@@ -21,7 +21,7 @@
 
 const fs = require("fs");
 const path = require("path");
-const fetch = require("node-fetch");
+// Node.js 18+ ya trae `fetch` integrado, no hace falta node-fetch.
 
 // ============================================================
 // ACTAS A CONSULTAR (de prueba)
@@ -150,10 +150,14 @@ async function main() {
   console.log("\nListo. Revisa la carpeta actas-crudas/");
 }
 
-main().catch((err) => {
-  console.error("\n❌ ERROR GENERAL:");
-  console.error(err);
-  process.exit(1);
-});
+// Solo se ejecuta main() si este archivo se lanza directamente
+// (node obtener-acta.js), no cuando otro script hace require() de él.
+if (require.main === module) {
+  main().catch((err) => {
+    console.error("\n❌ ERROR GENERAL:");
+    console.error(err);
+    process.exit(1);
+  });
+}
 
 module.exports = { urlActa, obtenerActaCruda, codactaDeUrl };
