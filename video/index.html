@@ -7,18 +7,23 @@
 </head>
 <body>
   <!--
-    Lienzo de 1080x1920 (formato vertical, tipo Instagram Reels/
-    Stories). Todo se dibuja dentro de #escena; styles.css lo
-    escala para que se vea entero en la ventana del navegador.
+    Lienzo de 1080x1920 (formato vertical, historia de Instagram).
+    Todo se dibuja dentro de #escena; styles.css lo escala para
+    que se vea entero en la ventana del navegador.
   -->
   <div id="escena">
 
-    <!-- Cabecera fija con el escudo del club, visible en todo el vídeo -->
-    <div id="cabecera-club">
+    <!-- Cabecera fija, estilo cartel de calendario. Visible en
+         todo el vídeo. -->
+    <header id="cabecera-club">
       <img id="escudo-club" src="" alt="Escudo del club" />
-    </div>
+      <div id="cabecera-texto">
+        <div id="cabecera-titulo">RESULTADO<br />FINAL</div>
+        <div id="cabecera-categoria"></div>
+      </div>
+    </header>
 
-    <!-- Pantalla 1: card de resultado -->
+    <!-- Pantalla 1: marcador -->
     <section id="pantalla-resultado" class="pantalla"></section>
 
     <!-- Pantalla 2: alineación (lista -> campo) -->
@@ -27,16 +32,27 @@
       <div id="jugadores"></div>
     </section>
 
-    <!-- Pantalla 3: goles en orden cronológico -->
+    <!-- Pantalla 3: goles, en dos columnas (propios / rival) -->
     <section id="pantalla-goles" class="pantalla oculta">
-      <div id="linea-goles"></div>
+      <div id="goles-cabecera">GOLES</div>
+      <div id="goles-columnas">
+        <div class="columna-goles">
+          <div id="goles-nombre-propio" class="columna-goles-nombre"></div>
+          <div id="lista-goles-propios" class="lista-goles"></div>
+        </div>
+        <div class="columna-goles">
+          <div id="goles-nombre-rival" class="columna-goles-nombre"></div>
+          <div id="lista-goles-rival" class="lista-goles"></div>
+        </div>
+      </div>
     </section>
 
-    <!-- Pantalla 4: mascota + mensajes -->
+    <!-- Pantalla 4: mascota + bocadillo de resumen -->
     <section id="pantalla-mascota" class="pantalla oculta">
       <img id="img-mascota" src="" alt="Mascota del club" />
-      <p id="texto-mascota"></p>
-      <p id="texto-especial"></p>
+      <div id="bocadillo-mascota">
+        <div id="lista-resumen"></div>
+      </div>
     </section>
 
   </div>

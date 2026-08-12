@@ -189,22 +189,27 @@ function pintarResultado(datos) {
     : datos.resultado.local;
 
   cont.innerHTML = `
-    <div class="resultado-categoria">${datos.categoria} · Jornada ${datos.jornada}</div>
-    <div class="resultado-equipos">
-      <div class="equipo">
-        <img class="escudo-equipo" src="${datos.resultado.escudoPropio || ""}" />
-        <div class="resultado-nombre">${datos.resultado.equipoPropio}</div>
+    <div class="marcador-card">
+      <div class="resultado-equipos">
+        <div class="equipo">
+          <img class="escudo-equipo" src="${datos.resultado.escudoPropio || ""}" />
+          <div class="resultado-nombre">${datos.resultado.equipoPropio}</div>
+        </div>
+        <div class="resultado-marcador">
+          <span>${golesPropios}</span><span>-</span><span>${golesRival}</span>
+        </div>
+        <div class="equipo">
+          <img class="escudo-equipo" src="${datos.resultado.escudoRival || ""}" />
+          <div class="resultado-nombre">${datos.resultado.rival}</div>
+        </div>
       </div>
-      <div class="resultado-marcador">
-        <span>${golesPropios}</span><span>-</span><span>${golesRival}</span>
-      </div>
-      <div class="equipo">
-        <img class="escudo-equipo" src="${datos.resultado.escudoRival || ""}" />
-        <div class="resultado-nombre">${datos.resultado.rival}</div>
-      </div>
+      <div class="resultado-fecha">${datos.fecha} · ${datos.campo}</div>
     </div>
-    <div class="resultado-fecha">${datos.fecha} · ${datos.campo}</div>
   `;
+
+  // La cabecera fija muestra la categoría/jornada durante todo el vídeo.
+  document.getElementById("cabecera-categoria").textContent =
+    `${datos.categoria} · Jornada ${datos.jornada}`;
 }
 
 // ============================================================
@@ -246,6 +251,15 @@ function posicionesEnCampo(numJugadores) {
 }
 
 async function pintarAlineacion(datos) {
+  // Líneas del campo (una sola vez).
+  const campo = document.getElementById("campo");
+  campo.innerHTML = `
+    <div class="linea-medio-campo"></div>
+    <div class="circulo-central"></div>
+    <div class="area-porteria arriba"></div>
+    <div class="area-porteria abajo"></div>
+  `;
+
   const cont = document.getElementById("jugadores");
   cont.innerHTML = "";
 
@@ -255,26 +269,31 @@ async function pintarAlineacion(datos) {
     (a, b) => Number(b.portero) - Number(a.portero)
   );
 
-  // --- Paso 1: lista vertical centrada ---
+  // --- Paso 1: lista de tarjetas, centradas verticalmente ---
+  const altoTarjeta = 78;
+  const inicioY = 960 - (alineacion.length * altoTarjeta) / 2;
+
   alineacion.forEach((jugador, i) => {
     const el = document.createElement("div");
-    el.className = "jugador";
-    el.style.top = `${230 + i * 130}px`;
+    el.className = "jugador en-lista";
+    el.style.top = `${inicioY + i * altoTarjeta}px`;
     el.style.left = "50%";
     el.innerHTML = `
       ${crearCamisetaSVG(jugador, datos.resultado.propioLocal)}
-      <div class="nombre">${jugador.nombre}</div>
+      <div class="nombre">${jugador.nombre}${jugador.capitan ? " (C)" : ""}</div>
     `;
     cont.appendChild(el);
   });
 
   await esperar(DURACION_ALINEACION_LISTA);
 
-  // --- Paso 2: mover cada jugador a su posición en el campo ---
+  // --- Paso 2: quitamos el estilo de "tarjeta de lista" y
+  // movemos cada jugador a su posición en el campo ---
   const posiciones = posicionesEnCampo(alineacion.length);
   const elementos = cont.querySelectorAll(".jugador");
 
   elementos.forEach((el, i) => {
+    el.classList.remove("en-lista");
     const pos = posiciones[i] || { top: "50%", left: "50%" };
     el.style.top = pos.top;
     el.style.left = pos.left;
@@ -288,29 +307,47 @@ async function pintarAlineacion(datos) {
 // ============================================================
 
 async function pintarGoles(datos) {
-  const cont = document.getElementById("linea-goles");
-  cont.innerHTML = "";
+  document.getElementById("goles-nombre-propio").textContent =
+    datos.resultado.equipoPropio;
+  document.getElementById("goles-nombre-rival").textContent =
+    datos.resultado.rival;
 
-  const eventos = [
-    ...datos.golesPropios.map((g) => ({ ...g, propio: true })),
-    ...datos.golesRival.map((g) => ({ ...g, propio: false })),
-  ].sort((a, b) => a.minuto - b.minuto);
+  const contPropios = document.getElementById("lista-goles-propios");
+  const contRival = document.getElementById("lista-goles-rival");
+  contPropios.innerHTML = "";
+  contRival.innerHTML = "";
 
-  if (eventos.length === 0) {
+  const propios = [...datos.golesPropios].sort((a, b) => a.minuto - b.minuto);
+  const rival = [...datos.golesRival].sort((a, b) => a.minuto - b.minuto);
+
+  if (propios.length === 0 && rival.length === 0) {
     return;
   }
 
-  for (const gol of eventos) {
-    const el = document.createElement("div");
-    el.className = "gol " + (gol.propio ? "propio" : "rival");
-    el.innerHTML = gol.propio
-      ? `<span class="balon">⚽</span> ${gol.jugador} — min ${gol.minuto}'`
-      : `<span class="balon">⚽</span>`;
-    cont.appendChild(el);
+  // Intercalamos la aparición de ambas columnas para que el
+  // vídeo no se quede "vacío" mirando una sola columna vacía.
+  const maxLen = Math.max(propios.length, rival.length);
 
-    // Forzamos reflow para que la transición de aparición se vea
-    void el.offsetWidth;
-    el.classList.add("visible");
+  for (let i = 0; i < maxLen; i++) {
+    if (propios[i]) {
+      const el = document.createElement("div");
+      el.className = "gol";
+      el.innerHTML =
+        `<span class="balon">⚽</span> ${propios[i].jugador}` +
+        ` <span class="minuto">${propios[i].minuto}'</span>`;
+      contPropios.appendChild(el);
+      void el.offsetWidth;
+      el.classList.add("visible");
+    }
+
+    if (rival[i]) {
+      const el = document.createElement("div");
+      el.className = "gol";
+      el.innerHTML = `<span class="balon">⚽</span>`;
+      contRival.appendChild(el);
+      void el.offsetWidth;
+      el.classList.add("visible");
+    }
 
     await esperar(DURACION_ENTRE_GOLES);
   }
@@ -372,47 +409,58 @@ function pintarMascota(datos) {
     imgMascota.replaceWith(
       Object.assign(document.createElement("div"), {
         id: "img-mascota",
-        style: "font-size: 220px; margin-bottom: 50px;",
+        style: "font-size: 220px;",
         textContent: MASCOTA_EMOJI_RESPALDO[tipo],
       })
     );
   };
 
   const categoria = categoriaResultado(diferencia);
-  document.getElementById("texto-mascota").textContent = elegirAleatorio(
-    FRASES[categoria]
-  );
 
-  const especiales = [];
+  // Cada línea del bocadillo lleva un icono + su frase, al estilo
+  // de la referencia (viñetas con emoji delante).
+  const iconoResultado = { victoria: "🏆", empate: "🤝", derrota: "💪" }[tipo];
+  const lineas = [
+    { icono: iconoResultado, texto: elegirAleatorio(FRASES[categoria]) },
+  ];
 
   // Dobletes y hat-tricks (contados a partir de los goles propios).
   const conteoGoles = contarGolesPorJugador(datos.golesPropios || []);
   for (const nombreJugador of Object.keys(conteoGoles)) {
     const goles = conteoGoles[nombreJugador];
     if (goles >= 3) {
-      especiales.push(frasePersonalizada(FRASES_HATTRICK, nombreJugador));
+      lineas.push({
+        icono: "⚽",
+        texto: frasePersonalizada(FRASES_HATTRICK, nombreJugador),
+      });
     } else if (goles === 2) {
-      especiales.push(frasePersonalizada(FRASES_DOBLETE, nombreJugador));
+      lineas.push({
+        icono: "⚽",
+        texto: frasePersonalizada(FRASES_DOBLETE, nombreJugador),
+      });
     }
   }
 
   // Portería a cero (el rival no marcó).
   if ((datos.golesRival || []).length === 0) {
-    especiales.push(elegirAleatorio(FRASES_PORTERIA_CERO));
+    lineas.push({ icono: "🧤", texto: elegirAleatorio(FRASES_PORTERIA_CERO) });
   }
 
   // Expulsión (sin decir el nombre del jugador).
   const expulsiones = (datos.expulsiones || []).filter((t) => t.expulsion);
   if (expulsiones.length > 0) {
-    especiales.push(elegirAleatorio(FRASES_EXPULSION));
+    lineas.push({ icono: "🟥", texto: elegirAleatorio(FRASES_EXPULSION) });
   }
 
   // Frase de cierre, siempre presente.
-  especiales.push(elegirAleatorio(FRASES_EXTRA_CIERRE));
+  lineas.push({ icono: "💚", texto: elegirAleatorio(FRASES_EXTRA_CIERRE) });
 
-  document.getElementById("texto-especial").textContent = especiales.join(
-    "  ·  "
-  );
+  document.getElementById("lista-resumen").innerHTML = lineas
+    .map(
+      (l) =>
+        `<div class="linea-resumen"><span class="icono">${l.icono}</span><span>${l.texto}</span></div>`
+    )
+    .join("");
 }
 
 // ============================================================
