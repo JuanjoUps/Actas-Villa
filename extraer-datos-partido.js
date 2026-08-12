@@ -61,6 +61,20 @@ function extraerAlineacion(game, esLocal) {
     }));
 }
 
+// Suplentes (para la lista lateral junto al campo).
+function extraerSuplentes(game, esLocal) {
+  const jugadores = esLocal
+    ? game.jugadores_equipo_local
+    : game.jugadores_equipo_visitante;
+
+  return (jugadores || [])
+    .filter((j) => j.suplente === "1")
+    .map((j) => ({
+      dorsal: j.dorsal,
+      nombre: invertirNombre(j.nombre_jugador),
+    }));
+}
+
 // ============================================================
 // Goles propios y del rival
 // ============================================================
@@ -164,6 +178,7 @@ function extraerDatosPartido(game) {
   };
 
   const alineacion = extraerAlineacion(game, esLocal);
+  const suplentes = extraerSuplentes(game, esLocal);
 
   const { propios: golesPropios, rival: golesRival } = extraerGoles(
     game,
@@ -185,6 +200,7 @@ function extraerDatosPartido(game) {
     campo: game.campo,
     resultado,
     alineacion,
+    suplentes,
     golesPropios,
     golesRival,
     hatTricks,
