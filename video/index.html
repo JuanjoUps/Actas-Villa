@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Vídeo del partido</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!--
+    Lienzo de 1080x1920 (formato vertical, tipo Instagram Reels/
+    Stories). Todo se dibuja dentro de #escena; styles.css lo
+    escala para que se vea entero en la ventana del navegador.
+  -->
+  <div id="escena">
+
+    <!-- Cabecera fija con el escudo del club, visible en todo el vídeo -->
+    <div id="cabecera-club">
+      <img id="escudo-club" src="" alt="Escudo del club" />
+    </div>
+
+    <!-- Pantalla 1: card de resultado -->
+    <section id="pantalla-resultado" class="pantalla"></section>
+
+    <!-- Pantalla 2: alineación (lista -> campo) -->
+    <section id="pantalla-alineacion" class="pantalla oculta">
+      <div id="campo"></div>
+      <div id="jugadores"></div>
+    </section>
+
+    <!-- Pantalla 3: goles en orden cronológico -->
+    <section id="pantalla-goles" class="pantalla oculta">
+      <div id="linea-goles"></div>
+    </section>
+
+    <!-- Pantalla 4: mascota + mensajes -->
+    <section id="pantalla-mascota" class="pantalla oculta">
+      <img id="img-mascota" src="" alt="Mascota del club" />
+      <p id="texto-mascota"></p>
+      <p id="texto-especial"></p>
+    </section>
+
+  </div>
+
+  <script src="animacion.js"></script>
+</body>
+</html>

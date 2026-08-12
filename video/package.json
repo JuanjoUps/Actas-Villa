@@ -1,0 +1,15 @@
+{
+  "name": "video-resultado-partido",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Genera el vídeo de resultado de cada partido (alineación animada, goles, mascota) a partir de resultados-partidos/*.json",
+  "scripts": {
+    "video": "node generar-video.js",
+    "previsualizar": "node ../server.js"
+  },
+  "dependencies": {
+    "@ffmpeg-installer/ffmpeg": "^1.1.0",
+    "fluent-ffmpeg": "^2.1.3",
+    "playwright": "^1.47.0"
+  }
+}
