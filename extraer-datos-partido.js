@@ -28,6 +28,12 @@ function esClubLocal(game) {
     .includes(NOMBRE_CLUB_FILTRO);
 }
 
+function esClubVisitante(game) {
+  return (game.equipo_visitante || "")
+    .toUpperCase()
+    .includes(NOMBRE_CLUB_FILTRO);
+}
+
 // ============================================================
 // Alineación titular del club (para la animación al campo)
 // ============================================================
@@ -125,6 +131,14 @@ function extraerTarjetas(game, esLocal) {
 
 function extraerDatosPartido(game) {
   const esLocal = esClubLocal(game);
+  const esVisitante = esClubVisitante(game);
+
+  if (!esLocal && !esVisitante) {
+    throw new Error(
+      `Este partido no es del club (${(game.equipo_local || "").trim()}` +
+      ` vs ${(game.equipo_visitante || "").trim()}), acta ${game.codacta}`
+    );
+  }
 
   const resultado = {
     local: Number(game.goles_local),
