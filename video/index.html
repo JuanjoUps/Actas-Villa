@@ -26,44 +26,52 @@
       </div>
     </header>
 
-    <!-- Marcador -->
-    <section id="bloque-resultado" class="bloque"></section>
+    <!-- Marcador + campo/alineación + goles: crecen hacia abajo desde
+         la cabecera. La mascota y el banner van FIJOS al fondo del
+         lienzo (ver más abajo), no dependen de cuánto ocupe esto. -->
+    <div id="contenido-medio">
 
-    <!-- Campo + alineación (lista -> formación) -->
-    <section id="bloque-alineacion" class="bloque">
-      <div id="campo-envoltura">
-        <div id="campo">
-          <div class="foco arriba-izq"></div>
-          <div class="foco arriba-der"></div>
-          <div class="porteria arriba"></div>
-          <div class="circulo-central"></div>
-          <div class="linea-medio-campo"></div>
-          <div class="porteria abajo"></div>
-          <div id="jugadores"></div>
-        </div>
-        <div id="panel-suplentes">
-          <div id="suplentes-titulo">SUPLENTES</div>
-          <div id="lista-suplentes"></div>
-        </div>
-      </div>
-    </section>
+      <!-- Marcador -->
+      <section id="bloque-resultado" class="bloque"></section>
 
-    <!-- Goles, en dos columnas -->
-    <section id="bloque-goles" class="bloque">
-      <div id="goles-cabecera">GOLES</div>
-      <div id="goles-columnas">
-        <div class="columna-goles">
-          <div id="goles-nombre-propio" class="columna-goles-nombre"></div>
-          <div id="lista-goles-propios" class="lista-goles"></div>
+      <!-- Campo + alineación (lista -> formación) -->
+      <section id="bloque-alineacion" class="bloque">
+        <div id="campo-envoltura">
+          <div id="campo">
+            <div class="foco arriba-izq"></div>
+            <div class="foco arriba-der"></div>
+            <div class="porteria arriba"></div>
+            <div class="circulo-central"></div>
+            <div class="linea-medio-campo"></div>
+            <div class="porteria abajo"></div>
+            <div id="jugadores"></div>
+          </div>
+          <div id="panel-suplentes">
+            <div id="suplentes-titulo">SUPLENTES</div>
+            <div id="lista-suplentes"></div>
+          </div>
         </div>
-        <div class="columna-goles">
-          <div id="goles-nombre-rival" class="columna-goles-nombre"></div>
-          <div id="lista-goles-rival" class="lista-goles"></div>
-        </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- Mascota + bocadillo de resumen, aparece la última -->
+      <!-- Goles, en dos columnas -->
+      <section id="bloque-goles" class="bloque">
+        <div id="goles-cabecera">GOLES</div>
+        <div id="goles-columnas">
+          <div class="columna-goles">
+            <div id="goles-nombre-propio" class="columna-goles-nombre"></div>
+            <div id="lista-goles-propios" class="lista-goles"></div>
+          </div>
+          <div class="columna-goles">
+            <div id="goles-nombre-rival" class="columna-goles-nombre"></div>
+            <div id="lista-goles-rival" class="lista-goles"></div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Mascota + bocadillo: FIJA, siempre pegada justo encima del
+         banner, sea lo que sea lo que haya pasado arriba. -->
     <section id="bloque-mascota" class="bloque">
       <img id="img-mascota" src="" alt="Mascota del club" />
       <div id="bocadillo-mascota">
@@ -71,7 +79,7 @@
       </div>
     </section>
 
-    <!-- Banner de patrocinadores, siempre visible al pie -->
+    <!-- Banner de patrocinadores: FIJO, siempre en el mismo sitio. -->
     <footer id="banner-patrocina">
       <div id="patrocina-texto">
         ¿QUIERES QUE TU MARCA<br />APAREZCA CADA SEMANA?

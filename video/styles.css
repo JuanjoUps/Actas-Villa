@@ -51,6 +51,10 @@ html, body {
   flex-direction: column;
 }
 
+#contenido-medio {
+  display: flex;
+  flex-direction: column;
+}
 /* Cada bloque aparece con el tiempo, pero NUNCA se oculta el
    anterior — todo se va acumulando en el mismo plano. */
 .bloque {
@@ -462,12 +466,18 @@ html, body {
    ============================================================ */
 
 #bloque-mascota {
-  flex-shrink: 0;
+  /* FIJO: siempre a la misma distancia del fondo, sin importar
+     cuánto ocupe el contenido de arriba (justo encima del banner). */
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 150px;
+  height: 380px;
   display: flex;
   align-items: flex-end;
   justify-content: center;
   gap: 16px;
-  padding: 0 30px 50px 30px;
+  padding: 0 30px 30px 30px;
 }
 
 #img-mascota {
@@ -523,7 +533,12 @@ html, body {
    ============================================================ */
 
 #banner-patrocina {
-  flex-shrink: 0;
+  /* FIJO: siempre pegado al fondo del lienzo, estático, no forma
+     parte del flujo elástico de los bloques de arriba. */
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
   height: 150px;
   background: linear-gradient(180deg, #071A0F 0%, #05140C 100%);
   border-top: 3px solid var(--color-oro);
