@@ -16,27 +16,35 @@
  *   hay que revisar y ajustar la función esExpulsion() de abajo.
  */
 
-const NOMBRE_CLUB_FILTRO = "BUITRAGO";
+// Código oficial del club en la RFFM (mismo que usa generar_cartel.js).
+// Filtramos por ESTE código, no por el nombre — nombres como
+// "GREDOS SAN DIEGO - BUITRAGO 'D'" contienen la palabra "BUITRAGO"
+// sin ser el club, y un filtro de texto los cogería por error.
+const CODIGO_CLUB = "846904";
 
 // ============================================================
 // ¿Es el club local o visitante en este partido?
 // ============================================================
 
 function esClubLocal(game) {
-  return (game.equipo_local || "")
-    .toUpperCase()
-    .includes(NOMBRE_CLUB_FILTRO);
+  return game.codigo_equipo_local === CODIGO_CLUB;
 }
 
 function esClubVisitante(game) {
-  return (game.equipo_visitante || "")
-    .toUpperCase()
-    .includes(NOMBRE_CLUB_FILTRO);
+  return game.codigo_equipo_visitante === CODIGO_CLUB;
 }
 
 // ============================================================
 // Alineación titular del club (para la animación al campo)
 // ============================================================
+
+// El acta da los nombres como "APELLIDOS, NOMBRE" (p.ej.
+// "GONZÁLEZ GARCÍA, GEMA MARÍA"). Los pasamos a "Nombre Apellidos".
+function invertirNombre(nombreCrudo) {
+  if (!nombreCrudo || !nombreCrudo.includes(",")) return nombreCrudo || "";
+  const [apellidos, nombre] = nombreCrudo.split(",").map((s) => s.trim());
+  return `${nombre} ${apellidos}`;
+}
 
 function extraerAlineacion(game, esLocal) {
   const jugadores = esLocal
@@ -47,7 +55,7 @@ function extraerAlineacion(game, esLocal) {
     .filter((j) => j.titular === "1")
     .map((j) => ({
       dorsal: j.dorsal,
-      nombre: j.nombre_jugador,
+      nombre: invertirNombre(j.nombre_jugador),
       capitan: j.capitan === "1",
       portero: j.portero === "1",
     }));
@@ -67,7 +75,7 @@ function extraerGoles(game, esLocal) {
     : game.goles_equipo_local;
 
   const propios = (golesPropios || []).map((g) => ({
-    jugador: g.nombre_jugador,
+    jugador: invertirNombre(g.nombre_jugador),
     minuto: Number(g.minuto),
   }));
 
@@ -140,12 +148,19 @@ function extraerDatosPartido(game) {
     );
   }
 
+  const escudoUrl = (relativo) =>
+    relativo ? "https://appweb.rffm.es" + relativo : "";
+
   const resultado = {
     local: Number(game.goles_local),
     visitante: Number(game.goles_visitante),
     propioLocal: esLocal,
     equipoPropio: esLocal ? game.equipo_local.trim() : game.equipo_visitante.trim(),
     rival: esLocal ? game.equipo_visitante.trim() : game.equipo_local.trim(),
+    // URLs crudas del escudo en rffm.es. GestorEscudos (de
+    // generar_cartel.js) las convierte en data URI cacheada.
+    escudoPropioUrl: escudoUrl(esLocal ? game.escudo_local : game.escudo_visitante),
+    escudoRivalUrl: escudoUrl(esLocal ? game.escudo_visitante : game.escudo_local),
   };
 
   const alineacion = extraerAlineacion(game, esLocal);
