@@ -74,6 +74,31 @@ function tieneActaReal(partido) {
 }
 
 // ============================================================
+// RANGO DE FECHAS A PROCESAR (para revisar un fin de semana
+// concreto con datos reales, en vez de todo el histórico).
+//
+// Formato DD-MM-YYYY, ambos límites incluidos. Ponlo a `null`
+// para procesar TODO lo pendiente (modo producción normal).
+// ============================================================
+
+const RANGO_FECHAS_PRUEBA = {
+  desde: "07-02-2026",
+  hasta: "08-02-2026",
+};
+
+function fechaEnRango(fechaDDMMYYYY, rango) {
+  if (!rango) return true;
+
+  const aFecha = (f) => {
+    const [d, m, a] = f.split("-").map(Number);
+    return new Date(a, m - 1, d);
+  };
+
+  const fecha = aFecha(fechaDDMMYYYY);
+  return fecha >= aFecha(rango.desde) && fecha <= aFecha(rango.hasta);
+}
+
+// ============================================================
 // MAIN
 // ============================================================
 
@@ -95,12 +120,23 @@ async function main() {
 
   const estadoActas = cargarEstadoActas();
 
-  // Partidos finalizados, con acta real, todavía no procesados.
+  // Partidos finalizados, con acta real, todavía no procesados,
+  // y dentro del rango de fechas de prueba (si hay uno definido).
   const pendientes = todosLosPartidos.filter(
-    (p) => p.finalizado && tieneActaReal(p) && !estadoActas[p.codacta]
+    (p) =>
+      p.finalizado &&
+      tieneActaReal(p) &&
+      !estadoActas[p.codacta] &&
+      fechaEnRango(p.fecha, RANGO_FECHAS_PRUEBA)
   );
 
-  console.log(`Partidos finalizados sin procesar: ${pendientes.length}`);
+  console.log(
+    `Partidos finalizados sin procesar` +
+    (RANGO_FECHAS_PRUEBA
+      ? ` entre ${RANGO_FECHAS_PRUEBA.desde} y ${RANGO_FECHAS_PRUEBA.hasta}`
+      : "") +
+    `: ${pendientes.length}`
+  );
 
   if (pendientes.length === 0) {
     console.log("Nada nuevo que procesar.");
