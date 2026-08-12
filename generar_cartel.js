@@ -223,16 +223,22 @@ async function generarImagenJornada(fecha, partidos, salida) {
     headless: "new",
     args: ["--no-sandbox", "--disable-setuid-sandbox", "--allow-file-access-from-files"],
   });
-  const page = await browser.newPage();
-  await page.setViewport({ width: 1080, height: 2400, deviceScaleFactor: 1 });
-  await page.goto(url, { waitUntil: "networkidle0" });
-  await page.waitForFunction("window.__listo === true");
 
-  const cartel = await page.$("#cartel");
-  await cartel.screenshot({ path: salida });
+  // try/finally: el navegador se cierra SIEMPRE, incluso si algo
+  // falla (p.ej. falta la plantilla). Si no, el proceso de Chromium
+  // se queda abierto y Node.js nunca llega a terminar el script.
+  try {
+    const page = await browser.newPage();
+    await page.setViewport({ width: 1080, height: 2400, deviceScaleFactor: 1 });
+    await page.goto(url, { waitUntil: "networkidle0" });
+    await page.waitForFunction("window.__listo === true");
 
-  await browser.close();
-  fs.unlinkSync(partidosJsonPath);
+    const cartel = await page.$("#cartel");
+    await cartel.screenshot({ path: salida });
+  } finally {
+    await browser.close();
+    if (fs.existsSync(partidosJsonPath)) fs.unlinkSync(partidosJsonPath);
+  }
 }
 
 async function extraerActa(url) {
@@ -306,14 +312,17 @@ async function generarImagen(datos, salida) {
     headless: "new",
     args: ["--no-sandbox", "--disable-setuid-sandbox"],
   });
-  const page = await browser.newPage();
-  await page.setViewport({ width: 500, height: 700, deviceScaleFactor: 2.85 }); // ~1080px de ancho final
-  await page.goto(urlPlantilla, { waitUntil: "networkidle0" });
 
-  const cartel = await page.$("#cartel");
-  await cartel.screenshot({ path: salida });
+  try {
+    const page = await browser.newPage();
+    await page.setViewport({ width: 500, height: 700, deviceScaleFactor: 2.85 }); // ~1080px de ancho final
+    await page.goto(urlPlantilla, { waitUntil: "networkidle0" });
 
-  await browser.close();
+    const cartel = await page.$("#cartel");
+    await cartel.screenshot({ path: salida });
+  } finally {
+    await browser.close();
+  }
 }
 
 module.exports = { extraerActa, generarImagen, generarImagenJornada, formatearFecha, formatearCampo, descargarComoDataURI, GestorEscudos, CODIGO_CLUB, PLANTILLA };
