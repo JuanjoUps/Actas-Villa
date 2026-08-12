@@ -765,22 +765,33 @@ async function main() {
       );
 
 
-    await generarImagenJornada(
+    // Un fallo generando ESTE cartel concreto (p.ej. si falta la
+    // plantilla cartel-jornada.html en este repo) no debe tumbar
+    // todo el proceso — seguimos con el resto de fechas y, sobre
+    // todo, dejamos que continúe el resto del workflow (actas).
+    try {
+      await generarImagenJornada(
 
-      fecha,
+        fecha,
 
-      partidosConEscudo,
+        partidosConEscudo,
 
-      salida
+        salida
 
-    );
+      );
 
+      estado[fecha] =
+        firma;
 
-    estado[fecha] =
-      firma;
-
-
-    generados++;
+      generados++;
+    } catch (err) {
+      console.error(
+        `  -> ERROR generando cartel de ${fecha}: ${err.message}`
+      );
+      console.error(
+        "     (se omite este cartel y se continúa con el resto)"
+      );
+    }
 
   }
 
