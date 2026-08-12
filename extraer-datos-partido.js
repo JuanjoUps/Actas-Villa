@@ -1,0 +1,167 @@
+/**
+ * Convierte el objeto "game" del acta de rffm.es (extraído de
+ * __NEXT_DATA__ en la página /acta-partido/<codacta>) en los datos
+ * limpios que necesita el generador de vídeo: resultado, alineación,
+ * goles propios/rival, tarjetas, hat-tricks y expulsiones.
+ *
+ * ENTRADA: el objeto "game" tal cual viene en:
+ *   data.props.pageProps.game
+ *
+ * SALIDA: un objeto listo para partidos-video.json / generar-video.js
+ *
+ * PENDIENTE DE CONFIRMAR:
+ *   El código "codigo_tipo_amonestacion" de una tarjeta ROJA directa
+ *   todavía no lo hemos visto en un ejemplo real (solo amarillas,
+ *   código "100"). En cuanto tengamos un acta con roja directa,
+ *   hay que revisar y ajustar la función esExpulsion() de abajo.
+ */
+
+const NOMBRE_CLUB_FILTRO = "BUITRAGO";
+
+// ============================================================
+// ¿Es el club local o visitante en este partido?
+// ============================================================
+
+function esClubLocal(game) {
+  return (game.equipo_local || "")
+    .toUpperCase()
+    .includes(NOMBRE_CLUB_FILTRO);
+}
+
+// ============================================================
+// Alineación titular del club (para la animación al campo)
+// ============================================================
+
+function extraerAlineacion(game, esLocal) {
+  const jugadores = esLocal
+    ? game.jugadores_equipo_local
+    : game.jugadores_equipo_visitante;
+
+  return (jugadores || [])
+    .filter((j) => j.titular === "1")
+    .map((j) => ({
+      dorsal: j.dorsal,
+      nombre: j.nombre_jugador,
+      capitan: j.capitan === "1",
+      portero: j.portero === "1",
+    }));
+}
+
+// ============================================================
+// Goles propios y del rival
+// ============================================================
+
+function extraerGoles(game, esLocal) {
+  const golesPropios = esLocal
+    ? game.goles_equipo_local
+    : game.goles_equipo_visitante;
+
+  const golesRival = esLocal
+    ? game.goles_equipo_visitante
+    : game.goles_equipo_local;
+
+  const propios = (golesPropios || []).map((g) => ({
+    jugador: g.nombre_jugador,
+    minuto: Number(g.minuto),
+  }));
+
+  const rival = (golesRival || []).map((g) => ({
+    minuto: Number(g.minuto),
+  }));
+
+  return { propios, rival };
+}
+
+// ============================================================
+// Hat-tricks (3 o más goles del mismo jugador propio)
+// ============================================================
+
+function detectarHatTricks(golesPropios) {
+  const conteo = {};
+
+  for (const g of golesPropios) {
+    conteo[g.jugador] = (conteo[g.jugador] || 0) + 1;
+  }
+
+  return Object.keys(conteo).filter((nombre) => conteo[nombre] >= 3);
+}
+
+// ============================================================
+// Tarjetas del club y detección de expulsión
+//
+// De momento consideramos expulsión: segunda amarilla, o
+// cualquier código de amonestación que NO sea "100" (amarilla
+// simple). AJUSTAR cuando tengamos un ejemplo real con roja.
+// ============================================================
+
+function esExpulsion(tarjeta) {
+  if (tarjeta.segunda_amarilla === "1") {
+    return true;
+  }
+
+  // TODO: confirmar el código real de tarjeta roja directa
+  if (tarjeta.codigo_tipo_amonestacion !== "100") {
+    return true;
+  }
+
+  return false;
+}
+
+function extraerTarjetas(game, esLocal) {
+  const tarjetas = esLocal
+    ? game.tarjetas_equipo_local
+    : game.tarjetas_equipo_visitante;
+
+  return (tarjetas || []).map((t) => ({
+    jugador: t.nombre_jugador,
+    minuto: Number(t.minuto),
+    expulsion: esExpulsion(t),
+  }));
+}
+
+// ============================================================
+// FUNCIÓN PRINCIPAL
+// ============================================================
+
+function extraerDatosPartido(game) {
+  const esLocal = esClubLocal(game);
+
+  const resultado = {
+    local: Number(game.goles_local),
+    visitante: Number(game.goles_visitante),
+    propioLocal: esLocal,
+    equipoPropio: esLocal ? game.equipo_local.trim() : game.equipo_visitante.trim(),
+    rival: esLocal ? game.equipo_visitante.trim() : game.equipo_local.trim(),
+  };
+
+  const alineacion = extraerAlineacion(game, esLocal);
+
+  const { propios: golesPropios, rival: golesRival } = extraerGoles(
+    game,
+    esLocal
+  );
+
+  const hatTricks = detectarHatTricks(golesPropios);
+
+  const tarjetas = extraerTarjetas(game, esLocal);
+
+  const expulsiones = tarjetas.filter((t) => t.expulsion);
+
+  return {
+    codacta: game.codacta,
+    categoria: game.nombre_competicion,
+    grupo: game.nombre_grupo,
+    jornada: game.jornada,
+    fecha: game.fecha,
+    campo: game.campo,
+    resultado,
+    alineacion,
+    golesPropios,
+    golesRival,
+    hatTricks,
+    tarjetas,
+    expulsiones,
+  };
+}
+
+module.exports = { extraerDatosPartido };
