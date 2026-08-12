@@ -3,14 +3,14 @@
    ============================================================ */
 
 :root {
-  --color-club: #1e8449;               /* camiseta LOCAL: verde */
+  --color-club: #1e8449;               /* camiseta LOCAL: verde (a juego con la mascota) */
   --color-club-visitante: #f4c430;     /* camiseta VISITANTE: amarillo */
-  --color-oro: #f4c430;
+  --color-oro: #F4B400;                /* dorado real de la marca */
   --color-campo: #1c5c33;
   --color-campo-oscuro: #16492a;
   --color-campo-lineas: rgba(255, 255, 255, 0.7);
   --color-fondo: #0a0e08;
-  --color-panel: #0f2818;
+  --color-panel: #14532D;              /* verde-card del cartel */
 }
 
 * {
@@ -23,7 +23,7 @@ html, body {
   background: #000;
   height: 100%;
   overflow: hidden;
-  font-family: "Arial Black", "Segoe UI", Roboto, Arial, sans-serif;
+  font-family: "Barlow Condensed", "Segoe UI", Roboto, Arial, sans-serif;
 }
 
 /* ============================================================
@@ -184,8 +184,8 @@ html, body {
    ============================================================ */
 
 #bloque-alineacion {
-  flex: 1;
-  min-height: 0;
+  height: 640px;
+  flex-shrink: 0;
   padding: 0 40px;
 }
 
@@ -516,4 +516,46 @@ html, body {
 .linea-resumen .icono {
   font-size: 24px;
   flex-shrink: 0;
+}
+
+/* ============================================================
+   BANNER DE PATROCINADORES (pie fijo, calcado del cartel)
+   ============================================================ */
+
+#banner-patrocina {
+  flex-shrink: 0;
+  height: 150px;
+  background: linear-gradient(180deg, #071A0F 0%, #05140C 100%);
+  border-top: 3px solid var(--color-oro);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  text-align: center;
+  padding: 10px 40px;
+}
+
+#patrocina-texto {
+  font-family: "Anton", sans-serif;
+  font-size: 26px;
+  line-height: 0.95;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: white;
+  text-shadow: 2px 3px 0 rgba(0, 0, 0, 0.45);
+}
+
+#patrocina-accion {
+  display: inline-block;
+  padding: 8px 20px;
+  background: var(--color-oro);
+  color: #071A0F;
+  font-family: "Anton", sans-serif;
+  font-size: 17px;
+  line-height: 1.05;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  transform: rotate(-1deg);
+  box-shadow: 3px 4px 0 rgba(0, 0, 0, 0.35);
 }
