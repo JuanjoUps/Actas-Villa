@@ -1,0 +1,200 @@
+name: Generar vídeo de resultado
+
+on:
+
+  # Ejecutar manualmente desde la pestaña Actions (para probar)
+  workflow_dispatch:
+
+  # Fines de semana, cada 30 minutos entre ~12:00 y ~23:30 hora
+  # española (verano, CEST = UTC+2). GitHub usa UTC, por eso el
+  # rango aquí es 10:00-21:30 UTC. En horario de invierno (CET,
+  # UTC+1) esto se adelanta una hora respecto a la hora española
+  # real — si hace falta más precisión todo el año, hay que separar
+  # dos cron con rango de meses distinto.
+  schedule:
+    - cron: "0,30 10-21 * * 6,0"
+
+
+jobs:
+
+  generar-video:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      # ========================================================
+      # DESCARGAR REPOSITORIO
+      # ========================================================
+
+      - name: Descargar repositorio
+        uses: actions/checkout@v4
+
+
+      # ========================================================
+      # NODE.JS
+      # ========================================================
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+
+      # ========================================================
+      # DEPENDENCIAS PRINCIPALES (raíz del repo)
+      # ========================================================
+
+      - name: Instalar dependencias principales
+        run: npm install
+
+
+      # ========================================================
+      # DEPENDENCIAS DEL GENERADOR DE VÍDEO
+      # ========================================================
+
+      - name: Instalar dependencias del vídeo
+        working-directory: video
+        run: npm install
+
+
+      # ========================================================
+      # INSTALAR CHROMIUM (Playwright)
+      # ========================================================
+
+      - name: Instalar navegador Chromium
+        working-directory: video
+        run: npx playwright install --with-deps chromium
+
+
+      # ========================================================
+      # 1. ACTUALIZAR CALENDARIO Y CARTELES
+      # ========================================================
+
+      - name: Revisar calendario y generar carteles
+        run: node partidos-actuales.js
+
+
+      # ========================================================
+      # 2. PROCESAR ACTAS DE PARTIDOS FINALIZADOS
+      # ========================================================
+
+      - name: Procesar actas nuevas
+        run: node procesar-actas.js
+
+
+      # ========================================================
+      # 3. GENERAR VÍDEO DE LOS RESULTADOS NUEVOS
+      # ========================================================
+
+      - name: Generar vídeo
+        working-directory: video
+        run: npm run video
+
+
+      # ========================================================
+      # COMPROBAR SI HAY VÍDEO NUEVO
+      # ========================================================
+
+      - name: Comprobar si se generó vídeo nuevo
+        id: check
+        shell: bash
+        run: |
+
+          if [ -f "video-pendiente.json" ] && \
+             [ -d "videos-generados" ] && \
+             [ "$(ls -A videos-generados/*.mp4 2>/dev/null)" ]; then
+
+            echo "hay_video=true" >> "$GITHUB_OUTPUT"
+            echo "✓ Hay vídeo nuevo"
+
+          else
+
+            echo "hay_video=false" >> "$GITHUB_OUTPUT"
+            echo "ℹ️ No hay vídeo nuevo"
+
+          fi
+
+
+      # ========================================================
+      # GUARDAR VÍDEO(S) COMO ARTEFACTO
+      # ========================================================
+
+      - name: Guardar vídeo(s) generado(s)
+        if: steps.check.outputs.hay_video == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: videos-resultado
+          path: videos-generados/*.mp4
+          retention-days: 7
+
+
+      # ========================================================
+      # ENVIAR VÍDEO(S) POR EMAIL
+      #
+      # Misma configuración que el workflow de video-partidos.
+      # ========================================================
+
+      - name: Enviar vídeo(s) nuevo(s) por email
+        if: steps.check.outputs.hay_video == 'true'
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.EMAIL_USUARIO }}
+          password: ${{ secrets.EMAIL_CLAVE }}
+          from: Actas Villa de Buitrago
+          to: ${{ secrets.EMAIL_DESTINO }}
+          subject: "Vídeo de resultado - C.D. Villa de Buitrago"
+          body: |
+            Hola,
+
+            Ya está generado el vídeo de resultado del/de los partido(s)
+            finalizado(s). Se adjunta listo para subir como historia de
+            Instagram.
+
+            Un saludo.
+          attachments: videos-generados/*.mp4
+
+
+      # ========================================================
+      # GUARDAR ESTADO Y ESCUDOS NUEVOS PARA LA PRÓXIMA VEZ
+      # ========================================================
+
+      - name: Guardar estado y escudos nuevos
+        if: always()
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add estado.json estado-actas.json estado-videos.json escudos-cache/ partidos-video.json resultados-partidos/ 2>/dev/null || true
+          git commit -m "Actualiza estado de actas y vídeos" || echo "Nada que guardar"
+          git push
+
+
+      # ========================================================
+      # LIMPIAR video-pendiente.json (ya usado en este workflow)
+      # ========================================================
+
+      - name: Limpiar marca de vídeo pendiente
+        if: steps.check.outputs.hay_video == 'true'
+        run: |
+          rm -f video-pendiente.json
+          git add video-pendiente.json 2>/dev/null || true
+          git commit -m "Limpia marca de vídeo pendiente" || echo "Nada que limpiar"
+          git push
+
+
+      # ========================================================
+      # RESULTADO FINAL
+      # ========================================================
+
+      - name: Resultado final
+        if: always()
+        shell: bash
+        run: |
+
+          if [ "${{ steps.check.outputs.hay_video }}" = "true" ]; then
+            echo "🎬 VÍDEO NUEVO PROCESADO Y ENVIADO"
+          else
+            echo "ℹ️ No había vídeo nuevo — no se ha enviado ningún correo."
+          fi
