@@ -1,0 +1,136 @@
+{
+  "codacta": "5381935",
+  "categoria": "SEGUNDA JUVENIL",
+  "grupo": "Grupo 2",
+  "jornada": "17",
+  "fecha": "07-02-2026",
+  "campo": "GUADALIX DE LA SIERRA (HA)",
+  "resultado": {
+    "local": 3,
+    "visitante": 3,
+    "propioLocal": false,
+    "equipoPropio": "GREDOS SAN DIEGO - BUITRAGO 'D'",
+    "rival": "C.D. GUADALIX DE LA SIERRA",
+    "escudoPropio": "data:image/png;base64,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",
+    "escudoRival": "data:image/png;base64,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"
+  },
+  "alineacion": [
+    {
+      "dorsal": "1",
+      "nombre": "SHAHMARIGHOJEHBIGLOO, MANI",
+      "capitan": false,
+      "portero": true
+    },
+    {
+      "dorsal": "2",
+      "nombre": "LOPEZ MALDONADO, KENIEL EMIL",
+      "capitan": false,
+      "portero": false
+    },
+    {
+      "dorsal": "3",
+      "nombre": "DEL RIO SANTIAGO, ANDRES JAVIER",
+      "capitan": false,
+      "portero": false
+    },
+    {
+      "dorsal": "4",
+      "nombre": "MORROY ALVAREZ, ELOY",
+      "capitan": false,
+      "portero": false
+    },
+    {
+      "dorsal": "6",
+      "nombre": "MORALES QUINONES, LUIS ARMANI",
+      "capitan": false,
+      "portero": false
+    },
+    {
+      "dorsal": "7",
+      "nombre": "ARCE MACHADO, ALEXIS YERIEL",
+      "capitan": false,
+      "portero": false
+    },
+    {
+      "dorsal": "8",
+      "nombre": "KIPRUTO, AARON KIPLIMO",
+      "capitan": false,
+      "portero": false
+    },
+    {
+      "dorsal": "11",
+      "nombre": "MAMMADOV, RASIM",
+      "capitan": false,
+      "portero": false
+    },
+    {
+      "dorsal": "15",
+      "nombre": "COLON CANDELARIA, NESTOR OBIE",
+      "capitan": false,
+      "portero": false
+    },
+    {
+      "dorsal": "21",
+      "nombre": "LLANO COLYER, FERNANDO CRISTIANO",
+      "capitan": true,
+      "portero": false
+    },
+    {
+      "dorsal": "22",
+      "nombre": "RASULZADE, MAHAMMAD",
+      "capitan": false,
+      "portero": false
+    }
+  ],
+  "golesPropios": [
+    {
+      "jugador": "COLON CANDELARIA, NESTOR OBIE",
+      "minuto": 22
+    },
+    {
+      "jugador": "COLON CANDELARIA, NESTOR OBIE",
+      "minuto": 31
+    },
+    {
+      "jugador": "COLON CANDELARIA, NESTOR OBIE",
+      "minuto": 52
+    }
+  ],
+  "golesRival": [
+    {
+      "minuto": 70
+    },
+    {
+      "minuto": 70
+    },
+    {
+      "minuto": 75
+    }
+  ],
+  "hatTricks": [
+    "COLON CANDELARIA, NESTOR OBIE"
+  ],
+  "tarjetas": [
+    {
+      "jugador": "SHAHMARIGHOJEHBIGLOO, MANI",
+      "minuto": 65,
+      "expulsion": false
+    },
+    {
+      "jugador": "MORROY ALVAREZ, ELOY",
+      "minuto": 70,
+      "expulsion": false
+    },
+    {
+      "jugador": "MORALES QUINONES, LUIS ARMANI",
+      "minuto": 70,
+      "expulsion": false
+    },
+    {
+      "jugador": "DEL RIO SANTIAGO, ANDRES JAVIER",
+      "minuto": 85,
+      "expulsion": false
+    }
+  ],
+  "expulsiones": []
+}
