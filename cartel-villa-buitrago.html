@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Cartel de partido - C.D. Villa de Buitrago</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600..900&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+  :root{
+    --verde: #1F4D2C;
+    --verde-oscuro: #0F2716;
+    --oro: #F2A100;
+    --oro-claro: #F7C548;
+    --crema: #F6EFDD;
+    --tierra: #7A4B26;
+    --blanco: #FFFFFF;
+  }
+  *{ box-sizing:border-box; }
+  body{
+    margin:0;
+    font-family:'Barlow Condensed', sans-serif;
+    background:#E7E2D3;
+    color:#1a1a1a;
+    display:flex;
+    min-height:100vh;
+  }
+  .panel{
+    width:340px;
+    flex-shrink:0;
+    background:var(--verde-oscuro);
+    color:var(--crema);
+    padding:28px 24px;
+    overflow-y:auto;
+  }
+  .panel h1{
+    font-family:'Fraunces', serif;
+    font-size:22px;
+    margin:0 0 4px;
+    color:var(--oro-claro);
+  }
+  .panel p.sub{
+    font-size:15px;
+    color:#c9c2ac;
+    margin:0 0 24px;
+    line-height:1.3;
+  }
+  label{
+    display:block;
+    font-size:13px;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+    color:#c9c2ac;
+    margin:16px 0 6px;
+  }
+  input[type=text]{
+    width:100%;
+    padding:9px 10px;
+    border-radius:6px;
+    border:1px solid #3a5442;
+    background:#173322;
+    color:var(--crema);
+    font-family:'Barlow Condensed', sans-serif;
+    font-size:16px;
+  }
+  .toggle{ display:flex; gap:8px; margin-top:6px; }
+  .toggle button{
+    flex:1; padding:8px 0; border-radius:6px;
+    border:1px solid #3a5442; background:#173322; color:#c9c2ac;
+    font-family:'Barlow Condensed', sans-serif; font-size:15px; cursor:pointer;
+  }
+  .toggle button.active{
+    background:var(--oro); color:var(--verde-oscuro);
+    border-color:var(--oro); font-weight:700;
+  }
+  .descargar{
+    width:100%; margin-top:28px; padding:13px 0; border:none; border-radius:8px;
+    background:var(--oro); color:var(--verde-oscuro);
+    font-family:'Barlow Condensed', sans-serif; font-weight:700; font-size:17px;
+    letter-spacing:0.03em; cursor:pointer;
+  }
+  .stage{ flex:1; display:flex; align-items:center; justify-content:center; padding:40px; }
+
+  /* ---- CARTEL ---- */
+  #cartel{
+    position:relative;
+    width:380px;
+    aspect-ratio:4/5;
+    background:var(--verde);
+    overflow:hidden;
+    box-shadow:0 20px 50px rgba(0,0,0,0.35);
+    font-family:'Barlow Condensed', sans-serif;
+  }
+  .banda-oro{
+    position:relative;
+    height:88px;
+    background:var(--oro);
+    clip-path:polygon(0 0,100% 0,100% 65%,0 100%);
+    display:flex;
+    align-items:center;
+    padding:0 18px;
+    gap:10px;
+  }
+  .banda-oro .escudo-mini{ width:40px; height:40px; object-fit:contain; }
+  .banda-oro .nombre-club{
+    font-family:'Fraunces', serif; font-weight:700; font-size:17px;
+    color:var(--verde-oscuro); letter-spacing:0.01em; line-height:1.05;
+  }
+
+  /* Tarjeta reutilizable del partido: cabecera + escudos + pie con datos */
+  .card{
+    position:relative;
+    margin:22px 16px 0;
+    background:var(--crema);
+    border-radius:14px;
+    box-shadow:0 10px 24px rgba(0,0,0,0.28);
+    overflow:hidden;
+  }
+  .card-cabecera{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:12px 14px 0;
+  }
+  .card-cabecera .categoria{
+    background:var(--verde-oscuro);
+    color:var(--oro-claro);
+    font-size:11px;
+    letter-spacing:0.07em;
+    text-transform:uppercase;
+    padding:4px 9px;
+    border-radius:3px;
+    font-weight:600;
+    max-width:60%;
+  }
+  .card-cabecera .condicion{
+    background:var(--verde);
+    color:var(--crema);
+    font-size:11px;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    padding:4px 9px;
+    border-radius:3px;
+    font-weight:700;
+  }
+
+  .card-cuerpo{
+    display:flex;
+    align-items:flex-start;
+    justify-content:center;
+    padding:14px 14px 6px;
+    gap:10px;
+  }
+  .equipo{ width:112px; display:flex; flex-direction:column; align-items:center; gap:6px; }
+  .equipo .marco-escudo{
+    width:92px; height:92px; border-radius:10px;
+    background:rgba(15,39,22,0.06);
+    display:flex; align-items:center; justify-content:center; padding:6px;
+  }
+  .equipo.es-club .marco-escudo{ box-shadow:0 0 0 3px var(--oro); background:var(--blanco); }
+  .equipo img.escudo{ max-width:100%; max-height:100%; object-fit:contain; }
+  .equipo .nombre-equipo{
+    font-family:'Fraunces', serif; font-weight:700; font-size:12.5px;
+    line-height:1.12; color:var(--verde-oscuro); text-align:center;
+  }
+  .vs{
+    font-family:'Fraunces', serif; font-size:22px; color:var(--tierra);
+    font-weight:700; font-style:italic; padding-top:32px;
+  }
+
+  .card-pie{
+    display:flex;
+    justify-content:space-between;
+    gap:8px;
+    padding:12px 14px 16px;
+    border-top:1px dashed rgba(15,39,22,0.25);
+    margin-top:6px;
+  }
+  .card-pie .dato{ text-align:left; max-width:34%; }
+  .card-pie .dato .etiqueta{
+    font-size:10px; letter-spacing:0.08em; text-transform:uppercase;
+    color:var(--tierra); font-weight:700;
+  }
+  .card-pie .dato .valor{
+    font-family:'Fraunces', serif; font-size:14px; color:var(--verde-oscuro);
+    font-weight:700; line-height:1.15;
+  }
+
+  .mascota{
+    position:absolute;
+    bottom:44px;
+    right:-8px;
+    width:118px;
+    filter:drop-shadow(-6px 8px 10px rgba(0,0,0,0.35));
+  }
+
+  .patrocina{
+    position:absolute; left:0; right:0; bottom:0; height:40px;
+    background:var(--verde-oscuro);
+    display:flex; align-items:center; justify-content:center; gap:8px;
+  }
+  .patrocina span{
+    font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:#c9c2ac;
+  }
+  .patrocina img{ height:22px; object-fit:contain; }
+</style>
+</head>
+<body>
+
+  <div class="panel">
+    <h1>Cartel de partido</h1>
+    <p class="sub">C.D. Villa de Buitrago — genera el cartel de convocatoria para Instagram.</p>
+
+    <label>Categoría</label>
+    <input type="text" id="categoria" value="SEGUNDA AFICIONADO" />
+
+    <label>Condición</label>
+    <div class="toggle">
+      <button type="button" id="btn-local" class="active">Local</button>
+      <button type="button" id="btn-visitante">Visitante</button>
+    </div>
+
+    <label>Rival</label>
+    <input type="text" id="rival" value="ALCOBENDAS C.F." />
+
+    <label>Escudo del rival (URL o data:...)</label>
+    <input type="text" id="rivalEscudo" value="" />
+
+    <label>Fecha</label>
+    <input type="text" id="fecha" value="28 SEP" />
+
+    <label>Hora</label>
+    <input type="text" id="hora" value="18:30" />
+
+    <label>Campo</label>
+    <input type="text" id="campo" value="Peñalta, Buitrago del Lozoya" />
+
+    <label>Logo patrocinador (opcional)</label>
+    <input type="file" id="patrocinador" accept="image/*" />
+
+    <button class="descargar" id="descargar">Descargar cartel</button>
+  </div>
+
+  <div class="stage">
+    <div id="cartel">
+      <div class="banda-oro">
+        <img class="escudo-mini" src="escudo-club.png" />
+        <div class="nombre-club">C.D. VILLA<br/>DE BUITRAGO</div>
+      </div>
+
+      <div class="card">
+        <div class="card-cabecera">
+          <div class="categoria" id="out-categoria">SEGUNDA AFICIONADO</div>
+          <div class="condicion" id="out-condicion">EN CASA</div>
+        </div>
+
+        <div class="card-cuerpo">
+          <div class="equipo" id="equipo-izquierda">
+            <div class="marco-escudo"><img class="escudo" id="escudo-izquierda" /></div>
+            <div class="nombre-equipo" id="nombre-izquierda"></div>
+          </div>
+          <div class="vs">VS</div>
+          <div class="equipo" id="equipo-derecha">
+            <div class="marco-escudo"><img class="escudo" id="escudo-derecha" /></div>
+            <div class="nombre-equipo" id="nombre-derecha"></div>
+          </div>
+        </div>
+
+        <div class="card-pie">
+          <div class="dato">
+            <div class="etiqueta">Fecha</div>
+            <div class="valor" id="out-fecha">28 SEP</div>
+          </div>
+          <div class="dato">
+            <div class="etiqueta">Hora</div>
+            <div class="valor" id="out-hora">18:30</div>
+          </div>
+          <div class="dato">
+            <div class="etiqueta">Campo</div>
+            <div class="valor" id="out-campo">Peñalta, Buitrago del Lozoya</div>
+          </div>
+        </div>
+      </div>
+
+      <img class="mascota" src="mascota.png" />
+
+      <div class="patrocina">
+        <span>Patrocina</span>
+        <img id="out-patrocinador" src="" style="display:none;" />
+      </div>
+    </div>
+  </div>
+
+<script>
+  const $ = (id) => document.getElementById(id);
+  const ESCUDO_CLUB = "escudo-club.png";
+  const NOMBRE_CLUB = "C.D. VILLA DE BUITRAGO";
+
+  let esLocal = true;
+
+  function actualizar(){
+    $('out-categoria').textContent = $('categoria').value;
+    $('out-fecha').textContent = $('fecha').value;
+    $('out-hora').textContent = $('hora').value;
+    $('out-campo').textContent = $('campo').value;
+    $('out-condicion').textContent = esLocal ? 'EN CASA' : 'FUERA';
+
+    const club = { nombre: NOMBRE_CLUB, escudo: ESCUDO_CLUB, esClub: true };
+    const rival = { nombre: $('rival').value, escudo: $('rivalEscudo').value, esClub: false };
+
+    const izquierda = esLocal ? club : rival;
+    const derecha = esLocal ? rival : club;
+
+    pintarEquipo('izquierda', izquierda);
+    pintarEquipo('derecha', derecha);
+  }
+
+  function pintarEquipo(lado, datos){
+    $('nombre-' + lado).textContent = datos.nombre;
+    $('escudo-' + lado).src = datos.escudo;
+    $('equipo-' + lado).classList.toggle('es-club', datos.esClub);
+  }
+
+  ['categoria','rival','rivalEscudo','fecha','hora','campo'].forEach(id=>{
+    $(id).addEventListener('input', actualizar);
+  });
+
+  $('btn-local').addEventListener('click', ()=>{
+    esLocal = true;
+    $('btn-local').classList.add('active');
+    $('btn-visitante').classList.remove('active');
+    actualizar();
+  });
+  $('btn-visitante').addEventListener('click', ()=>{
+    esLocal = false;
+    $('btn-visitante').classList.add('active');
+    $('btn-local').classList.remove('active');
+    actualizar();
+  });
+
+  $('patrocinador').addEventListener('change', (e)=>{
+    const file = e.target.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev)=>{
+      const img = $('out-patrocinador');
+      img.src = ev.target.result;
+      img.style.display = 'inline-block';
+    };
+    reader.readAsDataURL(file);
+  });
+
+  $('descargar').addEventListener('click', async ()=>{
+    const cartel = $('cartel');
+    const canvas = await html2canvas(cartel, { scale: 1080/380, useCORS:true, allowTaint:true });
+    const link = document.createElement('a');
+    link.download = 'cartel-partido.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  });
+
+  // Modo automático: si la página se abre con parámetros en la URL, se
+  // usan esos valores directamente y se oculta el panel de edición.
+  const params = new URLSearchParams(window.location.search);
+  if (params.toString()) {
+    if (params.has('categoria')) $('categoria').value = params.get('categoria');
+    if (params.has('rival')) $('rival').value = params.get('rival');
+    if (params.has('rivalEscudo')) $('rivalEscudo').value = params.get('rivalEscudo');
+    if (params.has('fecha')) $('fecha').value = params.get('fecha');
+    if (params.has('hora')) $('hora').value = params.get('hora');
+    if (params.has('campo')) $('campo').value = params.get('campo');
+    if (params.has('esLocal')) esLocal = params.get('esLocal') === 'true';
+    document.querySelector('.panel').style.display = 'none';
+    document.querySelector('.stage').style.padding = '0';
+    document.body.style.background = 'transparent';
+  }
+
+  actualizar();
+</script>
+
+</body>
+</html>

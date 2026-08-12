@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Partidos de esta semana - C.D. Villa de Buitrago</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+  --verde:#174B2B;
+  --verde-oscuro:#071A0F;
+  --verde-card:#14532D;
+  --oro:#F4B400;
+  --crema:#F7F1E3;
+  --blanco:#FFFFFF;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+html,
+body{
+  margin:0;
+  padding:0;
+  width:100%;
+  min-height:100%;
+  background:#000;
+}
+
+body{
+  font-family:'Barlow Condensed',sans-serif;
+}
+
+
+/* =========================================================
+   CARTEL
+   ========================================================= */
+
+#cartel{
+
+  position:relative;
+
+  width:1080px;
+  height:1920px;
+
+  overflow:hidden;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(244,180,0,.08),
+      transparent 25%
+    ),
+    linear-gradient(
+      155deg,
+      #092516 0%,
+      #124B2B 48%,
+      #062015 100%
+    );
+
+  color:white;
+}
+
+
+/* =========================================================
+   LÍNEAS DECORATIVAS
+   ========================================================= */
+
+.lineas{
+  position:absolute;
+  inset:-300px;
+
+  background:
+    repeating-linear-gradient(
+      125deg,
+      transparent 0px,
+      transparent 115px,
+      rgba(244,180,0,.13) 116px,
+      rgba(244,180,0,.13) 121px,
+      transparent 122px,
+      transparent 240px
+    );
+
+  pointer-events:none;
+}
+
+
+/* =========================================================
+   CABECERA
+   ========================================================= */
+
+.cabecera{
+
+  position:absolute;
+
+  top:65px;
+  left:55px;
+  right:55px;
+
+  height:285px;
+
+  z-index:10;
+}
+
+
+.escudo-top{
+
+  position:absolute;
+
+  left:0;
+  top:0;
+
+  width:230px;
+  height:230px;
+
+  object-fit:contain;
+}
+
+
+.titulo{
+
+  position:absolute;
+
+  left:270px;
+  top:20px;
+
+  font-family:'Anton',sans-serif;
+
+  line-height:.88;
+  text-transform:uppercase;
+}
+
+
+.titulo .l1{
+
+  display:block;
+
+  color:#fff;
+
+  font-size:72px;
+
+  letter-spacing:.5px;
+}
+
+
+.titulo .l2{
+
+  display:block;
+
+  color:var(--oro);
+
+  font-size:68px;
+
+  margin-top:5px;
+}
+
+
+.fecha{
+
+  position:absolute;
+
+  left:270px;
+  top:195px;
+
+  height:58px;
+
+  display:flex;
+  align-items:center;
+
+  padding:0 22px;
+
+  background:var(--verde);
+
+  border-left:7px solid var(--oro);
+
+  color:white;
+
+  font-size:27px;
+  font-weight:800;
+
+  letter-spacing:.03em;
+
+  text-transform:uppercase;
+}
+
+
+/* =========================================================
+   CUERPO
+   ========================================================= */
+
+.cuerpo{
+
+  position:absolute;
+
+  left:0;
+  right:0;
+
+  top:350px;
+  bottom:190px;
+
+  z-index:5;
+}
+
+
+/* =========================================================
+   MASCOTA GRANDE
+   ========================================================= */
+
+.mascota{
+
+  position:absolute;
+
+  left:-175px;
+
+  bottom:55px;
+
+  width:700px;
+  height:1400px;
+
+  z-index:3;
+
+  display:flex;
+
+  align-items:flex-end;
+  justify-content:flex-start;
+
+  pointer-events:none;
+}
+
+
+.mascota img{
+
+  display:block;
+
+  width:700px;
+  height:1400px;
+
+  object-fit:contain;
+  object-position:bottom left;
+
+  transform:scale(1.08);
+
+  transform-origin:bottom left;
+}
+
+
+/* =========================================================
+   TEXTO ANIMAR
+   ========================================================= */
+
+.animar{
+
+  position:absolute;
+
+  left:105px;
+  bottom:35px;
+
+  z-index:12;
+
+  color:var(--oro);
+
+  font-family:'Anton',sans-serif;
+
+  font-size:47px;
+
+  line-height:.85;
+
+  text-transform:uppercase;
+
+  transform:rotate(-3deg);
+
+  text-shadow:
+    2px 3px 0 rgba(0,0,0,.35);
+}
+
+
+.animar span{
+
+  display:block;
+
+  color:white;
+
+  font-size:22px;
+
+  margin-left:25px;
+
+  margin-bottom:3px;
+}
+
+
+/* =========================================================
+   LISTA DE PARTIDOS
+   ========================================================= */
+
+.filas{
+
+  position:absolute;
+
+  top:25px;
+
+  right:55px;
+
+  width:630px;
+
+  z-index:10;
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:16px;
+
+  align-items:flex-end;
+}
+
+
+/* =========================================================
+   CARD
+   ========================================================= */
+
+.fila{
+
+  position:relative;
+
+  width:630px;
+
+  height:280px;
+
+  flex:0 0 280px;
+
+  background:var(--crema);
+
+  border:3px solid var(--oro);
+
+  border-radius:17px;
+
+  box-shadow:
+    0 7px 15px rgba(0,0,0,.30);
+
+  color:#071A0F;
+
+  overflow:visible;
+
+  padding:46px 25px 14px;
+}
+
+
+/* =========================================================
+   CATEGORÍA
+   ========================================================= */
+
+.categoria{
+
+  position:absolute;
+
+  top:-3px;
+  left:50%;
+
+  transform:translateX(-50%);
+
+  min-width:220px;
+
+  height:43px;
+
+  padding:0 20px;
+
+  display:flex;
+
+  align-items:center;
+  justify-content:center;
+
+  white-space:nowrap;
+
+  background:var(--verde-card);
+
+  border-radius:0 0 10px 10px;
+
+  color:white;
+
+  font-size:21px;
+
+  font-weight:900;
+
+  letter-spacing:.02em;
+
+  text-transform:uppercase;
+
+  z-index:5;
+}
+
+
+/* =========================================================
+   PARTIDO
+   ========================================================= */
+
+.partido{
+
+  height:170px;
+
+  display:flex;
+
+  align-items:center;
+  justify-content:center;
+
+  gap:20px;
+}
+
+
+.equipo{
+
+  width:220px;
+
+  height:145px;
+
+  display:flex;
+
+  flex-direction:column;
+
+  align-items:center;
+  justify-content:center;
+
+  gap:9px;
+}
+
+
+.escudo{
+
+  width:96px;
+  height:96px;
+
+  object-fit:contain;
+}
+
+
+.nombre{
+
+  width:220px;
+
+  color:#071A0F;
+
+  font-size:17px;
+
+  line-height:1.02;
+
+  font-weight:900;
+
+  text-align:center;
+
+  text-transform:uppercase;
+
+  display:-webkit-box;
+
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+
+  overflow:hidden;
+}
+
+
+.vs{
+
+  width:65px;
+
+  flex-shrink:0;
+
+  text-align:center;
+
+  font-family:'Anton',sans-serif;
+
+  font-size:43px;
+
+  color:#071A0F;
+
+  line-height:1;
+
+  transform:rotate(-3deg);
+}
+
+
+/* =========================================================
+   PIE DE CARD
+   ========================================================= */
+
+.pie{
+
+  position:absolute;
+
+  left:25px;
+  right:25px;
+  bottom:12px;
+
+  height:34px;
+
+  border-top:1px solid rgba(7,26,15,.20);
+
+  display:flex;
+
+  align-items:flex-end;
+  justify-content:center;
+
+  gap:12px;
+
+  padding-top:7px;
+
+  color:#071A0F;
+
+  font-size:16px;
+
+  font-weight:800;
+
+  white-space:nowrap;
+}
+
+
+.pie .hora{
+  font-weight:900;
+}
+
+
+.pie .separador{
+
+  color:var(--oro);
+
+  font-weight:900;
+}
+
+
+/* =========================================================
+   LLAMADA A PATROCINADORES
+   ========================================================= */
+
+.patrocina{
+
+  position:absolute;
+
+  left:0;
+  right:0;
+  bottom:0;
+
+  height:190px;
+
+  z-index:20;
+
+  background:
+    linear-gradient(
+      180deg,
+      #071A0F 0%,
+      #05140C 100%
+    );
+
+  border-top:3px solid var(--oro);
+
+  display:flex;
+
+  align-items:center;
+  justify-content:center;
+
+  padding:15px 50px;
+}
+
+
+.mensaje-patrocinio{
+
+  width:100%;
+
+  text-align:center;
+
+  text-transform:uppercase;
+}
+
+
+.patrocinio-pregunta{
+
+  color:white;
+
+  font-family:'Anton',sans-serif;
+
+  font-size:35px;
+
+  line-height:.95;
+
+  letter-spacing:.02em;
+
+  text-shadow:
+    2px 3px 0 rgba(0,0,0,.45);
+}
+
+
+.patrocinio-accion{
+
+  display:inline-block;
+
+  margin-top:10px;
+
+  padding:8px 24px;
+
+  background:var(--oro);
+
+  color:#071A0F;
+
+  font-family:'Anton',sans-serif;
+
+  font-size:25px;
+
+  line-height:1;
+
+  letter-spacing:.02em;
+
+  transform:rotate(-1deg);
+
+  box-shadow:
+    4px 5px 0 rgba(0,0,0,.35);
+}
+
+
+/* =========================================================
+   DECORACIÓN AMARILLA
+   ========================================================= */
+
+.decoracion{
+
+  position:absolute;
+
+  width:150px;
+  height:9px;
+
+  background:var(--oro);
+
+  transform:rotate(-28deg);
+
+  z-index:2;
+}
+
+
+.d1{
+  left:-40px;
+  top:270px;
+}
+
+
+.d2{
+  right:-40px;
+  top:650px;
+}
+
+
+.d3{
+  left:-35px;
+  bottom:245px;
+}
+
+
+.d4{
+  right:-35px;
+  bottom:215px;
+}
+
+
+/* =========================================================
+   MUCHOS PARTIDOS
+   ========================================================= */
+
+.filas.muchos{
+  gap:12px;
+}
+
+
+/* =========================================================
+   PREVISUALIZACIÓN
+   ========================================================= */
+
+@media(max-width:1100px){
+
+  #cartel{
+    transform-origin:top left;
+  }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+<div id="cartel">
+
+  <div class="lineas"></div>
+
+
+  <!-- =====================================================
+       DECORACIÓN
+       ===================================================== -->
+
+  <div class="decoracion d1"></div>
+  <div class="decoracion d2"></div>
+  <div class="decoracion d3"></div>
+  <div class="decoracion d4"></div>
+
+
+  <!-- =====================================================
+       CABECERA
+       ===================================================== -->
+
+  <header class="cabecera">
+
+    <img
+      class="escudo-top"
+      src="escudo-club.png"
+      alt="C.D. Villa de Buitrago"
+    >
+
+    <div class="titulo">
+
+      <span class="l1">PARTIDOS</span>
+
+      <span class="l2">DE ESTA SEMANA</span>
+
+    </div>
+
+
+    <div
+      class="fecha"
+      id="out-dia"
+    >
+      SÁBADO · 7 FEBRERO
+    </div>
+
+  </header>
+
+
+  <!-- =====================================================
+       CUERPO
+       ===================================================== -->
+
+  <main class="cuerpo">
+
+
+    <!-- =================================================
+         MASCOTA GRANDE
+         ================================================= -->
+
+    <div class="mascota">
+
+      <img
+        src="mascota.png"
+        alt="Villita"
+      >
+
+    </div>
+
+
+    <!-- =================================================
+         TEXTO ANIMAR
+         ================================================= -->
+
+    <div class="animar">
+
+      <span>¡VEN A</span>
+
+      ANIMAR!
+
+    </div>
+
+
+    <!-- =================================================
+         CARDS
+         ================================================= -->
+
+    <section
+      class="filas"
+      id="lista-partidos"
+    ></section>
+
+  </main>
+
+
+  <!-- =====================================================
+       LLAMADA A PATROCINADORES
+       ===================================================== -->
+
+  <footer class="patrocina">
+
+    <div class="mensaje-patrocinio">
+
+      <div class="patrocinio-pregunta">
+        ¿QUIERES QUE TU MARCA<br>
+        APAREZCA CADA SEMANA?
+      </div>
+
+      <div class="patrocinio-accion">
+        PATROCINA NUESTRO CONTENIDO<br>
+        DE PARTIDOS
+      </div>
+
+    </div>
+
+  </footer>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   CONFIGURACIÓN
+   ========================================================= */
+
+const ESCUDO_CLUB = "escudo-club.png";
+
+
+/* =========================================================
+   CREAR CARD
+   ========================================================= */
+
+function fila(p){
+
+  const escudoLocal =
+    p.esLocal
+      ? ESCUDO_CLUB
+      : (p.escudoRival || ESCUDO_CLUB);
+
+
+  const escudoVisitante =
+    p.esLocal
+      ? (p.escudoRival || ESCUDO_CLUB)
+      : ESCUDO_CLUB;
+
+
+  const nombreLocal =
+    p.esLocal
+      ? "VILLA DE BUITRAGO"
+      : p.rival;
+
+
+  const nombreVisitante =
+    p.esLocal
+      ? p.rival
+      : "VILLA DE BUITRAGO";
+
+
+  const div =
+    document.createElement("article");
+
+
+  div.className = "fila";
+
+
+  div.innerHTML = `
+
+    <div class="categoria">
+      ${p.categoria || ""}
+    </div>
+
+
+    <div class="partido">
+
+      <div class="equipo">
+
+        <img
+          class="escudo"
+          src="${escudoLocal}"
+          alt=""
+        >
+
+        <span class="nombre">
+          ${nombreLocal}
+        </span>
+
+      </div>
+
+
+      <div class="vs">
+        VS
+      </div>
+
+
+      <div class="equipo">
+
+        <img
+          class="escudo"
+          src="${escudoVisitante}"
+          alt=""
+        >
+
+        <span class="nombre">
+          ${nombreVisitante}
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <div class="pie">
+
+      <span class="hora">
+        ${p.hora || ""}
+      </span>
+
+      <span class="separador">
+        |
+      </span>
+
+      <span>
+        ${p.campo || ""}
+      </span>
+
+    </div>
+
+  `;
+
+
+  return div;
+
+}
+
+
+/* =========================================================
+   INICIALIZACIÓN
+   ========================================================= */
+
+async function init(){
+
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+
+  const diaSemana =
+    params.get("diaSemana") || "";
+
+
+  const fechaLarga =
+    params.get("fechaLarga") || "";
+
+
+  const dia =
+    diaSemana
+      ? diaSemana.charAt(0).toUpperCase()
+        + diaSemana.slice(1).toLowerCase()
+      : "";
+
+
+  const fecha =
+    fechaLarga
+      ? fechaLarga.toLowerCase()
+      : "";
+
+
+  document.getElementById("out-dia").textContent =
+    dia + " · " + fecha;
+
+
+  const resp =
+    await fetch("partidos.json");
+
+
+  const partidos =
+    await resp.json();
+
+
+  const cont =
+    document.getElementById(
+      "lista-partidos"
+    );
+
+
+  if(partidos.length > 3){
+    cont.classList.add("muchos");
+  }
+
+
+  partidos.forEach(p => {
+
+    cont.appendChild(
+      fila(p)
+    );
+
+  });
+
+
+  window.__listo = true;
+
+}
+
+
+init();
+
+</script>
+
+</body>
+</html>
