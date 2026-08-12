@@ -1,0 +1,12 @@
+{
+  "name": "actas-villa",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Carteles, actas y vídeos de resultado del C.D. Villa de Buitrago",
+  "dependencies": {
+    "node-fetch": "^2.7.0",
+    "puppeteer": "^23.0.0",
+    "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2"
+  }
+}
