@@ -178,7 +178,7 @@ function crearCamisetaSVG(jugador, esPartidoLocal) {
 // ============================================================
 
 function pintarResultado(datos) {
-  const cont = document.getElementById("pantalla-resultado");
+  const cont = document.getElementById("bloque-resultado");
 
   const golesPropios = datos.resultado.propioLocal
     ? datos.resultado.local
@@ -251,15 +251,7 @@ function posicionesEnCampo(numJugadores) {
 }
 
 async function pintarAlineacion(datos) {
-  // Líneas del campo (una sola vez).
   const campo = document.getElementById("campo");
-  campo.innerHTML = `
-    <div class="linea-medio-campo"></div>
-    <div class="circulo-central"></div>
-    <div class="area-porteria arriba"></div>
-    <div class="area-porteria abajo"></div>
-  `;
-
   const cont = document.getElementById("jugadores");
   cont.innerHTML = "";
 
@@ -270,13 +262,16 @@ async function pintarAlineacion(datos) {
   );
 
   // --- Paso 1: lista de tarjetas, centradas verticalmente ---
-  const altoTarjeta = 78;
-  const inicioY = 960 - (alineacion.length * altoTarjeta) / 2;
+  // Calculamos el alto disponible en tiempo real (el campo cambia
+  // de tamaño según cuánto texto tenga el resto del vídeo).
+  const altoCampo = campo.clientHeight;
+  const altoTarjeta = Math.min(62, (altoCampo - 30) / alineacion.length);
+  const inicioY = altoCampo / 2 - (alineacion.length * altoTarjeta) / 2;
 
   alineacion.forEach((jugador, i) => {
     const el = document.createElement("div");
     el.className = "jugador en-lista";
-    el.style.top = `${inicioY + i * altoTarjeta}px`;
+    el.style.top = `${inicioY + i * altoTarjeta + altoTarjeta / 2}px`;
     el.style.left = "50%";
     el.innerHTML = `
       ${crearCamisetaSVG(jugador, datos.resultado.propioLocal)}
@@ -467,27 +462,25 @@ function pintarMascota(datos) {
 // SECUENCIA PRINCIPAL
 // ============================================================
 
-function mostrarPantalla(id) {
-  document.querySelectorAll(".pantalla").forEach((p) => {
-    p.classList.toggle("oculta", p.id !== id);
-  });
+function mostrarBloque(id) {
+  document.getElementById(id).classList.add("visible");
 }
 
 async function reproducirVideo(datos) {
   document.getElementById("escudo-club").src = datos.resultado.escudoPropio || "";
 
   pintarResultado(datos);
-  mostrarPantalla("pantalla-resultado");
+  mostrarBloque("bloque-resultado");
   await esperar(DURACION_RESULTADO);
 
-  mostrarPantalla("pantalla-alineacion");
+  mostrarBloque("bloque-alineacion");
   await pintarAlineacion(datos);
 
-  mostrarPantalla("pantalla-goles");
+  mostrarBloque("bloque-goles");
   await pintarGoles(datos);
 
   pintarMascota(datos);
-  mostrarPantalla("pantalla-mascota");
+  mostrarBloque("bloque-mascota");
   await esperar(DURACION_MASCOTA);
 
   // Señal para el grabador de vídeo (Playwright): el vídeo ya

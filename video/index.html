@@ -8,13 +8,13 @@
 <body>
   <!--
     Lienzo de 1080x1920 (formato vertical, historia de Instagram).
-    Todo se dibuja dentro de #escena; styles.css lo escala para
-    que se vea entero en la ventana del navegador.
+    Todo se construye en un único plano continuo: cada bloque
+    aparece con el tiempo pero NO se oculta el anterior — así no
+    hay "saltos" entre pantallas.
   -->
   <div id="escena">
 
-    <!-- Cabecera fija, estilo cartel de calendario. Visible en
-         todo el vídeo. -->
+    <!-- Cabecera fija, estilo cartel de calendario. Siempre visible. -->
     <header id="cabecera-club">
       <img id="escudo-club" src="" alt="Escudo del club" />
       <div id="cabecera-texto">
@@ -23,17 +23,22 @@
       </div>
     </header>
 
-    <!-- Pantalla 1: marcador -->
-    <section id="pantalla-resultado" class="pantalla"></section>
+    <!-- Marcador -->
+    <section id="bloque-resultado" class="bloque"></section>
 
-    <!-- Pantalla 2: alineación (lista -> campo) -->
-    <section id="pantalla-alineacion" class="pantalla oculta">
-      <div id="campo"></div>
-      <div id="jugadores"></div>
+    <!-- Campo + alineación (lista -> formación) -->
+    <section id="bloque-alineacion" class="bloque">
+      <div id="campo">
+        <div class="porteria arriba"></div>
+        <div class="circulo-central"></div>
+        <div class="linea-medio-campo"></div>
+        <div class="porteria abajo"></div>
+        <div id="jugadores"></div>
+      </div>
     </section>
 
-    <!-- Pantalla 3: goles, en dos columnas (propios / rival) -->
-    <section id="pantalla-goles" class="pantalla oculta">
+    <!-- Goles, en dos columnas -->
+    <section id="bloque-goles" class="bloque">
       <div id="goles-cabecera">GOLES</div>
       <div id="goles-columnas">
         <div class="columna-goles">
@@ -47,8 +52,8 @@
       </div>
     </section>
 
-    <!-- Pantalla 4: mascota + bocadillo de resumen -->
-    <section id="pantalla-mascota" class="pantalla oculta">
+    <!-- Mascota + bocadillo de resumen, aparece la última -->
+    <section id="bloque-mascota" class="bloque">
       <img id="img-mascota" src="" alt="Mascota del club" />
       <div id="bocadillo-mascota">
         <div id="lista-resumen"></div>
