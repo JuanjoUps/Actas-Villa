@@ -62,7 +62,43 @@ function extraerAlineacion(game, esLocal) {
 }
 
 // Suplentes (para la lista lateral junto al campo).
+// Jugadores que ENTRARON en algún cambio durante el partido (los
+// que de verdad participaron), leído de la sección de
+// sustituciones del acta.
+function extraerCambios(game, esLocal) {
+  const cambios = esLocal
+    ? game.sustituciones_equipo_local
+    : game.sustituciones_equipo_visitante;
+
+  if (!Array.isArray(cambios) || cambios.length === 0) return null;
+
+  const vistos = new Set();
+  const resultado = [];
+
+  cambios.forEach((c) => {
+    // El nombre exacto del campo puede variar según categoría —
+    // probamos las variantes más habituales.
+    const nombreEntra =
+      c.nombre_jugador_entra || c.jugador_entra || c.entra || c.nombre_entra;
+    const dorsalEntra = c.dorsal_entra || c.dorsal_jugador_entra || "";
+
+    if (nombreEntra && !vistos.has(nombreEntra)) {
+      vistos.add(nombreEntra);
+      resultado.push({ dorsal: dorsalEntra, nombre: invertirNombre(nombreEntra) });
+    }
+  });
+
+  return resultado.length > 0 ? resultado : null;
+}
+
 function extraerSuplentes(game, esLocal) {
+  // Preferimos los que constan como ENTRADOS en algún cambio (la
+  // sección de sustituciones) — esos sí participaron de verdad.
+  // Si el acta no trae esa sección reconocible, usamos como
+  // respaldo el listado completo del banquillo.
+  const porCambios = extraerCambios(game, esLocal);
+  if (porCambios) return porCambios;
+
   const jugadores = esLocal
     ? game.jugadores_equipo_local
     : game.jugadores_equipo_visitante;
