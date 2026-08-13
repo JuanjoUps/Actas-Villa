@@ -82,8 +82,8 @@ function tieneActaReal(partido) {
 // ============================================================
 
 const RANGO_FECHAS_PRUEBA = {
-  desde: "07-02-2026",
-  hasta: "08-02-2026",
+  desde: "01-02-2026",
+  hasta: "14-02-2026",
 };
 
 function fechaEnRango(fechaDDMMYYYY, rango) {
@@ -175,6 +175,22 @@ async function main() {
       }
 
       const datos = extraerDatosPartido(pageProps.game);
+
+      // DIAGNÓSTICO TEMPORAL: para ver en el log del workflow cómo
+      // se llaman de verdad los campos de sustituciones en el acta,
+      // y así afinar la extracción de "también participaron" sin
+      // tener que adivinar. Se puede quitar una vez confirmado.
+      const clavesSustitucion = Object.keys(pageProps.game).filter((k) =>
+        /suplente|cambio|sustitu/i.test(k)
+      );
+      if (clavesSustitucion.length > 0) {
+        console.log("  [diagnóstico] Campos relacionados con cambios encontrados:");
+        clavesSustitucion.forEach((clave) => {
+          console.log(`    ${clave} =`, JSON.stringify(pageProps.game[clave]).slice(0, 500));
+        });
+      } else {
+        console.log("  [diagnóstico] No se encontró ningún campo con 'suplente/cambio/sustitu' en el acta.");
+      }
 
       // Resolvemos los escudos a data URI (descarga + caché en
       // escudos-cache/, o genérico si no se consigue).
