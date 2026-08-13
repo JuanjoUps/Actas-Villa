@@ -194,8 +194,6 @@ function capitalizarTexto(texto) {
 const CODIGO_CLUB = "846904"; // C.D. Villa de Buitrago del Lozoya (según el acta)
 const PLANTILLA = path.join(__dirname, "cartel-villa-buitrago.html");
 const PLANTILLA_JORNADA = path.join(__dirname, "cartel-jornada.html");
-const PLANTILLA_TEMPORADA = path.join(__dirname, "cartel-temporada.html");
-const PLANTILLA_CALENDARIO_MESES = path.join(__dirname, "cartel-calendario-meses.html");
 
 const DIAS_SEMANA = ["DOMINGO", "LUNES", "MARTES", "MIÉRCOLES", "JUEVES", "VIERNES", "SÁBADO"];
 const MESES_LARGO = ["ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE"];
@@ -225,68 +223,22 @@ async function generarImagenJornada(fecha, partidos, salida) {
     headless: "new",
     args: ["--no-sandbox", "--disable-setuid-sandbox", "--allow-file-access-from-files"],
   });
-  const page = await browser.newPage();
-  await page.setViewport({ width: 1080, height: 2400, deviceScaleFactor: 1 });
-  await page.goto(url, { waitUntil: "networkidle0" });
-  await page.waitForFunction("window.__listo === true");
 
-  const cartel = await page.$("#cartel");
-  await cartel.screenshot({ path: salida });
+  // try/finally: el navegador se cierra SIEMPRE, incluso si algo
+  // falla (p.ej. falta la plantilla). Si no, el proceso de Chromium
+  // se queda abierto y Node.js nunca llega a terminar el script.
+  try {
+    const page = await browser.newPage();
+    await page.setViewport({ width: 1080, height: 2400, deviceScaleFactor: 1 });
+    await page.goto(url, { waitUntil: "networkidle0" });
+    await page.waitForFunction("window.__listo === true");
 
-  await browser.close();
-  fs.unlinkSync(partidosJsonPath);
-}
-
-async function generarImagenTemporada(categoria, jornadas, salida) {
-  const jornadasJsonPath = path.join(path.dirname(PLANTILLA_TEMPORADA), "jornadas.json");
-  fs.writeFileSync(jornadasJsonPath, JSON.stringify(jornadas));
-
-  const params = new URLSearchParams({ categoria });
-  const url = "file://" + PLANTILLA_TEMPORADA + "?" + params.toString();
-
-  const browser = await puppeteer.launch({
-    headless: "new",
-    args: ["--no-sandbox", "--disable-setuid-sandbox", "--allow-file-access-from-files"],
-  });
-  const page = await browser.newPage();
-  await page.setViewport({ width: 1080, height: 1920, deviceScaleFactor: 1 });
-  await page.goto(url, { waitUntil: "networkidle0" });
-  await page.waitForFunction("window.__listo === true");
-
-  const cartel = await page.$("#cartel");
-  await cartel.screenshot({ path: salida });
-
-  await browser.close();
-  fs.unlinkSync(jornadasJsonPath);
-}
-
-async function generarImagenCalendarioMeses(opciones, partidos, salida) {
-  const jsonPath = path.join(path.dirname(PLANTILLA_CALENDARIO_MESES), "partidos_calendario.json");
-  fs.writeFileSync(jsonPath, JSON.stringify(partidos));
-
-  const params = new URLSearchParams({
-    categoria: opciones.categoria,
-    rango: opciones.rango,
-    primerMes: String(opciones.primerMes),
-    primerAnio: String(opciones.primerAnio),
-    numMeses: String(opciones.numMeses || 3),
-  });
-  const url = "file://" + PLANTILLA_CALENDARIO_MESES + "?" + params.toString();
-
-  const browser = await puppeteer.launch({
-    headless: "new",
-    args: ["--no-sandbox", "--disable-setuid-sandbox", "--allow-file-access-from-files"],
-  });
-  const page = await browser.newPage();
-  await page.setViewport({ width: 1080, height: 3800, deviceScaleFactor: 1 });
-  await page.goto(url, { waitUntil: "networkidle0" });
-  await page.waitForFunction("window.__listo === true");
-
-  const cartel = await page.$("#cartel");
-  await cartel.screenshot({ path: salida });
-
-  await browser.close();
-  fs.unlinkSync(jsonPath);
+    const cartel = await page.$("#cartel");
+    await cartel.screenshot({ path: salida });
+  } finally {
+    await browser.close();
+    if (fs.existsSync(partidosJsonPath)) fs.unlinkSync(partidosJsonPath);
+  }
 }
 
 async function extraerActa(url) {
@@ -360,17 +312,20 @@ async function generarImagen(datos, salida) {
     headless: "new",
     args: ["--no-sandbox", "--disable-setuid-sandbox"],
   });
-  const page = await browser.newPage();
-  await page.setViewport({ width: 500, height: 700, deviceScaleFactor: 2.85 }); // ~1080px de ancho final
-  await page.goto(urlPlantilla, { waitUntil: "networkidle0" });
 
-  const cartel = await page.$("#cartel");
-  await cartel.screenshot({ path: salida });
+  try {
+    const page = await browser.newPage();
+    await page.setViewport({ width: 500, height: 700, deviceScaleFactor: 2.85 }); // ~1080px de ancho final
+    await page.goto(urlPlantilla, { waitUntil: "networkidle0" });
 
-  await browser.close();
+    const cartel = await page.$("#cartel");
+    await cartel.screenshot({ path: salida });
+  } finally {
+    await browser.close();
+  }
 }
 
-module.exports = { extraerActa, generarImagen, generarImagenJornada, generarImagenTemporada, generarImagenCalendarioMeses, formatearFecha, formatearCampo, descargarComoDataURI, GestorEscudos, CODIGO_CLUB, PLANTILLA };
+module.exports = { extraerActa, generarImagen, generarImagenJornada, formatearFecha, formatearCampo, descargarComoDataURI, GestorEscudos, CODIGO_CLUB, PLANTILLA };
 
 if (require.main === module) {
   main().catch((err) => {
