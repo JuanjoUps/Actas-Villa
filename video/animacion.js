@@ -196,7 +196,7 @@ function dibujarCamisetaConViento(c, t) {
 
   for (let i = 0; i < franjas; i++) {
     const progreso = i / franjas; // 0 arriba, 1 abajo
-    const amplitud = 2.2 * progreso; // más movimiento cuanto más abajo
+    const amplitud = 16 * progreso; // más movimiento cuanto más abajo (antes 2.2 — invisible)
     const desplazamiento =
       Math.sin(t * 2.2 + progreso * 6 + fase) * amplitud;
 
