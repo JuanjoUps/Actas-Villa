@@ -342,7 +342,7 @@ html, body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 120px;
+  width: 160px;
   transform: translate(-50%, -50%);
   transition: top 1.3s ease, left 1.3s ease;
 }
@@ -358,13 +358,13 @@ html, body {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 120px;
+  max-width: 160px;
 }
 
 .camiseta {
-  width: 44px;
-  height: 56px;
-  filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.5));
+  width: 68px;
+  height: 84px;
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.6));
 }
 
 /* Tarjetas de la lista inicial (antes de moverse a la formación) */
@@ -381,8 +381,8 @@ html, body {
 }
 
 .jugador.en-lista .camiseta {
-  width: 34px;
-  height: 43px;
+  width: 48px;
+  height: 60px;
   flex-shrink: 0;
 }
 

@@ -148,9 +148,9 @@ ajustarEscala();
 // Imágenes base, cargadas una sola vez y reutilizadas para todos
 // los jugadores.
 const IMAGENES_CAMISETA = {
-  local: cargarImagen("assets/camiseta-local.png"),
-  visitante: cargarImagen("assets/camiseta-visitante.png"),
-  portero: cargarImagen("assets/camiseta-portero.png"),
+  local: cargarImagen("assets/camiseta-local-v2.png"),
+  visitante: cargarImagen("assets/camiseta-visitante-v2.png"),
+  portero: cargarImagen("assets/camiseta-portero-v2.png"),
 };
 
 function cargarImagen(src) {
@@ -196,7 +196,7 @@ function dibujarCamisetaConViento(c, t) {
 
   for (let i = 0; i < franjas; i++) {
     const progreso = i / franjas; // 0 arriba, 1 abajo
-    const amplitud = 16 * progreso; // más movimiento cuanto más abajo (antes 2.2 — invisible)
+    const amplitud = 24 * progreso; // más movimiento cuanto más abajo
     const desplazamiento =
       Math.sin(t * 2.2 + progreso * 6 + fase) * amplitud;
 
@@ -242,8 +242,8 @@ function crearCamisetaCanvas(jugador, esPartidoLocal) {
 
   const canvas = document.createElement("canvas");
   canvas.className = "camiseta";
-  canvas.width = 110;
-  canvas.height = 140;
+  canvas.width = 168;
+  canvas.height = 208;
 
   const estado = {
     canvas,
@@ -348,8 +348,8 @@ async function pintarAlineacion(datos) {
   // Fondo del campo: tu campo real si jugáis en casa, uno
   // genérico si jugáis fuera.
   document.getElementById("fondo-campo").src = datos.resultado.propioLocal
-    ? "assets/campo-local.jpg"
-    : "assets/campo-generico.jpg";
+    ? "assets/campo-local-v2.jpg"
+    : "assets/campo-generico-v2.jpg";
 
   // Suplentes que también participaron (entraron en algún cambio),
   // no todo el banquillo sin usar.
