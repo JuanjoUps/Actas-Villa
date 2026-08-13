@@ -141,52 +141,125 @@ window.addEventListener("resize", ajustarEscala);
 ajustarEscala();
 
 // ============================================================
-// CAMISETA (SVG con el número)
+// CAMISETA (Canvas 2D, con la imagen ondeando al viento — sin
+// necesitar WebGL, así que es fiable en el runner sin GPU)
 // ============================================================
+
+// Imágenes base, cargadas una sola vez y reutilizadas para todos
+// los jugadores.
+const IMAGENES_CAMISETA = {
+  local: cargarImagen("assets/camiseta-local.png"),
+  visitante: cargarImagen("assets/camiseta-visitante.png"),
+  portero: cargarImagen("assets/camiseta-portero.png"),
+};
+
+function cargarImagen(src) {
+  const img = new Image();
+  img.src = src;
+  return img;
+}
+
+// Todas las camisetas activas se animan juntas en un único bucle
+// (más barato que un requestAnimationFrame por jugador).
+const CAMISETAS_ACTIVAS = [];
+let bucleVientoIniciado = false;
+
+function iniciarBucleViento() {
+  if (bucleVientoIniciado) return;
+  bucleVientoIniciado = true;
+
+  function fotograma() {
+    const t = performance.now() / 1000;
+    CAMISETAS_ACTIVAS.forEach((c) => dibujarCamisetaConViento(c, t));
+    requestAnimationFrame(fotograma);
+  }
+  requestAnimationFrame(fotograma);
+}
+
+function dibujarCamisetaConViento(c, t) {
+  const { canvas, imagen, dorsal, colorTexto, insigniaCapitan, fase } = c;
+  const ctx = canvas.getContext("2d");
+  const w = canvas.width;
+  const h = canvas.height;
+  ctx.clearRect(0, 0, w, h);
+
+  if (!imagen.complete || imagen.naturalWidth === 0) return;
+
+  // "Rejilla de vértices": la imagen se dibuja en franjas
+  // horizontales finas, cada una desplazada en X según una onda
+  // seno — así ondea como si fuera tela al viento, sin necesitar
+  // 3D. Las franjas de arriba (hombro) apenas se mueven — como si
+  // la camiseta estuviera "sujeta" ahí — y las de abajo se mueven
+  // más, como el bajo de una tela suelta.
+  const franjas = 24;
+  const altoFranja = h / franjas;
+
+  for (let i = 0; i < franjas; i++) {
+    const progreso = i / franjas; // 0 arriba, 1 abajo
+    const amplitud = 2.2 * progreso; // más movimiento cuanto más abajo
+    const desplazamiento =
+      Math.sin(t * 2.2 + progreso * 6 + fase) * amplitud;
+
+    ctx.drawImage(
+      imagen,
+      0, i * (imagen.naturalHeight / franjas), imagen.naturalWidth, imagen.naturalHeight / franjas,
+      desplazamiento, i * altoFranja, w, altoFranja + 1
+    );
+  }
+
+  // Dorsal (sin ondear, para que se lea bien)
+  ctx.font = `bold ${h * 0.16}px Arial`;
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillStyle = colorTexto;
+  ctx.fillText(dorsal, w / 2, h * 0.44);
+
+  // Insignia de capitán
+  if (insigniaCapitan) {
+    ctx.beginPath();
+    ctx.arc(w * 0.82, h * 0.12, h * 0.06, 0, Math.PI * 2);
+    ctx.fillStyle = "#ffd700";
+    ctx.fill();
+    ctx.strokeStyle = "#333";
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+    ctx.font = `bold ${h * 0.07}px Arial`;
+    ctx.fillStyle = "#222";
+    ctx.fillText("C", w * 0.82, h * 0.13);
+  }
+}
 
 let contadorCamiseta = 0;
 
-function crearCamisetaSVG(jugador, esPartidoLocal) {
-  // Verde en casa, amarillo fuera. Número siempre en negro, salvo
-  // el portero (camiseta negra, número blanco).
-  let colorClaro = esPartidoLocal ? "#2aa860" : "#ffd94d";
-  let colorOscuro = esPartidoLocal ? "#12592c" : "#c99a12";
-  let colorTexto = "#000000";
-
-  if (jugador.portero) {
-    colorClaro = "#3a3a3a";
-    colorOscuro = "#0a0a0a";
-    colorTexto = "#ffffff";
-  }
-
-  // Degradado propio por camiseta (para un poco de volumen, no
-  // color plano), con id único para no chocar entre jugadores.
+function crearCamisetaCanvas(jugador, esPartidoLocal) {
   contadorCamiseta += 1;
-  const idGradiente = `gradCamiseta${contadorCamiseta}`;
 
-  // Capitán: "C" en una insignia en la esquina de la camiseta.
-  const insigniaCapitan = jugador.capitan
-    ? `<circle cx="86" cy="16" r="13" fill="#ffd700" stroke="#333" stroke-width="1.5" />
-       <text x="86" y="21" font-size="16" font-weight="bold" fill="#222" text-anchor="middle">C</text>`
-    : "";
+  const imagen = jugador.portero
+    ? IMAGENES_CAMISETA.portero
+    : esPartidoLocal
+    ? IMAGENES_CAMISETA.local
+    : IMAGENES_CAMISETA.visitante;
 
-  return `
-    <svg class="camiseta" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="${idGradiente}" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="${colorClaro}" />
-          <stop offset="100%" stop-color="${colorOscuro}" />
-        </linearGradient>
-      </defs>
-      <path d="M30 10 L10 25 L20 40 L30 33 L30 90 L70 90 L70 33 L80 40 L90 25 L70 10
-               C 65 18, 35 18, 30 10 Z"
-            fill="url(#${idGradiente})" stroke="white" stroke-width="2" />
-      <text x="50" y="65" font-size="34" font-weight="bold"
-            fill="${colorTexto}" text-anchor="middle">${jugador.dorsal}</text>
-      ${insigniaCapitan}
-    </svg>
-  `;
+  const canvas = document.createElement("canvas");
+  canvas.className = "camiseta";
+  canvas.width = 110;
+  canvas.height = 140;
+
+  const estado = {
+    canvas,
+    imagen,
+    dorsal: jugador.dorsal,
+    colorTexto: jugador.portero ? "#ffffff" : "#000000",
+    insigniaCapitan: !!jugador.capitan,
+    fase: contadorCamiseta * 0.9,
+  };
+
+  CAMISETAS_ACTIVAS.push(estado);
+  iniciarBucleViento();
+
+  return canvas;
 }
+
 
 // ============================================================
 // PANTALLA 1: RESULTADO
@@ -269,8 +342,17 @@ async function pintarAlineacion(datos) {
   const campo = document.getElementById("campo");
   const cont = document.getElementById("jugadores");
   cont.innerHTML = "";
+  cont.style.opacity = "1";
+  cont.style.display = "";
 
-  // Panel de suplentes (estático, no hace falta animarlo).
+  // Fondo del campo: tu campo real si jugáis en casa, uno
+  // genérico si jugáis fuera.
+  document.getElementById("fondo-campo").src = datos.resultado.propioLocal
+    ? "assets/campo-local.jpg"
+    : "assets/campo-generico.jpg";
+
+  // Suplentes que también participaron (entraron en algún cambio),
+  // no todo el banquillo sin usar.
   const contSuplentes = document.getElementById("lista-suplentes");
   contSuplentes.innerHTML = (datos.suplentes || [])
     .map(
@@ -289,8 +371,6 @@ async function pintarAlineacion(datos) {
   );
 
   // --- Paso 1: lista de tarjetas, centradas verticalmente ---
-  // Calculamos el alto disponible en tiempo real (el campo cambia
-  // de tamaño según cuánto texto tenga el resto del vídeo).
   const altoCampo = campo.clientHeight;
   const altoTarjeta = Math.min(62, (altoCampo - 30) / alineacion.length);
   const inicioY = altoCampo / 2 - (alineacion.length * altoTarjeta) / 2;
@@ -300,33 +380,35 @@ async function pintarAlineacion(datos) {
     el.className = "jugador en-lista";
     el.style.top = `${inicioY + i * altoTarjeta + altoTarjeta / 2}px`;
     el.style.left = "50%";
-    el.innerHTML = `
-      ${crearCamisetaSVG(jugador, datos.resultado.propioLocal)}
-      <div class="nombre">${jugador.nombre}${jugador.capitan ? " (C)" : ""}</div>
-    `;
+
+    el.appendChild(crearCamisetaCanvas(jugador, datos.resultado.propioLocal));
+
+    const nombre = document.createElement("div");
+    nombre.className = "nombre";
+    nombre.textContent = jugador.nombre + (jugador.capitan ? " (C)" : "");
+    el.appendChild(nombre);
+
     cont.appendChild(el);
   });
 
   await esperar(DURACION_ALINEACION_LISTA);
 
-  // --- Paso 2: la lista desaparece y entra el campo 3D real, con
-  // los jugadores ya en su posición táctica ---
-  cont.style.transition = "opacity 0.5s ease";
-  cont.style.opacity = "0";
-  await esperar(500);
-  cont.style.display = "none";
+  // --- Paso 2: las mismas camisetas (ya ondeando) se mueven a su
+  // posición en el campo — no desaparecen y reaparecen, se
+  // desplazan con una transición CSS ---
+  const posiciones = posicionesEnCampo(alineacion.length);
+  const elementos = cont.querySelectorAll(".jugador");
 
-  const lienzo3d = document.getElementById("campo3d");
-  lienzo3d.style.display = "block";
-
-  await window.iniciarCampo3D(
-    "campo3d",
-    alineacion,
-    datos.resultado.propioLocal
-  );
+  elementos.forEach((el, i) => {
+    el.classList.remove("en-lista");
+    const pos = posiciones[i] || { top: "50%", left: "50%" };
+    el.style.top = pos.top;
+    el.style.left = pos.left;
+  });
 
   await esperar(DURACION_ALINEACION_CAMPO);
 }
+
 
 // ============================================================
 // PANTALLA 3: GOLES

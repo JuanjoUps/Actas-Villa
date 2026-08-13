@@ -34,15 +34,20 @@
       <!-- Marcador -->
       <section id="bloque-resultado" class="bloque"></section>
 
-      <!-- Campo + alineación (lista -> formación 3D) -->
+      <!-- Campo + alineación (lista -> formación, con la camiseta
+           ondeando al viento mediante Canvas 2D) -->
       <section id="bloque-alineacion" class="bloque">
         <div id="campo-envoltura">
           <div id="campo">
+            <img id="fondo-campo" src="" alt="" />
+            <div class="porteria arriba"></div>
+            <div class="circulo-central"></div>
+            <div class="linea-medio-campo"></div>
+            <div class="porteria abajo"></div>
             <div id="jugadores"></div>
-            <canvas id="campo3d"></canvas>
           </div>
           <div id="panel-suplentes">
-            <div id="suplentes-titulo">SUPLENTES</div>
+            <div id="suplentes-titulo">TAMBIÉN PARTICIPARON</div>
             <div id="lista-suplentes"></div>
           </div>
         </div>
@@ -86,9 +91,6 @@
 
   </div>
 
-  <script src="https://cdn.babylonjs.com/babylon.js"></script>
-  <script src="https://cdn.babylonjs.com/gui/babylon.gui.min.js"></script>
-  <script src="campo3d.js"></script>
   <script src="animacion.js"></script>
 </body>
 </html>
