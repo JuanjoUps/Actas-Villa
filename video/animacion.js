@@ -144,16 +144,25 @@ ajustarEscala();
 // CAMISETA (SVG con el número)
 // ============================================================
 
+let contadorCamiseta = 0;
+
 function crearCamisetaSVG(jugador, esPartidoLocal) {
   // Verde en casa, amarillo fuera. Número siempre en negro, salvo
   // el portero (camiseta negra, número blanco).
-  let colorCamiseta = esPartidoLocal ? "var(--color-club)" : "var(--color-club-visitante)";
+  let colorClaro = esPartidoLocal ? "#2aa860" : "#ffd94d";
+  let colorOscuro = esPartidoLocal ? "#12592c" : "#c99a12";
   let colorTexto = "#000000";
 
   if (jugador.portero) {
-    colorCamiseta = "#1c1c1c";
+    colorClaro = "#3a3a3a";
+    colorOscuro = "#0a0a0a";
     colorTexto = "#ffffff";
   }
+
+  // Degradado propio por camiseta (para un poco de volumen, no
+  // color plano), con id único para no chocar entre jugadores.
+  contadorCamiseta += 1;
+  const idGradiente = `gradCamiseta${contadorCamiseta}`;
 
   // Capitán: "C" en una insignia en la esquina de la camiseta.
   const insigniaCapitan = jugador.capitan
@@ -163,9 +172,15 @@ function crearCamisetaSVG(jugador, esPartidoLocal) {
 
   return `
     <svg class="camiseta" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="${idGradiente}" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="${colorClaro}" />
+          <stop offset="100%" stop-color="${colorOscuro}" />
+        </linearGradient>
+      </defs>
       <path d="M30 10 L10 25 L20 40 L30 33 L30 90 L70 90 L70 33 L80 40 L90 25 L70 10
                C 65 18, 35 18, 30 10 Z"
-            fill="${colorCamiseta}" stroke="white" stroke-width="2" />
+            fill="url(#${idGradiente})" stroke="white" stroke-width="2" />
       <text x="50" y="65" font-size="34" font-weight="bold"
             fill="${colorTexto}" text-anchor="middle">${jugador.dorsal}</text>
       ${insigniaCapitan}
@@ -192,7 +207,7 @@ function pintarResultado(datos) {
     <div class="marcador-card">
       <div class="resultado-equipos">
         <div class="equipo">
-          <img class="escudo-equipo" src="${datos.resultado.escudoPropio || ""}" />
+          <img class="escudo-equipo" src="/escudo-club.png" />
           <div class="resultado-nombre">${datos.resultado.equipoPropio}</div>
         </div>
         <div class="resultado-marcador">
@@ -255,6 +270,18 @@ async function pintarAlineacion(datos) {
   const cont = document.getElementById("jugadores");
   cont.innerHTML = "";
 
+  // Panel de suplentes (estático, no hace falta animarlo).
+  const contSuplentes = document.getElementById("lista-suplentes");
+  contSuplentes.innerHTML = (datos.suplentes || [])
+    .map(
+      (s) =>
+        `<div class="suplente">
+           <span class="dorsal-suplente">${s.dorsal}</span>
+           <span class="nombre-suplente">${s.nombre}</span>
+         </div>`
+    )
+    .join("");
+
   // Portero primero (si lo detectamos), luego el resto en el
   // orden en que viene el acta.
   const alineacion = [...datos.alineacion].sort(
@@ -282,17 +309,21 @@ async function pintarAlineacion(datos) {
 
   await esperar(DURACION_ALINEACION_LISTA);
 
-  // --- Paso 2: quitamos el estilo de "tarjeta de lista" y
-  // movemos cada jugador a su posición en el campo ---
-  const posiciones = posicionesEnCampo(alineacion.length);
-  const elementos = cont.querySelectorAll(".jugador");
+  // --- Paso 2: la lista desaparece y entra el campo 3D real, con
+  // los jugadores ya en su posición táctica ---
+  cont.style.transition = "opacity 0.5s ease";
+  cont.style.opacity = "0";
+  await esperar(500);
+  cont.style.display = "none";
 
-  elementos.forEach((el, i) => {
-    el.classList.remove("en-lista");
-    const pos = posiciones[i] || { top: "50%", left: "50%" };
-    el.style.top = pos.top;
-    el.style.left = pos.left;
-  });
+  const lienzo3d = document.getElementById("campo3d");
+  lienzo3d.style.display = "block";
+
+  await window.iniciarCampo3D(
+    "campo3d",
+    alineacion,
+    datos.resultado.propioLocal
+  );
 
   await esperar(DURACION_ALINEACION_CAMPO);
 }
@@ -467,7 +498,7 @@ function mostrarBloque(id) {
 }
 
 async function reproducirVideo(datos) {
-  document.getElementById("escudo-club").src = datos.resultado.escudoPropio || "";
+  document.getElementById("escudo-club").src = "/escudo-club.png";
 
   pintarResultado(datos);
   mostrarBloque("bloque-resultado");

@@ -34,17 +34,12 @@
       <!-- Marcador -->
       <section id="bloque-resultado" class="bloque"></section>
 
-      <!-- Campo + alineación (lista -> formación) -->
+      <!-- Campo + alineación (lista -> formación 3D) -->
       <section id="bloque-alineacion" class="bloque">
         <div id="campo-envoltura">
           <div id="campo">
-            <div class="foco arriba-izq"></div>
-            <div class="foco arriba-der"></div>
-            <div class="porteria arriba"></div>
-            <div class="circulo-central"></div>
-            <div class="linea-medio-campo"></div>
-            <div class="porteria abajo"></div>
             <div id="jugadores"></div>
+            <canvas id="campo3d"></canvas>
           </div>
           <div id="panel-suplentes">
             <div id="suplentes-titulo">SUPLENTES</div>
@@ -91,6 +86,9 @@
 
   </div>
 
+  <script src="https://cdn.babylonjs.com/babylon.js"></script>
+  <script src="https://cdn.babylonjs.com/gui/babylon.gui.min.js"></script>
+  <script src="campo3d.js"></script>
   <script src="animacion.js"></script>
 </body>
 </html>

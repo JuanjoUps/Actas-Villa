@@ -146,7 +146,20 @@ async function main() {
   await new Promise((resolve) => servidor.listen(PUERTO, resolve));
   console.log(`Servidor local arrancado en el puerto ${PUERTO}`);
 
-  const browser = await chromium.launch();
+  // --use-gl=swiftshader / --use-angle=swiftshader: fuerzan un
+  // renderizado por software de WebGL. Sin esto, en un runner de
+  // GitHub Actions (sin tarjeta gráfica) el campo 3D de Babylon
+  // puede salir en negro o no cargar — Chromium headless no tiene
+  // GPU real a la que recurrir por defecto.
+  const browser = await chromium.launch({
+    args: [
+      "--use-gl=swiftshader",
+      "--use-angle=swiftshader",
+      "--enable-webgl",
+      "--ignore-gpu-blocklist",
+      "--enable-unsafe-swiftshader",
+    ],
+  });
 
   const generados = [];
 
