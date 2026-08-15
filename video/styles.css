@@ -166,7 +166,7 @@ html, body {
   color: #071A0F;
 }
 
-.resultado-marcador span:nth-child(1) {
+.resultado-marcador span.propio {
   color: var(--color-oro);
 }
 
@@ -380,20 +380,28 @@ html, body {
   top: 56%;
   left: 50%;
   transform: translate(-50%, -50%);
-  min-width: 34px;
-  padding: 2px 6px;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.82);
   font-size: 26px;
   font-weight: 900;
   line-height: 1;
   text-align: center;
   color: #000;
+  /* Contorno claro fino en vez de una pastilla de fondo — se lee
+     igual de bien sobre cualquier camiseta, pero no se nota tanto
+     como un "sticker" pegado encima */
+  text-shadow:
+    -1.5px -1.5px 0 rgba(255, 255, 255, 0.85),
+    1.5px -1.5px 0 rgba(255, 255, 255, 0.85),
+    -1.5px 1.5px 0 rgba(255, 255, 255, 0.85),
+    1.5px 1.5px 0 rgba(255, 255, 255, 0.85);
   pointer-events: none;
 }
 .camiseta-dorsal.portero {
   color: #fff;
-  background: rgba(0, 0, 0, 0.55);
+  text-shadow:
+    -1.5px -1.5px 0 rgba(0, 0, 0, 0.85),
+    1.5px -1.5px 0 rgba(0, 0, 0, 0.85),
+    -1.5px 1.5px 0 rgba(0, 0, 0, 0.85),
+    1.5px 1.5px 0 rgba(0, 0, 0, 0.85);
 }
 
 .camiseta-capitan {
