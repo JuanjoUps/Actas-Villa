@@ -200,19 +200,29 @@ function pintarResultado(datos) {
     ? datos.resultado.visitante
     : datos.resultado.local;
 
+  // El equipo LOCAL siempre va primero (izquierda) y el VISITANTE
+  // siempre segundo (derecha) — sea "nosotros" el que sea.
+  const izquierda = datos.resultado.propioLocal
+    ? { nombre: datos.resultado.equipoPropio, escudo: "/escudo-club.png", goles: golesPropios }
+    : { nombre: datos.resultado.rival, escudo: datos.resultado.escudoRival || "", goles: golesRival };
+
+  const derecha = datos.resultado.propioLocal
+    ? { nombre: datos.resultado.rival, escudo: datos.resultado.escudoRival || "", goles: golesRival }
+    : { nombre: datos.resultado.equipoPropio, escudo: "/escudo-club.png", goles: golesPropios };
+
   cont.innerHTML = `
     <div class="marcador-card">
       <div class="resultado-equipos">
         <div class="equipo">
-          <img class="escudo-equipo" src="/escudo-club.png" />
-          <div class="resultado-nombre">${datos.resultado.equipoPropio}</div>
+          <img class="escudo-equipo" src="${izquierda.escudo}" />
+          <div class="resultado-nombre">${izquierda.nombre}</div>
         </div>
         <div class="resultado-marcador">
-          <span>${golesPropios}</span><span>-</span><span>${golesRival}</span>
+          <span class="${datos.resultado.propioLocal ? "propio" : ""}">${izquierda.goles}</span><span>-</span><span class="${datos.resultado.propioLocal ? "" : "propio"}">${derecha.goles}</span>
         </div>
         <div class="equipo">
-          <img class="escudo-equipo" src="${datos.resultado.escudoRival || ""}" />
-          <div class="resultado-nombre">${datos.resultado.rival}</div>
+          <img class="escudo-equipo" src="${derecha.escudo}" />
+          <div class="resultado-nombre">${derecha.nombre}</div>
         </div>
       </div>
       <div class="resultado-fecha">${datos.fecha} · ${datos.campo}</div>
@@ -305,7 +315,13 @@ async function pintarAlineacion(datos) {
     el.style.top = `${inicioY + i * altoTarjeta + altoTarjeta / 2}px`;
     el.style.left = "50%";
 
-    el.appendChild(crearCamisetaCanvas(jugador, datos.resultado.propioLocal));
+    const camiseta = crearCamisetaCanvas(jugador, datos.resultado.propioLocal);
+    // Tamaño de la camiseta ajustado al hueco real disponible por
+    // fila — si no, con muchos jugadores se solapan unas con otras.
+    const altoCamiseta = Math.max(30, altoTarjeta * 0.86);
+    camiseta.style.height = `${altoCamiseta}px`;
+    camiseta.style.width = `${altoCamiseta * 0.82}px`;
+    el.appendChild(camiseta);
 
     const nombre = document.createElement("div");
     nombre.className = "nombre";
