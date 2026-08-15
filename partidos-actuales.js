@@ -328,13 +328,22 @@ function partidosDelClub(
         m.codigo_equipo_local !== undefined ||
         m.codigo_equipo_visitante !== undefined;
 
+      // Respaldo de texto más estricto: si algún día el calendario
+      // no trae el código, exigimos "VILLA" además de "BUITRAGO"
+      // (un "BUITRAGO" suelto también coincide con clubes ajenos
+      // como "Gredos San Diego - Buitrago").
+      const nombreCoincide = (nombre) => {
+        const n = (nombre || "").toUpperCase();
+        return n.includes("VILLA") && n.includes("BUITRAGO");
+      };
+
       const localEsClub = tieneCodigos
         ? m.codigo_equipo_local === CODIGO_CLUB
-        : (m.equipo_local || "").toUpperCase().includes(NOMBRE_CLUB_FILTRO);
+        : nombreCoincide(m.equipo_local);
 
       const visitanteEsClub = tieneCodigos
         ? m.codigo_equipo_visitante === CODIGO_CLUB
-        : (m.equipo_visitante || "").toUpperCase().includes(NOMBRE_CLUB_FILTRO);
+        : nombreCoincide(m.equipo_visitante);
 
       if (
         !localEsClub &&
