@@ -296,6 +296,19 @@ function partidosDelClub(
 
   const partidos = [];
 
+  // DIAGNÓSTICO TEMPORAL: para confirmar si el calendario trae
+  // código de equipo (fiable) o si toca seguir usando el nombre
+  // (con el riesgo de que vuelva a colarse un "falso Buitrago").
+  const primerEquipo = calendario.rounds?.[0]?.equipos?.[0];
+  if (primerEquipo) {
+    console.log(
+      "  [diagnóstico] ¿Trae código de equipo el calendario?",
+      primerEquipo.codigo_equipo_local !== undefined
+        ? `Sí (codigo_equipo_local=${primerEquipo.codigo_equipo_local})`
+        : "No — se sigue usando el filtro por nombre"
+    );
+  }
+
 
   for (
     const ronda of
@@ -307,27 +320,21 @@ function partidosDelClub(
       ronda.equipos
     ) {
 
-      const localEsClub =
-        (
-          m.equipo_local ||
-          ""
-        )
-        .toUpperCase()
-        .includes(
-          NOMBRE_CLUB_FILTRO
-        );
+      // Preferimos el código oficial del equipo (fiable) sobre el
+      // texto del nombre — "GREDOS SAN DIEGO - BUITRAGO 'D'" no es
+      // nuestro club aunque contenga la palabra "BUITRAGO", y ya
+      // nos coló por error una vez con el filtro de texto.
+      const tieneCodigos =
+        m.codigo_equipo_local !== undefined ||
+        m.codigo_equipo_visitante !== undefined;
 
+      const localEsClub = tieneCodigos
+        ? m.codigo_equipo_local === CODIGO_CLUB
+        : (m.equipo_local || "").toUpperCase().includes(NOMBRE_CLUB_FILTRO);
 
-      const visitanteEsClub =
-        (
-          m.equipo_visitante ||
-          ""
-        )
-        .toUpperCase()
-        .includes(
-          NOMBRE_CLUB_FILTRO
-        );
-
+      const visitanteEsClub = tieneCodigos
+        ? m.codigo_equipo_visitante === CODIGO_CLUB
+        : (m.equipo_visitante || "").toUpperCase().includes(NOMBRE_CLUB_FILTRO);
 
       if (
         !localEsClub &&
