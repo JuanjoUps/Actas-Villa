@@ -110,11 +110,11 @@ const FRASES_EXTRA_CIERRE = [
 ];
 
 // Duraciones de cada pantalla (ms)
-const DURACION_RESULTADO = 3500;
-const DURACION_ALINEACION_LISTA = 3000;
+const DURACION_RESULTADO = 1800;
+const DURACION_ALINEACION_LISTA = 2600;
 const DURACION_ALINEACION_CAMPO = 3000;
 const DURACION_ENTRE_GOLES = 900;
-const DURACION_GOLES_FINAL = 2000;
+const DURACION_GOLES_FINAL = 1800;
 const DURACION_MASCOTA = 5000;
 
 // ============================================================
@@ -141,123 +141,47 @@ window.addEventListener("resize", ajustarEscala);
 ajustarEscala();
 
 // ============================================================
-// CAMISETA (Canvas 2D, con la imagen ondeando al viento — sin
-// necesitar WebGL, así que es fiable en el runner sin GPU)
+// CAMISETA: imagen fija (tus fotos reales), sin efecto de viento —
+// más simple y más legible.
 // ============================================================
 
-// Imágenes base, cargadas una sola vez y reutilizadas para todos
-// los jugadores.
-const IMAGENES_CAMISETA = {
-  local: cargarImagen("assets/camiseta-local-v2.png"),
-  visitante: cargarImagen("assets/camiseta-visitante-v2.png"),
-  portero: cargarImagen("assets/camiseta-portero-v2.png"),
+const RUTAS_CAMISETA = {
+  local: "assets/camiseta-local-v4.png",
+  visitante: "assets/camiseta-visitante-v4.png",
+  portero: "assets/camiseta-portero-v4.png",
 };
 
-function cargarImagen(src) {
-  const img = new Image();
-  img.src = src;
-  return img;
-}
-
-// Todas las camisetas activas se animan juntas en un único bucle
-// (más barato que un requestAnimationFrame por jugador).
-const CAMISETAS_ACTIVAS = [];
-let bucleVientoIniciado = false;
-
-function iniciarBucleViento() {
-  if (bucleVientoIniciado) return;
-  bucleVientoIniciado = true;
-
-  function fotograma() {
-    const t = performance.now() / 1000;
-    CAMISETAS_ACTIVAS.forEach((c) => dibujarCamisetaConViento(c, t));
-    requestAnimationFrame(fotograma);
-  }
-  requestAnimationFrame(fotograma);
-}
-
-function dibujarCamisetaConViento(c, t) {
-  const { canvas, imagen, dorsal, colorTexto, insigniaCapitan, fase } = c;
-  const ctx = canvas.getContext("2d");
-  const w = canvas.width;
-  const h = canvas.height;
-  ctx.clearRect(0, 0, w, h);
-
-  if (!imagen.complete || imagen.naturalWidth === 0) return;
-
-  // "Rejilla de vértices": la imagen se dibuja en franjas
-  // horizontales finas, cada una desplazada en X según una onda
-  // seno — así ondea como si fuera tela al viento, sin necesitar
-  // 3D. Las franjas de arriba (hombro) apenas se mueven — como si
-  // la camiseta estuviera "sujeta" ahí — y las de abajo se mueven
-  // más, como el bajo de una tela suelta.
-  const franjas = 24;
-  const altoFranja = h / franjas;
-
-  for (let i = 0; i < franjas; i++) {
-    const progreso = i / franjas; // 0 arriba, 1 abajo
-    const amplitud = 24 * progreso; // más movimiento cuanto más abajo
-    const desplazamiento =
-      Math.sin(t * 2.2 + progreso * 6 + fase) * amplitud;
-
-    ctx.drawImage(
-      imagen,
-      0, i * (imagen.naturalHeight / franjas), imagen.naturalWidth, imagen.naturalHeight / franjas,
-      desplazamiento, i * altoFranja, w, altoFranja + 1
-    );
-  }
-
-  // Dorsal (sin ondear, para que se lea bien)
-  ctx.font = `bold ${h * 0.16}px Arial`;
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-  ctx.fillStyle = colorTexto;
-  ctx.fillText(dorsal, w / 2, h * 0.44);
-
-  // Insignia de capitán
-  if (insigniaCapitan) {
-    ctx.beginPath();
-    ctx.arc(w * 0.82, h * 0.12, h * 0.06, 0, Math.PI * 2);
-    ctx.fillStyle = "#ffd700";
-    ctx.fill();
-    ctx.strokeStyle = "#333";
-    ctx.lineWidth = 1.5;
-    ctx.stroke();
-    ctx.font = `bold ${h * 0.07}px Arial`;
-    ctx.fillStyle = "#222";
-    ctx.fillText("C", w * 0.82, h * 0.13);
-  }
-}
-
-let contadorCamiseta = 0;
-
 function crearCamisetaCanvas(jugador, esPartidoLocal) {
-  contadorCamiseta += 1;
-
-  const imagen = jugador.portero
-    ? IMAGENES_CAMISETA.portero
+  const ruta = jugador.portero
+    ? RUTAS_CAMISETA.portero
     : esPartidoLocal
-    ? IMAGENES_CAMISETA.local
-    : IMAGENES_CAMISETA.visitante;
+    ? RUTAS_CAMISETA.local
+    : RUTAS_CAMISETA.visitante;
 
-  const canvas = document.createElement("canvas");
-  canvas.className = "camiseta";
-  canvas.width = 168;
-  canvas.height = 208;
+  const envoltura = document.createElement("div");
+  envoltura.className = "camiseta-envoltura";
 
-  const estado = {
-    canvas,
-    imagen,
-    dorsal: jugador.dorsal,
-    colorTexto: jugador.portero ? "#ffffff" : "#000000",
-    insigniaCapitan: !!jugador.capitan,
-    fase: contadorCamiseta * 0.9,
-  };
+  const img = document.createElement("img");
+  img.className = "camiseta";
+  img.src = ruta;
+  envoltura.appendChild(img);
 
-  CAMISETAS_ACTIVAS.push(estado);
-  iniciarBucleViento();
+  // Dorsal: negro de normal, blanco si es portero — con un
+  // pequeño fondo detrás para que se lea bien pase lo que pase
+  // debajo (petición: "que sea legible").
+  const dorsal = document.createElement("div");
+  dorsal.className = "camiseta-dorsal" + (jugador.portero ? " portero" : "");
+  dorsal.textContent = jugador.dorsal;
+  envoltura.appendChild(dorsal);
 
-  return canvas;
+  if (jugador.capitan) {
+    const capitan = document.createElement("div");
+    capitan.className = "camiseta-capitan";
+    capitan.textContent = "C";
+    envoltura.appendChild(capitan);
+  }
+
+  return envoltura;
 }
 
 
@@ -348,8 +272,8 @@ async function pintarAlineacion(datos) {
   // Fondo del campo: tu campo real si jugáis en casa, uno
   // genérico si jugáis fuera.
   document.getElementById("fondo-campo").src = datos.resultado.propioLocal
-    ? "assets/campo-local-v2.jpg"
-    : "assets/campo-generico-v2.jpg";
+    ? "assets/campo-local-v4.jpg"
+    : "assets/campo-generico-v4.jpg";
 
   // Suplentes que también participaron (entraron en algún cambio),
   // no todo el banquillo sin usar.
