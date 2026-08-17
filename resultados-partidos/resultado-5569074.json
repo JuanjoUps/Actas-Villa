@@ -82,33 +82,26 @@
       "nombre": "KARAM AKACHCHAR AMEZIAN",
       "capitan": false,
       "portero": false
-    },
+    }
+  ],
+  "suplentes": [
     {
       "dorsal": "23",
-      "nombre": "NAIARA JIMENEZ ESCAMILLA",
-      "capitan": false,
-      "portero": false
+      "nombre": "NAIARA JIMENEZ ESCAMILLA"
     },
     {
       "dorsal": "24",
-      "nombre": "ENZO RENJIFO REGUERA",
-      "capitan": false,
-      "portero": false
+      "nombre": "ENZO RENJIFO REGUERA"
     },
     {
       "dorsal": "25",
-      "nombre": "GABRIEL RODRIGUEZ ESCALONA",
-      "capitan": false,
-      "portero": false
+      "nombre": "GABRIEL RODRIGUEZ ESCALONA"
     },
     {
       "dorsal": "26",
-      "nombre": "VICTOR ILISEI SANZ",
-      "capitan": false,
-      "portero": false
+      "nombre": "VICTOR ILISEI SANZ"
     }
   ],
-  "suplentes": [],
   "golesPropios": [
     {
       "jugador": "RAFAEL ESCOBAR TRIBIS-ARROSPE",
