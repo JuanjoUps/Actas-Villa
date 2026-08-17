@@ -194,6 +194,21 @@ async function main() {
 
       const datos = extraerDatosPartido(pageProps.game);
 
+      // DIAGNÓSTICO TEMPORAL: ¿trae el acta un campo directo de
+      // tipo de juego (fútbol 7 / fútbol 11)? Si existe, podemos
+      // dejar de adivinarlo por el nombre de la categoría.
+      const clavesTipoJuego = Object.keys(pageProps.game).filter((k) =>
+        /tipo.?juego|modalidad|num.?jugadores/i.test(k)
+      );
+      if (clavesTipoJuego.length > 0) {
+        console.log("  [diagnóstico] Campos de tipo de juego encontrados:");
+        clavesTipoJuego.forEach((clave) => {
+          console.log(`    ${clave} =`, JSON.stringify(pageProps.game[clave]));
+        });
+      } else {
+        console.log("  [diagnóstico] No se encontró ningún campo de tipo de juego/modalidad en el acta (seguimos detectando F-7 por el nombre de la categoría).");
+      }
+
       // DIAGNÓSTICO TEMPORAL: para ver en el log del workflow cómo
       // se llaman de verdad los campos de sustituciones en el acta,
       // y así afinar la extracción de "también participaron" sin
