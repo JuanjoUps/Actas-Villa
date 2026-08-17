@@ -62,12 +62,24 @@ function invertirNombre(nombreCrudo) {
 function esFutbol7(game) {
   const texto = `${game.nombre_competicion || ""} ${game.nombre_grupo || ""}`
     .toUpperCase();
-  return (
+
+  // Mención explícita de "fútbol 7"
+  if (
     texto.includes("F-7") ||
     texto.includes("F7") ||
     texto.includes("FUTBOL 7") ||
     texto.includes("FÚTBOL 7")
-  );
+  ) {
+    return true;
+  }
+
+  // Categorías que en la RFFM siempre son fútbol 7, aunque el
+  // texto de la categoría no lo diga explícitamente.
+  if (texto.includes("ALEVIN") || texto.includes("ALEVÍN")) return true;
+  if (texto.includes("BENJAMIN") || texto.includes("BENJAMÍN")) return true; // cubre también "PREBENJAMÍN"
+  if (texto.includes("CADETE") && texto.includes("FEMENINO")) return true; // solo cadete FEMENINO, no el masculino
+
+  return false;
 }
 
 function extraerAlineacion(game, esLocal) {
