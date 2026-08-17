@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Plantilla de veteranos - C.D. Villa de Buitrago</title>
+<style>
+  body{
+    font-family: -apple-system, Roboto, Arial, sans-serif;
+    background:#0F2716; color:#F6EFDD;
+    margin:0; padding:24px 18px 60px;
+  }
+  h1{ color:#F7C548; font-size:22px; margin-bottom:4px; }
+  p.sub{ color:#c9c2ac; font-size:14px; margin-top:0; }
+  label{ display:block; font-size:13px; color:#c9c2ac; margin:16px 0 6px; }
+  input[type=text], input[type=password], select{
+    width:100%; box-sizing:border-box; padding:11px 12px; border-radius:8px;
+    border:1px solid #3a5442; background:#173322; color:#F6EFDD; font-size:15px;
+  }
+  .fila-añadir{ display:flex; gap:8px; align-items:flex-end; margin-top:16px; }
+  .fila-añadir > div{ flex:1; }
+  .fila-añadir .dorsal{ flex:0 0 70px; }
+  button{
+    padding:11px 16px; border:none; border-radius:8px;
+    background:#F2A100; color:#0F2716; font-weight:700; font-size:15px;
+  }
+  button.secundario{ background:#173322; color:#c9c2ac; border:1px solid #3a5442; }
+  ul#lista{ list-style:none; padding:0; margin-top:22px; }
+  ul#lista li{
+    display:flex; align-items:center; gap:12px;
+    background:#173322; border:1px solid #3a5442; border-radius:9px;
+    padding:10px 14px; margin-bottom:8px;
+  }
+  ul#lista .dorsal-num{
+    width:34px; height:34px; border-radius:50%; background:#F2A100; color:#0F2716;
+    display:flex; align-items:center; justify-content:center; font-weight:800; flex-shrink:0;
+  }
+  ul#lista .info{ flex:1; }
+  ul#lista .nombre{ font-weight:700; }
+  ul#lista .posicion{ font-size:12px; color:#c9c2ac; text-transform:uppercase; }
+  ul#lista button{ padding:6px 10px; font-size:13px; }
+  #estado{
+    margin-top:18px; padding:14px; border-radius:8px; background:#173322;
+    font-size:14px; line-height:1.5; display:none;
+  }
+  #estado.visible{ display:block; }
+  .ok{ color:#8fd39a; } .error{ color:#e88; }
+</style>
+</head>
+<body>
+  <h1>Plantilla de veteranos</h1>
+  <p class="sub">Da de alta a cada jugador una sola vez. Se queda guardada y la reutilizas en cada partido, sin volver a escribir la lista.</p>
+
+  <label>Token de GitHub (se queda guardado en este dispositivo)</label>
+  <input type="password" id="token" placeholder="ghp_..." />
+
+  <div class="fila-añadir">
+    <div class="dorsal">
+      <label>Dorsal</label>
+      <input type="text" id="dorsal" inputmode="numeric" />
+    </div>
+    <div>
+      <label>Nombre</label>
+      <input type="text" id="nombre" placeholder="Ej: Xory" />
+    </div>
+    <div>
+      <label>Posición</label>
+      <select id="posicion">
+        <option value="portero">Portero</option>
+        <option value="defensa">Defensa</option>
+        <option value="centrocampista">Centrocampista</option>
+        <option value="delantero" selected>Delantero</option>
+      </select>
+    </div>
+  </div>
+  <button id="btnAñadir" style="width:100%; margin-top:12px;">Añadir a la plantilla</button>
+
+  <ul id="lista"></ul>
+
+  <div id="estado"></div>
+
+<script>
+  const GITHUB_REPO = "JuanjoUps/Actas-Villa";
+  const RUTA_PLANTILLA = "plantilla-veteranos.json";
+
+  const $ = (id) => document.getElementById(id);
+  const $token = $('token');
+  $token.value = localStorage.getItem('gh_token') || '';
+  $token.addEventListener('input', () => localStorage.setItem('gh_token', $token.value));
+
+  let plantilla = [];
+  let shaActual = null;
+
+  function cabeceras(){
+    return {
+      Authorization: 'Bearer ' + $token.value.trim(),
+      Accept: 'application/vnd.github+json',
+    };
+  }
+
+  function mostrar(html, esError){
+    const el = $('estado');
+    el.innerHTML = '<span class="' + (esError ? 'error' : 'ok') + '">' + html + '</span>';
+    el.classList.add('visible');
+  }
+
+  async function cargarPlantilla(){
+    if (!$token.value.trim()) return;
+    const url = `https://api.github.com/repos/${GITHUB_REPO}/contents/${RUTA_PLANTILLA}`;
+    const resp = await fetch(url, { headers: cabeceras() });
+    if (resp.status === 404) {
+      plantilla = [];
+      shaActual = null;
+      pintarLista();
+      return;
+    }
+    if (!resp.ok) { mostrar('No se pudo cargar la plantilla (' + resp.status + ').', true); return; }
+    const data = await resp.json();
+    shaActual = data.sha;
+    plantilla = JSON.parse(decodeURIComponent(escape(atob(data.content))));
+    pintarLista();
+  }
+
+  function pintarLista(){
+    const ul = $('lista');
+    ul.innerHTML = '';
+    const orden = { portero: 0, defensa: 1, centrocampista: 2, delantero: 3 };
+    const ordenada = [...plantilla].sort((a, b) => (orden[a.posicion] ?? 9) - (orden[b.posicion] ?? 9));
+    ordenada.forEach((j) => {
+      const li = document.createElement('li');
+      li.innerHTML = `
+        <div class="dorsal-num">${j.dorsal}</div>
+        <div class="info">
+          <div class="nombre">${j.nombre}</div>
+          <div class="posicion">${j.posicion}</div>
+        </div>
+        <button class="secundario" data-dorsal="${j.dorsal}">Quitar</button>
+      `;
+      li.querySelector('button').addEventListener('click', () => quitarJugador(j.dorsal));
+      ul.appendChild(li);
+    });
+  }
+
+  function quitarJugador(dorsal){
+    plantilla = plantilla.filter(j => String(j.dorsal) !== String(dorsal));
+    pintarLista();
+    guardarPlantilla('Quita jugador ' + dorsal + ' de la plantilla de veteranos');
+  }
+
+  async function guardarPlantilla(mensaje){
+    if (!$token.value.trim()) return mostrar('Falta el token de GitHub.', true);
+    mostrar('Guardando...', false);
+    const jsonTexto = JSON.stringify(plantilla, null, 2);
+    const jsonBase64 = btoa(unescape(encodeURIComponent(jsonTexto)));
+    const url = `https://api.github.com/repos/${GITHUB_REPO}/contents/${RUTA_PLANTILLA}`;
+    const cuerpo = { message: mensaje, content: jsonBase64 };
+    if (shaActual) cuerpo.sha = shaActual;
+    try {
+      const resp = await fetch(url, {
+        method: 'PUT',
+        headers: { ...cabeceras(), 'Content-Type': 'application/json' },
+        body: JSON.stringify(cuerpo),
+      });
+      if (!resp.ok) throw new Error('GitHub respondió ' + resp.status);
+      const data = await resp.json();
+      shaActual = data.content.sha;
+      mostrar('✓ Plantilla guardada (' + plantilla.length + ' jugadores).', false);
+    } catch (err) {
+      mostrar('Error: ' + err.message, true);
+    }
+  }
+
+  $('btnAñadir').addEventListener('click', () => {
+    const dorsal = $('dorsal').value.trim();
+    const nombre = $('nombre').value.trim();
+    const posicion = $('posicion').value;
+    if (!dorsal || !nombre) return mostrar('Falta el dorsal o el nombre.', true);
+
+    const idx = plantilla.findIndex(j => String(j.dorsal) === dorsal);
+    if (idx >= 0) plantilla[idx] = { dorsal, nombre, posicion };
+    else plantilla.push({ dorsal, nombre, posicion });
+
+    pintarLista();
+    guardarPlantilla('Añade/actualiza jugador ' + nombre + ' en la plantilla de veteranos');
+
+    $('dorsal').value = '';
+    $('nombre').value = '';
+  });
+
+  $token.addEventListener('change', cargarPlantilla);
+  cargarPlantilla();
+</script>
+</body>
+</html>
