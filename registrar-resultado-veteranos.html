@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Resultado del veterano - C.D. Villa de Buitrago</title>
+<style>
+  body{
+    font-family: -apple-system, Roboto, Arial, sans-serif;
+    background:#0F2716; color:#F6EFDD;
+    margin:0; padding:24px 18px 60px;
+  }
+  h1{ color:#F7C548; font-size:22px; margin-bottom:4px; }
+  h2{ color:#F7C548; font-size:16px; margin:26px 0 8px; border-top:1px solid #3a5442; padding-top:18px; }
+  p.sub{ color:#c9c2ac; font-size:14px; margin-top:0; }
+  label{ display:block; font-size:13px; color:#c9c2ac; margin:14px 0 6px; }
+  input[type=text], input[type=date], input[type=password], input[type=number], select{
+    width:100%; box-sizing:border-box; padding:11px 12px; border-radius:8px;
+    border:1px solid #3a5442; background:#173322; color:#F6EFDD; font-size:15px;
+  }
+  input[type=file]{ width:100%; color:#c9c2ac; font-size:13px; }
+  .toggle{ display:flex; gap:8px; margin-top:6px; }
+  .toggle button{
+    flex:1; padding:10px 0; border-radius:8px; border:1px solid #3a5442;
+    background:#173322; color:#c9c2ac; font-size:15px;
+  }
+  .toggle button.active{ background:#F2A100; color:#0F2716; font-weight:700; border-color:#F2A100; }
+  .marcador{ display:flex; align-items:center; gap:10px; }
+  .marcador input{ text-align:center; font-size:22px; font-weight:800; }
+  .marcador span{ font-size:20px; color:#c9c2ac; }
+
+  .jugador-fila{
+    display:flex; align-items:center; gap:10px;
+    background:#173322; border:1px solid #3a5442; border-radius:9px;
+    padding:8px 12px; margin-bottom:6px;
+  }
+  .jugador-fila .dorsal-num{
+    width:28px; height:28px; border-radius:50%; background:#3a5442; color:#F6EFDD;
+    display:flex; align-items:center; justify-content:center; font-weight:800; font-size:13px; flex-shrink:0;
+  }
+  .jugador-fila .nombre{ flex:1; font-size:14px; }
+  .jugador-fila select{ width:auto; flex:0 0 150px; padding:6px 8px; font-size:13px; }
+
+  .fila-gol{ display:flex; gap:8px; margin-bottom:8px; align-items:center; }
+  .fila-gol select{ flex:2; }
+  .fila-gol input{ flex:1; }
+  .fila-gol button{ flex:0 0 auto; padding:8px 10px; }
+  #listaGoles{ margin-top:10px; }
+  .gol-guardado{
+    display:flex; justify-content:space-between; align-items:center;
+    background:#173322; border-radius:8px; padding:8px 12px; margin-bottom:6px; font-size:14px;
+  }
+  .gol-guardado button{ padding:4px 8px; font-size:12px; background:#3a5442; color:#F6EFDD; }
+
+  button.guardar{
+    width:100%; margin-top:26px; padding:14px 0; border:none; border-radius:9px;
+    background:#F2A100; color:#0F2716; font-weight:700; font-size:16px;
+  }
+  button.guardar:disabled{ opacity:0.5; }
+  button{ border:none; border-radius:8px; cursor:pointer; }
+  #estado{
+    margin-top:18px; padding:14px; border-radius:8px; background:#173322;
+    font-size:14px; line-height:1.5; display:none;
+  }
+  #estado.visible{ display:block; }
+  .ok{ color:#8fd39a; } .error{ color:#e88; }
+  #campoFueraGrupo{ display:none; }
+  .aviso{ font-size:12px; color:#c9c2ac; margin-top:6px; }
+</style>
+</head>
+<body>
+  <h1>Resultado del veterano</h1>
+  <p class="sub">Elige del listado guardado quién jugó y quién marcó. Al guardar, el vídeo se genera solo en la próxima ejecución.</p>
+
+  <label>Token de GitHub (se queda guardado en este dispositivo)</label>
+  <input type="password" id="token" placeholder="ghp_..." />
+
+  <h2>Datos del partido</h2>
+
+  <label>Rival</label>
+  <input type="text" id="rival" placeholder="Ej: C.D. Bustarviejo" />
+
+  <label>Fecha</label>
+  <input type="date" id="fecha" />
+
+  <label>Condición</label>
+  <div class="toggle">
+    <button type="button" id="btnLocal" class="active">En casa</button>
+    <button type="button" id="btnFuera">Fuera</button>
+  </div>
+
+  <div id="campoFueraGrupo">
+    <label>Campo (fuera de casa)</label>
+    <input type="text" id="campo" placeholder="Ej: Talamanca del Jarama" />
+  </div>
+
+  <label>Escudo del rival (opcional)</label>
+  <input type="file" id="escudo" accept="image/*" />
+
+  <label>Marcador</label>
+  <div class="marcador">
+    <input type="number" id="golesPropios" value="0" min="0" style="width:70px" />
+    <span>—</span>
+    <input type="number" id="golesRival" value="0" min="0" style="width:70px" />
+    <span id="etiquetaMarcador" style="font-size:13px; color:#c9c2ac;"></span>
+  </div>
+  <p class="aviso">El marcador debe coincidir con el número de goles propios que añadas abajo — si no coinciden, avisamos antes de guardar.</p>
+
+  <h2>¿Quién jugó?</h2>
+  <p class="aviso">Marca cada jugador como titular, suplente (jugó pero no de inicio) o no jugó. Los titulares se colocan en el campo según su posición guardada.</p>
+  <div id="listaJugadores"></div>
+
+  <h2>Goles de tu equipo</h2>
+  <div class="fila-gol">
+    <select id="golSelectJugador"></select>
+    <input type="text" id="golMinuto" placeholder="Minuto (opcional)" />
+    <button id="btnAñadirGol">Añadir</button>
+  </div>
+  <div id="listaGoles"></div>
+
+  <button class="guardar" id="btnGuardar">Guardar resultado</button>
+
+  <div id="estado"></div>
+
+<script>
+  const GITHUB_REPO = "JuanjoUps/Actas-Villa";
+  const RUTA_PLANTILLA = "plantilla-veteranos.json";
+  const NOMBRE_CLUB = "C.D. VILLA DE BUITRAGO";
+
+  const $ = (id) => document.getElementById(id);
+  const $token = $('token');
+  $token.value = localStorage.getItem('gh_token') || '';
+  $token.addEventListener('input', () => localStorage.setItem('gh_token', $token.value));
+
+  let plantilla = [];
+  let esLocal = true;
+  let golesAñadidos = []; // { dorsal, nombre, minuto }
+
+  function cabeceras(){
+    return {
+      Authorization: 'Bearer ' + $token.value.trim(),
+      Accept: 'application/vnd.github+json',
+    };
+  }
+
+  function mostrar(html, esError){
+    const el = $('estado');
+    el.innerHTML = '<span class="' + (esError ? 'error' : 'ok') + '">' + html + '</span>';
+    el.classList.add('visible');
+  }
+
+  function claveEquipo(nombre){
+    return nombre
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .toUpperCase()
+      .replace(/[^A-Z0-9]+/g, '_')
+      .replace(/^_+|_+$/g, '');
+  }
+
+  function fechaDDMMYYYY(valorInputDate){
+    const [y, m, d] = valorInputDate.split('-');
+    return d + '-' + m + '-' + y;
+  }
+
+  $('btnLocal').addEventListener('click', () => {
+    esLocal = true;
+    $('btnLocal').classList.add('active');
+    $('btnFuera').classList.remove('active');
+    $('campoFueraGrupo').style.display = 'none';
+    actualizarEtiquetaMarcador();
+  });
+  $('btnFuera').addEventListener('click', () => {
+    esLocal = false;
+    $('btnFuera').classList.add('active');
+    $('btnLocal').classList.remove('active');
+    $('campoFueraGrupo').style.display = 'block';
+    actualizarEtiquetaMarcador();
+  });
+
+  function actualizarEtiquetaMarcador(){
+    $('etiquetaMarcador').textContent = esLocal ? '(Villa — rival)' : '(rival — Villa)';
+  }
+  actualizarEtiquetaMarcador();
+
+  // --- Cargar la plantilla guardada ---
+  async function cargarPlantilla(){
+    if (!$token.value.trim()) return;
+    const url = `https://api.github.com/repos/${GITHUB_REPO}/contents/${RUTA_PLANTILLA}`;
+    const resp = await fetch(url, { headers: cabeceras() });
+    if (!resp.ok) { mostrar('No se pudo cargar la plantilla de veteranos. ¿Ya diste de alta jugadores?', true); return; }
+    const data = await resp.json();
+    plantilla = JSON.parse(decodeURIComponent(escape(atob(data.content))));
+    pintarJugadores();
+    pintarSelectorGoles();
+  }
+
+  function pintarJugadores(){
+    const cont = $('listaJugadores');
+    cont.innerHTML = '';
+    const orden = { portero: 0, defensa: 1, centrocampista: 2, delantero: 3 };
+    const ordenada = [...plantilla].sort((a, b) => (orden[a.posicion] ?? 9) - (orden[b.posicion] ?? 9));
+    ordenada.forEach((j) => {
+      const fila = document.createElement('div');
+      fila.className = 'jugador-fila';
+      fila.innerHTML = `
+        <div class="dorsal-num">${j.dorsal}</div>
+        <div class="nombre">${j.nombre} <span style="color:#c9c2ac; font-size:12px;">(${j.posicion})</span></div>
+        <select data-dorsal="${j.dorsal}" class="estadoJugador">
+          <option value="no">No jugó</option>
+          <option value="titular" selected>Titular</option>
+          <option value="suplente">Suplente</option>
+        </select>
+      `;
+      fila.querySelector('select').addEventListener('change', pintarSelectorGoles);
+      cont.appendChild(fila);
+    });
+  }
+
+  // Solo los que juegan (titular o suplente) pueden aparecer como goleadores
+  function pintarSelectorGoles(){
+    const select = $('golSelectJugador');
+    select.innerHTML = '';
+    document.querySelectorAll('.estadoJugador').forEach((sel) => {
+      if (sel.value === 'no') return;
+      const dorsal = sel.dataset.dorsal;
+      const jugador = plantilla.find(j => String(j.dorsal) === dorsal);
+      if (!jugador) return;
+      const opt = document.createElement('option');
+      opt.value = dorsal;
+      opt.textContent = `${jugador.dorsal} — ${jugador.nombre}`;
+      select.appendChild(opt);
+    });
+  }
+
+  $('btnAñadirGol').addEventListener('click', () => {
+    const dorsal = $('golSelectJugador').value;
+    if (!dorsal) return mostrar('Marca primero quién jugó, para poder elegir quién marcó.', true);
+    const jugador = plantilla.find(j => String(j.dorsal) === dorsal);
+    const minuto = $('golMinuto').value.trim();
+    golesAñadidos.push({ dorsal, nombre: jugador.nombre, minuto });
+    $('golMinuto').value = '';
+    pintarGoles();
+  });
+
+  function pintarGoles(){
+    const cont = $('listaGoles');
+    cont.innerHTML = '';
+    golesAñadidos.forEach((g, i) => {
+      const div = document.createElement('div');
+      div.className = 'gol-guardado';
+      div.innerHTML = `
+        <span>⚽ ${g.nombre}${g.minuto ? ' — ' + g.minuto + "'" : ''}</span>
+        <button data-i="${i}">Quitar</button>
+      `;
+      div.querySelector('button').addEventListener('click', () => {
+        golesAñadidos.splice(i, 1);
+        pintarGoles();
+      });
+      cont.appendChild(div);
+    });
+    // El marcador de goles propios sigue automáticamente al número de goles añadidos
+    $('golesPropios').value = golesAñadidos.length;
+  }
+
+  async function leerArchivoGitHub(ruta, cab){
+    const url = `https://api.github.com/repos/${GITHUB_REPO}/contents/${ruta}`;
+    const resp = await fetch(url, { headers: cab });
+    if (!resp.ok) return { existe: false };
+    const data = await resp.json();
+    return { existe: true, sha: data.sha };
+  }
+
+  async function guardarArchivoGitHub(ruta, contenidoBase64, sha, mensaje, cab){
+    const url = `https://api.github.com/repos/${GITHUB_REPO}/contents/${ruta}`;
+    const cuerpo = { message: mensaje, content: contenidoBase64 };
+    if (sha) cuerpo.sha = sha;
+    const resp = await fetch(url, {
+      method: 'PUT',
+      headers: { ...cab, 'Content-Type': 'application/json' },
+      body: JSON.stringify(cuerpo),
+    });
+    if (!resp.ok) throw new Error('GitHub respondió ' + resp.status + ': ' + (await resp.text()).slice(0, 200));
+  }
+
+  function archivoABase64(file){
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result.split(',')[1]);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+
+  $('btnGuardar').addEventListener('click', async () => {
+    const token = $token.value.trim();
+    const rival = $('rival').value.trim();
+    const fechaValor = $('fecha').value;
+    const campoFuera = $('campo').value.trim();
+    const archivoEscudo = $('escudo').files[0];
+    const golesPropiosNum = Number($('golesPropios').value);
+    const golesRivalNum = Number($('golesRival').value);
+
+    if (!token) return mostrar('Falta el token de GitHub.', true);
+    if (!rival) return mostrar('Falta el nombre del rival.', true);
+    if (!fechaValor) return mostrar('Falta la fecha.', true);
+    if (!esLocal && !campoFuera) return mostrar('Si jugáis fuera, falta el campo.', true);
+    if (golesAñadidos.length !== golesPropiosNum) {
+      return mostrar('El marcador (' + golesPropiosNum + ') no coincide con los ' + golesAñadidos.length + ' goles añadidos abajo. Revísalo antes de guardar.', true);
+    }
+
+    const estados = {};
+    document.querySelectorAll('.estadoJugador').forEach((sel) => { estados[sel.dataset.dorsal] = sel.value; });
+
+    const titulares = plantilla.filter(j => estados[j.dorsal] === 'titular');
+    const suplentes = plantilla.filter(j => estados[j.dorsal] === 'suplente');
+
+    if (titulares.length === 0) return mostrar('Marca al menos un titular.', true);
+
+    $('btnGuardar').disabled = true;
+    mostrar('Guardando...', false);
+
+    const cab = cabeceras();
+
+    try {
+      let escudoRivalUrl = '';
+      if (archivoEscudo) {
+        const clave = claveEquipo(rival);
+        const ext = archivoEscudo.type.includes('png') ? 'png' : 'jpg';
+        const rutaEscudo = `escudos-cache/${clave}.${ext}`;
+        const escudoBase64 = await archivoABase64(archivoEscudo);
+        const actualEscudo = await leerArchivoGitHub(rutaEscudo, cab);
+        await guardarArchivoGitHub(
+          rutaEscudo, escudoBase64,
+          actualEscudo.existe ? actualEscudo.sha : null,
+          'Añade escudo de ' + rival, cab
+        );
+        escudoRivalUrl = rutaEscudo;
+      }
+
+      const fecha = fechaDDMMYYYY(fechaValor);
+      const idPartido = 'veteranos-' + fechaValor; // YYYY-MM-DD, ordenable
+
+      const resultado = {
+        codacta: idPartido,
+        categoria: "VETERANOS",
+        grupo: "Liga privada",
+        jornada: "",
+        fecha,
+        campo: esLocal ? "Peñalta, Buitrago del Lozoya" : campoFuera,
+        resultado: {
+          local: esLocal ? golesPropiosNum : golesRivalNum,
+          visitante: esLocal ? golesRivalNum : golesPropiosNum,
+          propioLocal: esLocal,
+          equipoPropio: NOMBRE_CLUB,
+          rival,
+          escudoPropioUrl: "",
+          escudoRivalUrl,
+        },
+        alineacion: titulares.map(j => ({
+          dorsal: j.dorsal,
+          nombre: j.nombre,
+          capitan: false,
+          portero: j.posicion === 'portero',
+          posicion: j.posicion,
+        })),
+        suplentes: suplentes.map(j => ({ dorsal: j.dorsal, nombre: j.nombre })),
+        golesPropios: golesAñadidos.map(g => ({ jugador: g.nombre, minuto: g.minuto })),
+        golesRival: Array.from({ length: golesRivalNum }, () => ({ minuto: "" })),
+        hatTricks: [],
+        tarjetas: [],
+        expulsiones: [],
+      };
+
+      const rutaResultado = `resultados-partidos/resultado-${idPartido}.json`;
+      const jsonBase64 = btoa(unescape(encodeURIComponent(JSON.stringify(resultado, null, 2))));
+      const actualResultado = await leerArchivoGitHub(rutaResultado, cab);
+      await guardarArchivoGitHub(
+        rutaResultado, jsonBase64,
+        actualResultado.existe ? actualResultado.sha : null,
+        'Resultado veteranos vs ' + rival, cab
+      );
+
+      mostrar('✓ Guardado en ' + rutaResultado + '. Se generará el vídeo en la próxima ejecución del workflow.', false);
+    } catch (err) {
+      mostrar('Error: ' + err.message, true);
+    } finally {
+      $('btnGuardar').disabled = false;
+    }
+  });
+
+  $token.addEventListener('change', cargarPlantilla);
+  cargarPlantilla();
+</script>
+</body>
+</html>
