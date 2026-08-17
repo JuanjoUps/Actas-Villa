@@ -74,6 +74,14 @@ function tieneActaReal(partido) {
 }
 
 // ============================================================
+// PROBAR UN ACTA CONCRETA (por número), sin depender de fechas —
+// si está puesto, se procesa SOLO esa acta e ignora el rango de
+// fechas de abajo. Déjalo en null para volver al modo normal.
+// ============================================================
+
+const CODACTA_PRUEBA = "5569074";
+
+// ============================================================
 // RANGO DE FECHAS A PROCESAR (para revisar un fin de semana
 // concreto con datos reales, en vez de todo el histórico).
 //
@@ -120,22 +128,32 @@ async function main() {
 
   const estadoActas = cargarEstadoActas();
 
-  // Partidos finalizados, con acta real, todavía no procesados,
-  // y dentro del rango de fechas de prueba (si hay uno definido).
-  const pendientes = todosLosPartidos.filter(
-    (p) =>
-      p.finalizado &&
-      tieneActaReal(p) &&
-      !estadoActas[p.codacta] &&
-      fechaEnRango(p.fecha, RANGO_FECHAS_PRUEBA)
-  );
+  // Si hay un acta de prueba fijada, nos quedamos solo con esa
+  // (ignorando fechas por completo) — así podemos probar un
+  // partido suelto sin tener que saber en qué día cayó.
+  const pendientes = CODACTA_PRUEBA
+    ? todosLosPartidos.filter(
+        (p) =>
+          String(p.codacta) === String(CODACTA_PRUEBA) &&
+          tieneActaReal(p) &&
+          !estadoActas[p.codacta]
+      )
+    : todosLosPartidos.filter(
+        (p) =>
+          p.finalizado &&
+          tieneActaReal(p) &&
+          !estadoActas[p.codacta] &&
+          fechaEnRango(p.fecha, RANGO_FECHAS_PRUEBA)
+      );
 
   console.log(
-    `Partidos finalizados sin procesar` +
-    (RANGO_FECHAS_PRUEBA
-      ? ` entre ${RANGO_FECHAS_PRUEBA.desde} y ${RANGO_FECHAS_PRUEBA.hasta}`
-      : "") +
-    `: ${pendientes.length}`
+    CODACTA_PRUEBA
+      ? `Modo prueba: buscando el acta ${CODACTA_PRUEBA} — encontrada: ${pendientes.length > 0 ? "sí" : "no"}`
+      : `Partidos finalizados sin procesar` +
+        (RANGO_FECHAS_PRUEBA
+          ? ` entre ${RANGO_FECHAS_PRUEBA.desde} y ${RANGO_FECHAS_PRUEBA.hasta}`
+          : "") +
+        `: ${pendientes.length}`
   );
 
   if (pendientes.length === 0) {
