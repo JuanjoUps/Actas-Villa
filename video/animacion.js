@@ -250,6 +250,36 @@ function repartirEnFilas(cantidad) {
   return filas;
 }
 
+// Reparto por ROL REAL (portero/defensa/centrocampista/delantero),
+// para cuando sí sabemos la posición de cada jugador (equipo de
+// veteranos, sin acta de la federación) — coloca a cada uno en su
+// línea de verdad, no en un reparto genérico por número.
+function posicionesPorRolFutbolistico(alineacion) {
+  const grupos = { portero: [], defensa: [], centrocampista: [], delantero: [] };
+
+  alineacion.forEach((j) => {
+    const clave = (j.posicion || "").toLowerCase().trim();
+    (grupos[clave] || grupos.centrocampista).push(j);
+  });
+
+  const filas = [
+    { jugadores: grupos.portero, top: "88%" },
+    { jugadores: grupos.defensa, top: "68%" },
+    { jugadores: grupos.centrocampista, top: "45%" },
+    { jugadores: grupos.delantero, top: "22%" },
+  ];
+
+  const mapa = new Map();
+  filas.forEach(({ jugadores, top }) => {
+    const hueco = 100 / (jugadores.length + 1);
+    jugadores.forEach((j, i) => {
+      mapa.set(j.dorsal, { top, left: `${hueco * (i + 1)}%` });
+    });
+  });
+
+  return mapa;
+}
+
 function posicionesEnCampo(numJugadores) {
   const posiciones = [];
 
@@ -336,12 +366,26 @@ async function pintarAlineacion(datos) {
   // --- Paso 2: las mismas camisetas (ya ondeando) se mueven a su
   // posición en el campo — no desaparecen y reaparecen, se
   // desplazan con una transición CSS ---
-  const posiciones = posicionesEnCampo(alineacion.length);
+  //
+  // Si TODOS los jugadores traen una "posicion" guardada (caso del
+  // equipo de veteranos, sin acta oficial), los colocamos por rol
+  // real en vez del reparto genérico en 3 líneas.
+  const usaPosicionesReales = alineacion.every((j) => j.posicion);
+  const mapaPosiciones = usaPosicionesReales
+    ? posicionesPorRolFutbolistico(alineacion)
+    : null;
+  const posiciones = usaPosicionesReales
+    ? null
+    : posicionesEnCampo(alineacion.length);
+
   const elementos = cont.querySelectorAll(".jugador");
 
   elementos.forEach((el, i) => {
     el.classList.remove("en-lista");
-    const pos = posiciones[i] || { top: "50%", left: "50%" };
+    const jugador = alineacion[i];
+    const pos = usaPosicionesReales
+      ? mapaPosiciones.get(jugador.dorsal) || { top: "50%", left: "50%" }
+      : posiciones[i] || { top: "50%", left: "50%" };
     el.style.top = pos.top;
     el.style.left = pos.left;
   });
@@ -365,8 +409,15 @@ async function pintarGoles(datos) {
   contPropios.innerHTML = "";
   contRival.innerHTML = "";
 
-  const propios = [...datos.golesPropios].sort((a, b) => a.minuto - b.minuto);
-  const rival = [...datos.golesRival].sort((a, b) => a.minuto - b.minuto);
+  // Si no hay minuto (partidos sin cronometrar, como los del
+  // equipo de veteranos), los dejamos en el orden en que se
+  // guardaron en vez de intentar ordenar por un número que no existe.
+  const propios = [...datos.golesPropios].sort(
+    (a, b) => (Number(a.minuto) || 0) - (Number(b.minuto) || 0)
+  );
+  const rival = [...datos.golesRival].sort(
+    (a, b) => (Number(a.minuto) || 0) - (Number(b.minuto) || 0)
+  );
 
   if (propios.length === 0 && rival.length === 0) {
     return;
@@ -380,9 +431,12 @@ async function pintarGoles(datos) {
     if (propios[i]) {
       const el = document.createElement("div");
       el.className = "gol";
+      const etiquetaMinuto = propios[i].minuto
+        ? ` <span class="minuto">${propios[i].minuto}'</span>`
+        : "";
       el.innerHTML =
         `<span class="balon">⚽</span> ${propios[i].jugador}` +
-        ` <span class="minuto">${propios[i].minuto}'</span>`;
+        etiquetaMinuto;
       contPropios.appendChild(el);
       void el.offsetWidth;
       el.classList.add("visible");
