@@ -58,33 +58,25 @@
       "nombre": "JAIME BRICEÑO CALACO",
       "capitan": true,
       "portero": false
-    },
-    {
-      "dorsal": "19",
-      "nombre": "RAFAEL ESCOBAR TRIBIS-ARROSPE",
-      "capitan": false,
-      "portero": false
-    },
-    {
-      "dorsal": "20",
-      "nombre": "SANTIAGO CARRASCO PEREZ",
-      "capitan": false,
-      "portero": false
-    },
-    {
-      "dorsal": "21",
-      "nombre": "BENI ANISLAVOV RALCHEV",
-      "capitan": false,
-      "portero": false
-    },
-    {
-      "dorsal": "22",
-      "nombre": "KARAM AKACHCHAR AMEZIAN",
-      "capitan": false,
-      "portero": false
     }
   ],
   "suplentes": [
+    {
+      "dorsal": "19",
+      "nombre": "RAFAEL ESCOBAR TRIBIS-ARROSPE"
+    },
+    {
+      "dorsal": "20",
+      "nombre": "SANTIAGO CARRASCO PEREZ"
+    },
+    {
+      "dorsal": "21",
+      "nombre": "BENI ANISLAVOV RALCHEV"
+    },
+    {
+      "dorsal": "22",
+      "nombre": "KARAM AKACHCHAR AMEZIAN"
+    },
     {
       "dorsal": "23",
       "nombre": "NAIARA JIMENEZ ESCAMILLA"
