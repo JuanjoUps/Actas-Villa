@@ -55,6 +55,21 @@ function invertirNombre(nombreCrudo) {
   return `${nombre} ${apellidos}`;
 }
 
+// ¿Es un partido de fútbol 7? En estas categorías el acta a veces
+// marca como "titular" a más jugadores de los que caben en el
+// campo (hasta 14-15) — necesitamos saberlo para poner el tope
+// correcto (7, no 11).
+function esFutbol7(game) {
+  const texto = `${game.nombre_competicion || ""} ${game.nombre_grupo || ""}`
+    .toUpperCase();
+  return (
+    texto.includes("F-7") ||
+    texto.includes("F7") ||
+    texto.includes("FUTBOL 7") ||
+    texto.includes("FÚTBOL 7")
+  );
+}
+
 function extraerAlineacion(game, esLocal) {
   const jugadores = esLocal
     ? game.jugadores_equipo_local
@@ -222,8 +237,28 @@ function extraerDatosPartido(game) {
     escudoRivalUrl: escudoUrl(esLocal ? game.escudo_visitante : game.escudo_local),
   };
 
-  const alineacion = extraerAlineacion(game, esLocal);
-  const suplentes = extraerSuplentes(game, esLocal);
+  let alineacion = extraerAlineacion(game, esLocal);
+  let suplentes = extraerSuplentes(game, esLocal);
+
+  // Tope de titulares según el tipo de partido — si el acta marca
+  // más "titulares" de los que caben en el campo (pasa en algunas
+  // actas de F-7), los que sobran pasan a "también participaron"
+  // en vez de amontonarse en el campo.
+  const maxTitulares = esFutbol7(game) ? 7 : 11;
+
+  if (alineacion.length > maxTitulares) {
+    // Portero primero, luego el resto en su orden — nos quedamos
+    // con los primeros "maxTitulares" para el campo.
+    const ordenados = [...alineacion].sort(
+      (a, b) => Number(b.portero) - Number(a.portero)
+    );
+    const sobran = ordenados.slice(maxTitulares).map((j) => ({
+      dorsal: j.dorsal,
+      nombre: j.nombre,
+    }));
+    alineacion = ordenados.slice(0, maxTitulares);
+    suplentes = [...sobran, ...suplentes];
+  }
 
   const { propios: golesPropios, rival: golesRival } = extraerGoles(
     game,
