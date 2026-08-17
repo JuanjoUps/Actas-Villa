@@ -16,22 +16,31 @@
  *   hay que revisar y ajustar la función esExpulsion() de abajo.
  */
 
-// Código oficial del club en la RFFM (mismo que usa generar_cartel.js).
-// Filtramos por ESTE código, no por el nombre — nombres como
-// "GREDOS SAN DIEGO - BUITRAGO 'D'" contienen la palabra "BUITRAGO"
-// sin ser el club, y un filtro de texto los cogería por error.
-const CODIGO_CLUB = "846904";
+// Equipos del club en la RFFM, uno por categoría (sacado de la
+// ficha real del club: rffm.es/fichaclub/847373). Filtramos por
+// estos códigos, no por el nombre — nombres como "GREDOS SAN
+// DIEGO - BUITRAGO 'D'" contienen la palabra "BUITRAGO" sin ser
+// el club, y un filtro de texto los cogería por error.
+const EQUIPOS_CLUB = new Set([
+  "846904",   // Segunda Aficionado
+  "2276659",  // Primera Juvenil
+  "3082888",  // Segunda Cadete
+  "3088877",  // Primera Infantil
+  "24710895", // Primera Alevín F-7
+  "17138002", // Primera Fútbol Femenino
+  // "23996978" Primera Benjamín F7 no compite esta temporada.
+]);
 
 // ============================================================
 // ¿Es el club local o visitante en este partido?
 // ============================================================
 
 function esClubLocal(game) {
-  return game.codigo_equipo_local === CODIGO_CLUB;
+  return EQUIPOS_CLUB.has(game.codigo_equipo_local);
 }
 
 function esClubVisitante(game) {
-  return game.codigo_equipo_visitante === CODIGO_CLUB;
+  return EQUIPOS_CLUB.has(game.codigo_equipo_visitante);
 }
 
 // ============================================================
