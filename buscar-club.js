@@ -1,13 +1,14 @@
 // ============================================================
-// DIAGNÓSTICO: vuelca en el log el contenido real de la ficha
-// del club en la RFFM (equipos, categorías, códigos), para
-// construir un filtro definitivo por código de equipo — sin
-// depender de coincidencias de texto en el nombre.
+// DIAGNÓSTICO: guarda en un archivo el contenido real de la
+// ficha del club en la RFFM (equipos, categorías, códigos),
+// para construir un filtro definitivo por código de equipo.
 //
 // Uso: node buscar-club.js
+// Genera: club-diagnostico.json (súbeme ese archivo)
 // ============================================================
 
 const fetch = require("node-fetch");
+const fs = require("fs");
 
 const URL_FICHA_CLUB = "https://www.rffm.es/fichaclub/847373";
 
@@ -20,12 +21,11 @@ async function main() {
   const inicio = html.indexOf('__NEXT_DATA__');
   if (inicio === -1) {
     console.error("No se encontró __NEXT_DATA__ en la página.");
-    console.log("Primeros 1000 caracteres del HTML recibido, para depurar:");
-    console.log(html.slice(0, 1000));
+    fs.writeFileSync("club-diagnostico.json", html.slice(0, 3000));
+    console.log("Guardados los primeros 3000 caracteres del HTML en club-diagnostico.json para depurar.");
     return;
   }
 
-  // Extraemos el bloque JSON del script __NEXT_DATA__
   const aperturaScript = html.indexOf(">", inicio) + 1;
   const cierreScript = html.indexOf("</script>", aperturaScript);
   const jsonCrudo = html.slice(aperturaScript, cierreScript);
@@ -35,26 +35,25 @@ async function main() {
     datos = JSON.parse(jsonCrudo);
   } catch (e) {
     console.error("No se pudo parsear el JSON:", e.message);
-    console.log("Fragmento crudo (primeros 1500 caracteres):");
-    console.log(jsonCrudo.slice(0, 1500));
+    fs.writeFileSync("club-diagnostico.json", jsonCrudo.slice(0, 3000));
+    console.log("Guardado un fragmento crudo en club-diagnostico.json para depurar.");
     return;
   }
 
   const pageProps = datos?.props?.pageProps;
   if (!pageProps) {
-    console.error("No se encontró pageProps. Claves disponibles en props:");
-    console.log(Object.keys(datos?.props || {}));
+    console.error("No se encontró pageProps.");
     return;
   }
 
-  console.log("\n=== CLAVES DISPONIBLES EN pageProps ===");
-  console.log(Object.keys(pageProps));
+  // SOLO lo que nos interesa: el objeto "club" (que debería traer
+  // el listado de equipos/categorías con sus códigos).
+  fs.writeFileSync(
+    "club-diagnostico.json",
+    JSON.stringify(pageProps.club, null, 2)
+  );
 
-  console.log("\n=== club ===");
-  console.log(JSON.stringify(pageProps.club, null, 2));
-
-  console.log("\n=== categories ===");
-  console.log(JSON.stringify(pageProps.categories, null, 2));
+  console.log("Guardado en club-diagnostico.json — súbeme ese archivo.");
 }
 
 main().catch((e) => console.error("Error:", e));
