@@ -32,9 +32,26 @@ const {
   formatearFecha,
   formatearCampo,
   GestorEscudos,
-  CODIGO_CLUB
 } = require("./generar_cartel");
 
+// ============================================================
+// EQUIPOS DEL CLUB (uno por categoría — sacado de la ficha real
+// del club en la RFFM: rffm.es/fichaclub/847373). Antes solo
+// teníamos el código de Segunda Aficionado, por eso el resto de
+// categorías dependían del filtro por texto, que coló a "Gredos".
+// ============================================================
+
+const EQUIPOS_CLUB = new Set([
+  "846904",   // Segunda Aficionado
+  "2276659",  // Primera Juvenil
+  "3082888",  // Segunda Cadete
+  "3088877",  // Primera Infantil
+  "24710895", // Primera Alevín F-7
+  "17138002", // Primera Fútbol Femenino
+  // "23996978" Primera Benjamín F7 queda fuera a propósito: la
+  // ficha del club la marca "en_competicion": "0" (no compite
+  // esta temporada) — si vuelve a competir, añádela aquí.
+]);
 
 // ============================================================
 // CONFIGURACIÓN FEDERACIÓN
@@ -338,11 +355,11 @@ function partidosDelClub(
       };
 
       const localEsClub = tieneCodigos
-        ? m.codigo_equipo_local === CODIGO_CLUB
+        ? EQUIPOS_CLUB.has(m.codigo_equipo_local)
         : nombreCoincide(m.equipo_local);
 
       const visitanteEsClub = tieneCodigos
-        ? m.codigo_equipo_visitante === CODIGO_CLUB
+        ? EQUIPOS_CLUB.has(m.codigo_equipo_visitante)
         : nombreCoincide(m.equipo_visitante);
 
       if (
