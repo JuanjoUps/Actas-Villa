@@ -50,8 +50,11 @@ async function main() {
   console.log("\n=== CLAVES DISPONIBLES EN pageProps ===");
   console.log(Object.keys(pageProps));
 
-  console.log("\n=== CONTENIDO COMPLETO (recórtalo si es muy largo) ===");
-  console.log(JSON.stringify(pageProps, null, 2).slice(0, 6000));
+  console.log("\n=== club ===");
+  console.log(JSON.stringify(pageProps.club, null, 2));
+
+  console.log("\n=== categories ===");
+  console.log(JSON.stringify(pageProps.categories, null, 2));
 }
 
 main().catch((e) => console.error("Error:", e));
