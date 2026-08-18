@@ -1,17 +1,17 @@
 [
   {
-    "dorsal": "9",
+    "posicion": "delantero",
     "nombre": "Xory",
+    "dorsal": "9"
+  },
+  {
+    "dorsal": "5",
+    "nombre": "Afa",
     "posicion": "delantero"
   },
   {
-    "posicion": "delantero",
-    "dorsal": "5",
-    "nombre": "Afa"
-  },
-  {
-    "nombre": "Danilo",
     "dorsal": "23",
+    "nombre": "Danilo",
     "posicion": "delantero"
   },
   {
@@ -26,17 +26,22 @@
   },
   {
     "posicion": "defensa",
-    "nombre": "Ricardo",
-    "dorsal": "6"
+    "dorsal": "6",
+    "nombre": "Ricardo"
   },
   {
-    "nombre": "Lean",
+    "posicion": "defensa",
     "dorsal": "24",
-    "posicion": "defensa"
+    "nombre": "Lean"
   },
   {
     "posicion": "portero",
-    "nombre": "Ato",
-    "dorsal": "88"
+    "dorsal": "88",
+    "nombre": "Ato"
+  },
+  {
+    "posicion": "delantero",
+    "nombre": "Josek",
+    "dorsal": "27"
   }
 ]
