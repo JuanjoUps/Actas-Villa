@@ -1,0 +1,88 @@
+{
+  "resultado": {
+    "visitante": 0,
+    "equipoPropio": "C.D. VILLA DE BUITRAGO",
+    "escudoPropioUrl": "",
+    "local": 5,
+    "rival": "La plata",
+    "escudoRivalUrl": "",
+    "propioLocal": true
+  },
+  "categoria": "VETERANOS",
+  "suplentes": [],
+  "hatTricks": [],
+  "grupo": "Liga privada",
+  "golesPropios": [
+    {
+      "jugador": "Xory",
+      "minuto": ""
+    },
+    {
+      "jugador": "Danilo",
+      "minuto": ""
+    },
+    {
+      "jugador": "Danilo",
+      "minuto": ""
+    },
+    {
+      "minuto": "",
+      "jugador": "Xory"
+    },
+    {
+      "jugador": "Xory",
+      "minuto": ""
+    }
+  ],
+  "alineacion": [
+    {
+      "portero": false,
+      "posicion": "delantero",
+      "capitan": false,
+      "nombre": "Xory",
+      "dorsal": "9"
+    },
+    {
+      "dorsal": "5",
+      "nombre": "Afa",
+      "capitan": false,
+      "posicion": "delantero",
+      "portero": false
+    },
+    {
+      "portero": false,
+      "capitan": false,
+      "nombre": "Danilo",
+      "posicion": "delantero",
+      "dorsal": "23"
+    },
+    {
+      "dorsal": "99",
+      "posicion": "centrocampista",
+      "portero": false,
+      "nombre": "Gelo",
+      "capitan": false
+    },
+    {
+      "dorsal": "51",
+      "nombre": "Chaski",
+      "capitan": false,
+      "portero": false,
+      "posicion": "defensa"
+    },
+    {
+      "nombre": "Ricardo",
+      "posicion": "defensa",
+      "dorsal": "6",
+      "capitan": false,
+      "portero": false
+    }
+  ],
+  "golesRival": [],
+  "tarjetas": [],
+  "expulsiones": [],
+  "codacta": "veteranos-2026-08-18",
+  "fecha": "18-08-2026",
+  "campo": "Peñalta, Buitrago del Lozoya",
+  "jornada": ""
+}
