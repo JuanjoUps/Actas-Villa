@@ -1,27 +1,32 @@
 [
   {
-    "posicion": "delantero",
     "nombre": "Xory",
-    "dorsal": "9"
+    "dorsal": "9",
+    "posicion": "delantero"
   },
   {
+    "dorsal": "5",
     "posicion": "delantero",
-    "nombre": "Afa",
-    "dorsal": "5"
+    "nombre": "Afa"
   },
   {
+    "dorsal": "23",
     "posicion": "delantero",
-    "nombre": "Danilo",
-    "dorsal": "23"
+    "nombre": "Danilo"
   },
   {
-    "dorsal": "99",
     "nombre": "Gelo",
+    "dorsal": "99",
     "posicion": "centrocampista"
   },
   {
+    "dorsal": "51",
     "posicion": "defensa",
-    "nombre": "Chaski",
-    "dorsal": "51"
+    "nombre": "Chaski"
+  },
+  {
+    "dorsal": "6",
+    "posicion": "defensa",
+    "nombre": "Ricardo"
   }
 ]
