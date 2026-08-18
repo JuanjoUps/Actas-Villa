@@ -1,17 +1,22 @@
 [
   {
     "nombre": "Xory",
-    "dorsal": "9",
-    "posicion": "delantero"
-  },
-  {
-    "nombre": "Afa",
-    "dorsal": "5",
-    "posicion": "delantero"
-  },
-  {
-    "dorsal": "23",
     "posicion": "delantero",
-    "nombre": "Danilo"
+    "dorsal": "9"
+  },
+  {
+    "dorsal": "5",
+    "nombre": "Afa",
+    "posicion": "delantero"
+  },
+  {
+    "nombre": "Danilo",
+    "posicion": "delantero",
+    "dorsal": "23"
+  },
+  {
+    "posicion": "centrocampista",
+    "nombre": "Gelo",
+    "dorsal": "99"
   }
 ]
