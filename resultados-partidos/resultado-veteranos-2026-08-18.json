@@ -1,0 +1,140 @@
+{
+  "tarjetas": [],
+  "codacta": "veteranos-2026-08-18",
+  "golesPropios": [
+    {
+      "minuto": "",
+      "jugador": "Xory"
+    },
+    {
+      "minuto": "",
+      "jugador": "Xory"
+    },
+    {
+      "minuto": "",
+      "jugador": "Josek"
+    },
+    {
+      "minuto": "",
+      "jugador": "Danilo"
+    },
+    {
+      "jugador": "Danilo",
+      "minuto": ""
+    },
+    {
+      "minuto": "",
+      "jugador": "Danilo"
+    }
+  ],
+  "fecha": "18-08-2026",
+  "expulsiones": [],
+  "categoria": "VETERANOS",
+  "suplentes": [
+    {
+      "dorsal": "5",
+      "nombre": "Afa"
+    },
+    {
+      "dorsal": "47",
+      "nombre": "Lolo"
+    },
+    {
+      "dorsal": "1",
+      "nombre": "Gato"
+    }
+  ],
+  "hatTricks": [],
+  "resultado": {
+    "rival": "Futuro San Francisco",
+    "escudoRivalUrl": "escudos-cache/FUTURO_SAN_FRANCISCO.png",
+    "equipoPropio": "C.D. VILLA DE BUITRAGO",
+    "local": 6,
+    "propioLocal": true,
+    "escudoPropioUrl": "",
+    "visitante": 0
+  },
+  "alineacion": [
+    {
+      "capitan": false,
+      "posicion": "delantero",
+      "nombre": "Xory",
+      "dorsal": "9",
+      "portero": false
+    },
+    {
+      "capitan": false,
+      "nombre": "Danilo",
+      "dorsal": "23",
+      "posicion": "delantero",
+      "portero": false
+    },
+    {
+      "dorsal": "99",
+      "nombre": "Gelo",
+      "posicion": "centrocampista",
+      "capitan": false,
+      "portero": false
+    },
+    {
+      "posicion": "defensa",
+      "portero": false,
+      "nombre": "Chaski",
+      "capitan": false,
+      "dorsal": "51"
+    },
+    {
+      "capitan": false,
+      "dorsal": "6",
+      "nombre": "Ricardo",
+      "portero": false,
+      "posicion": "defensa"
+    },
+    {
+      "capitan": false,
+      "nombre": "Lean",
+      "portero": false,
+      "posicion": "defensa",
+      "dorsal": "24"
+    },
+    {
+      "dorsal": "88",
+      "nombre": "Ato",
+      "posicion": "portero",
+      "capitan": false,
+      "portero": true
+    },
+    {
+      "capitan": false,
+      "posicion": "delantero",
+      "nombre": "Josek",
+      "dorsal": "27",
+      "portero": false
+    },
+    {
+      "capitan": false,
+      "dorsal": "14",
+      "nombre": "Claus",
+      "portero": false,
+      "posicion": "centrocampista"
+    },
+    {
+      "posicion": "centrocampista",
+      "portero": false,
+      "dorsal": "11",
+      "nombre": "Juanjo",
+      "capitan": false
+    },
+    {
+      "portero": false,
+      "nombre": "Vik",
+      "posicion": "centrocampista",
+      "dorsal": "10",
+      "capitan": false
+    }
+  ],
+  "jornada": "",
+  "grupo": "Liga privada",
+  "golesRival": [],
+  "campo": "Peñalta, Buitrago del Lozoya"
+}
