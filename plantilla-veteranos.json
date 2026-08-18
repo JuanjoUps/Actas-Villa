@@ -1,12 +1,17 @@
 [
   {
+    "nombre": "Xory",
     "dorsal": "9",
-    "posicion": "delantero",
-    "nombre": "Xory"
+    "posicion": "delantero"
   },
   {
+    "nombre": "Afa",
     "dorsal": "5",
+    "posicion": "delantero"
+  },
+  {
+    "dorsal": "23",
     "posicion": "delantero",
-    "nombre": "Afa"
+    "nombre": "Danilo"
   }
 ]
