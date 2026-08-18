@@ -1,88 +1,140 @@
 {
+  "alineacion": [
+    {
+      "nombre": "Xory",
+      "posicion": "delantero",
+      "portero": false,
+      "dorsal": "9",
+      "capitan": false
+    },
+    {
+      "nombre": "Danilo",
+      "portero": false,
+      "capitan": false,
+      "posicion": "delantero",
+      "dorsal": "23"
+    },
+    {
+      "portero": false,
+      "dorsal": "99",
+      "posicion": "centrocampista",
+      "capitan": false,
+      "nombre": "Gelo"
+    },
+    {
+      "dorsal": "51",
+      "capitan": false,
+      "portero": false,
+      "posicion": "defensa",
+      "nombre": "Chaski"
+    },
+    {
+      "nombre": "Lean",
+      "posicion": "defensa",
+      "portero": false,
+      "dorsal": "24",
+      "capitan": false
+    },
+    {
+      "posicion": "portero",
+      "portero": true,
+      "nombre": "Ato",
+      "capitan": false,
+      "dorsal": "88"
+    },
+    {
+      "portero": false,
+      "dorsal": "27",
+      "nombre": "Josek",
+      "posicion": "delantero",
+      "capitan": false
+    },
+    {
+      "portero": false,
+      "dorsal": "14",
+      "posicion": "centrocampista",
+      "nombre": "Claus",
+      "capitan": false
+    },
+    {
+      "dorsal": "11",
+      "portero": false,
+      "posicion": "centrocampista",
+      "nombre": "Juanjo",
+      "capitan": false
+    },
+    {
+      "capitan": false,
+      "nombre": "Nieva",
+      "posicion": "defensa",
+      "dorsal": "3",
+      "portero": false
+    },
+    {
+      "portero": false,
+      "dorsal": "10",
+      "capitan": false,
+      "nombre": "Vik",
+      "posicion": "centrocampista"
+    }
+  ],
+  "expulsiones": [],
   "resultado": {
     "visitante": 0,
-    "equipoPropio": "C.D. VILLA DE BUITRAGO",
+    "rival": "La Plata",
     "escudoPropioUrl": "",
-    "local": 5,
-    "rival": "La plata",
     "escudoRivalUrl": "",
-    "propioLocal": true
+    "local": 5,
+    "propioLocal": true,
+    "equipoPropio": "C.D. VILLA DE BUITRAGO"
   },
-  "categoria": "VETERANOS",
-  "suplentes": [],
-  "hatTricks": [],
-  "grupo": "Liga privada",
+  "suplentes": [
+    {
+      "dorsal": "5",
+      "nombre": "Afa"
+    },
+    {
+      "dorsal": "6",
+      "nombre": "Ricardo"
+    },
+    {
+      "dorsal": "47",
+      "nombre": "Lolo"
+    },
+    {
+      "dorsal": "1",
+      "nombre": "Gato"
+    }
+  ],
   "golesPropios": [
     {
       "jugador": "Xory",
       "minuto": ""
     },
     {
-      "jugador": "Danilo",
-      "minuto": ""
-    },
-    {
-      "jugador": "Danilo",
+      "jugador": "Xory",
       "minuto": ""
     },
     {
       "minuto": "",
-      "jugador": "Xory"
+      "jugador": "Danilo"
     },
     {
-      "jugador": "Xory",
-      "minuto": ""
+      "minuto": "",
+      "jugador": "Danilo"
+    },
+    {
+      "minuto": "",
+      "jugador": "Danilo"
     }
   ],
-  "alineacion": [
-    {
-      "portero": false,
-      "posicion": "delantero",
-      "capitan": false,
-      "nombre": "Xory",
-      "dorsal": "9"
-    },
-    {
-      "dorsal": "5",
-      "nombre": "Afa",
-      "capitan": false,
-      "posicion": "delantero",
-      "portero": false
-    },
-    {
-      "portero": false,
-      "capitan": false,
-      "nombre": "Danilo",
-      "posicion": "delantero",
-      "dorsal": "23"
-    },
-    {
-      "dorsal": "99",
-      "posicion": "centrocampista",
-      "portero": false,
-      "nombre": "Gelo",
-      "capitan": false
-    },
-    {
-      "dorsal": "51",
-      "nombre": "Chaski",
-      "capitan": false,
-      "portero": false,
-      "posicion": "defensa"
-    },
-    {
-      "nombre": "Ricardo",
-      "posicion": "defensa",
-      "dorsal": "6",
-      "capitan": false,
-      "portero": false
-    }
-  ],
-  "golesRival": [],
+  "categoria": "VETERANOS",
   "tarjetas": [],
-  "expulsiones": [],
-  "codacta": "veteranos-2026-08-18",
   "fecha": "18-08-2026",
+  "jornada": "",
   "campo": "Peñalta, Buitrago del Lozoya",
-  "jornada": ""
+  "codacta": "veteranos-2026-08-18",
+  "grupo": "Liga privada",
+  "golesRival": [],
+  "hatTricks": []
 }
