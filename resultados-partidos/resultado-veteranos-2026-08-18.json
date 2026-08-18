@@ -1,136 +1,140 @@
 {
+  "fecha": "18-08-2026",
+  "jornada": "",
+  "tarjetas": [],
+  "resultado": {
+    "escudoRivalUrl": "",
+    "propioLocal": true,
+    "equipoPropio": "C.D. VILLA DE BUITRAGO",
+    "local": 6,
+    "rival": "Futuro San Francisco",
+    "visitante": 0,
+    "escudoPropioUrl": ""
+  },
   "golesPropios": [
     {
-      "minuto": "",
-      "jugador": "Xory"
+      "jugador": "Xory",
+      "minuto": ""
     },
     {
       "jugador": "Xory",
       "minuto": ""
     },
     {
-      "jugador": "Danilo",
-      "minuto": ""
-    },
-    {
-      "jugador": "Danilo",
-      "minuto": ""
-    },
-    {
       "jugador": "Josek",
       "minuto": ""
+    },
+    {
+      "jugador": "Danilo",
+      "minuto": ""
+    },
+    {
+      "jugador": "Danilo",
+      "minuto": ""
+    },
+    {
+      "jugador": "Danilo",
+      "minuto": ""
     }
   ],
-  "codacta": "veteranos-2026-08-18",
-  "tarjetas": [],
-  "expulsiones": [],
-  "alineacion": [
-    {
-      "capitan": false,
-      "posicion": "delantero",
-      "nombre": "Xory",
-      "dorsal": "9",
-      "portero": false
-    },
-    {
-      "capitan": false,
-      "dorsal": "23",
-      "portero": false,
-      "nombre": "Danilo",
-      "posicion": "delantero"
-    },
-    {
-      "posicion": "centrocampista",
-      "nombre": "Gelo",
-      "portero": false,
-      "dorsal": "99",
-      "capitan": false
-    },
-    {
-      "posicion": "defensa",
-      "capitan": false,
-      "nombre": "Chaski",
-      "portero": false,
-      "dorsal": "51"
-    },
-    {
-      "posicion": "defensa",
-      "capitan": false,
-      "portero": false,
-      "nombre": "Ricardo",
-      "dorsal": "6"
-    },
-    {
-      "dorsal": "24",
-      "nombre": "Lean",
-      "capitan": false,
-      "portero": false,
-      "posicion": "defensa"
-    },
-    {
-      "dorsal": "88",
-      "nombre": "Ato",
-      "posicion": "portero",
-      "portero": true,
-      "capitan": false
-    },
-    {
-      "posicion": "delantero",
-      "capitan": false,
-      "portero": false,
-      "dorsal": "27",
-      "nombre": "Josek"
-    },
-    {
-      "nombre": "Claus",
-      "dorsal": "14",
-      "portero": false,
-      "posicion": "centrocampista",
-      "capitan": false
-    },
-    {
-      "nombre": "Juanjo",
-      "capitan": false,
-      "dorsal": "11",
-      "portero": false,
-      "posicion": "centrocampista"
-    },
-    {
-      "posicion": "centrocampista",
-      "capitan": false,
-      "dorsal": "10",
-      "portero": false,
-      "nombre": "Vik"
-    }
-  ],
-  "categoria": "VETERANOS",
-  "golesRival": [],
-  "resultado": {
-    "equipoPropio": "C.D. VILLA DE BUITRAGO",
-    "escudoRivalUrl": "escudos-cache/FUTURO_SAN_FRANCISCO.png",
-    "rival": "Futuro San Francisco",
-    "visitante": 0,
-    "propioLocal": true,
-    "local": 5,
-    "escudoPropioUrl": ""
-  },
-  "hatTricks": [],
-  "fecha": "18-08-2026",
-  "campo": "Peñalta, Buitrago del Lozoya",
-  "grupo": "Liga privada",
-  "jornada": "",
   "suplentes": [
     {
-      "nombre": "Afa",
-      "dorsal": "5"
+      "dorsal": "5",
+      "nombre": "Afa"
     },
     {
-      "nombre": "Nieva",
-      "dorsal": "3"
+      "nombre": "Lolo",
+      "dorsal": "47"
     },
     {
       "nombre": "Gato",
       "dorsal": "1"
     }
-  ]
+  ],
+  "golesRival": [],
+  "grupo": "Liga privada",
+  "campo": "Peñalta, Buitrago del Lozoya",
+  "hatTricks": [],
+  "alineacion": [
+    {
+      "nombre": "Xory",
+      "dorsal": "9",
+      "portero": false,
+      "capitan": false,
+      "posicion": "delantero"
+    },
+    {
+      "capitan": false,
+      "nombre": "Danilo",
+      "portero": false,
+      "posicion": "delantero",
+      "dorsal": "23"
+    },
+    {
+      "posicion": "centrocampista",
+      "dorsal": "99",
+      "portero": false,
+      "nombre": "Gelo",
+      "capitan": false
+    },
+    {
+      "dorsal": "51",
+      "posicion": "defensa",
+      "portero": false,
+      "nombre": "Chaski",
+      "capitan": false
+    },
+    {
+      "capitan": false,
+      "nombre": "Ricardo",
+      "portero": false,
+      "posicion": "defensa",
+      "dorsal": "6"
+    },
+    {
+      "nombre": "Lean",
+      "capitan": false,
+      "portero": false,
+      "posicion": "defensa",
+      "dorsal": "24"
+    },
+    {
+      "portero": true,
+      "dorsal": "88",
+      "posicion": "portero",
+      "capitan": false,
+      "nombre": "Ato"
+    },
+    {
+      "posicion": "delantero",
+      "nombre": "Josek",
+      "dorsal": "27",
+      "capitan": false,
+      "portero": false
+    },
+    {
+      "posicion": "centrocampista",
+      "dorsal": "14",
+      "nombre": "Claus",
+      "capitan": false,
+      "portero": false
+    },
+    {
+      "nombre": "Juanjo",
+      "capitan": false,
+      "posicion": "centrocampista",
+      "dorsal": "11",
+      "portero": false
+    },
+    {
+      "dorsal": "10",
+      "posicion": "centrocampista",
+      "portero": false,
+      "nombre": "Vik",
+      "capitan": false
+    }
+  ],
+  "expulsiones": [],
+  "categoria": "VETERANOS",
+  "codacta": "veteranos-2026-08-18"
 }
