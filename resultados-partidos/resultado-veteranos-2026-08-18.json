@@ -1,20 +1,33 @@
 {
   "fecha": "18-08-2026",
-  "jornada": "",
-  "tarjetas": [],
+  "codacta": "veteranos-2026-08-18",
   "resultado": {
-    "escudoRivalUrl": "",
-    "propioLocal": true,
-    "equipoPropio": "C.D. VILLA DE BUITRAGO",
     "local": 6,
-    "rival": "Futuro San Francisco",
+    "equipoPropio": "C.D. VILLA DE BUITRAGO",
+    "escudoRivalUrl": "escudos-cache/FUTURO_SAN_FRANCISCO.png",
+    "propioLocal": true,
     "visitante": 0,
-    "escudoPropioUrl": ""
+    "escudoPropioUrl": "",
+    "rival": "Futuro San Francisco"
   },
+  "suplentes": [
+    {
+      "nombre": "Afa",
+      "dorsal": "5"
+    },
+    {
+      "nombre": "Lolo",
+      "dorsal": "47"
+    },
+    {
+      "nombre": "Gato",
+      "dorsal": "1"
+    }
+  ],
   "golesPropios": [
     {
-      "jugador": "Xory",
-      "minuto": ""
+      "minuto": "",
+      "jugador": "Xory"
     },
     {
       "jugador": "Xory",
@@ -33,108 +46,95 @@
       "minuto": ""
     },
     {
-      "jugador": "Danilo",
-      "minuto": ""
-    }
-  ],
-  "suplentes": [
-    {
-      "dorsal": "5",
-      "nombre": "Afa"
-    },
-    {
-      "nombre": "Lolo",
-      "dorsal": "47"
-    },
-    {
-      "nombre": "Gato",
-      "dorsal": "1"
+      "minuto": "",
+      "jugador": "Danilo"
     }
   ],
   "golesRival": [],
+  "tarjetas": [],
   "grupo": "Liga privada",
-  "campo": "Peñalta, Buitrago del Lozoya",
+  "categoria": "VETERANOS",
   "hatTricks": [],
   "alineacion": [
     {
-      "nombre": "Xory",
       "dorsal": "9",
-      "portero": false,
       "capitan": false,
-      "posicion": "delantero"
-    },
-    {
-      "capitan": false,
-      "nombre": "Danilo",
-      "portero": false,
       "posicion": "delantero",
-      "dorsal": "23"
+      "portero": false,
+      "nombre": "Xory"
     },
     {
-      "posicion": "centrocampista",
+      "portero": false,
+      "nombre": "Danilo",
+      "posicion": "delantero",
+      "dorsal": "23",
+      "capitan": false
+    },
+    {
+      "nombre": "Gelo",
+      "capitan": false,
       "dorsal": "99",
       "portero": false,
-      "nombre": "Gelo",
-      "capitan": false
+      "posicion": "centrocampista"
     },
     {
       "dorsal": "51",
       "posicion": "defensa",
+      "capitan": false,
       "portero": false,
-      "nombre": "Chaski",
-      "capitan": false
+      "nombre": "Chaski"
     },
     {
       "capitan": false,
       "nombre": "Ricardo",
-      "portero": false,
+      "dorsal": "6",
       "posicion": "defensa",
-      "dorsal": "6"
+      "portero": false
     },
     {
+      "capitan": false,
       "nombre": "Lean",
-      "capitan": false,
-      "portero": false,
       "posicion": "defensa",
-      "dorsal": "24"
+      "dorsal": "24",
+      "portero": false
     },
     {
-      "portero": true,
-      "dorsal": "88",
-      "posicion": "portero",
       "capitan": false,
-      "nombre": "Ato"
+      "dorsal": "88",
+      "nombre": "Ato",
+      "posicion": "portero",
+      "portero": true
     },
     {
+      "portero": false,
+      "dorsal": "27",
       "posicion": "delantero",
       "nombre": "Josek",
-      "dorsal": "27",
-      "capitan": false,
-      "portero": false
+      "capitan": false
     },
     {
-      "posicion": "centrocampista",
-      "dorsal": "14",
       "nombre": "Claus",
+      "posicion": "centrocampista",
+      "portero": false,
       "capitan": false,
-      "portero": false
+      "dorsal": "14"
     },
     {
-      "nombre": "Juanjo",
-      "capitan": false,
-      "posicion": "centrocampista",
       "dorsal": "11",
-      "portero": false
+      "portero": false,
+      "capitan": false,
+      "nombre": "Juanjo",
+      "posicion": "centrocampista"
     },
     {
       "dorsal": "10",
-      "posicion": "centrocampista",
+      "capitan": false,
       "portero": false,
-      "nombre": "Vik",
-      "capitan": false
+      "posicion": "centrocampista",
+      "nombre": "Vik"
     }
   ],
   "expulsiones": [],
-  "categoria": "VETERANOS",
-  "codacta": "veteranos-2026-08-18"
+  "jornada": "",
+  "campo": "Peñalta, Buitrago del Lozoya"
 }
