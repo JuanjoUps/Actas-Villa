@@ -1,0 +1,143 @@
+{
+  "golesPropios": [
+    {
+      "jugador": "Xory",
+      "minuto": ""
+    },
+    {
+      "jugador": "Xory",
+      "minuto": ""
+    },
+    {
+      "jugador": "Danilo",
+      "minuto": ""
+    },
+    {
+      "jugador": "Danilo",
+      "minuto": ""
+    },
+    {
+      "jugador": "Danilo",
+      "minuto": ""
+    }
+  ],
+  "codacta": "veteranos-2026-08-17",
+  "alineacion": [
+    {
+      "portero": false,
+      "dorsal": "9",
+      "posicion": "delantero",
+      "nombre": "Xory",
+      "capitan": false
+    },
+    {
+      "dorsal": "23",
+      "capitan": false,
+      "posicion": "delantero",
+      "portero": false,
+      "nombre": "Danilo"
+    },
+    {
+      "nombre": "Gelo",
+      "portero": false,
+      "capitan": false,
+      "posicion": "centrocampista",
+      "dorsal": "99"
+    },
+    {
+      "nombre": "Chaski",
+      "portero": false,
+      "dorsal": "51",
+      "capitan": false,
+      "posicion": "defensa"
+    },
+    {
+      "posicion": "defensa",
+      "capitan": false,
+      "dorsal": "24",
+      "portero": false,
+      "nombre": "Lean"
+    },
+    {
+      "capitan": false,
+      "dorsal": "88",
+      "posicion": "portero",
+      "portero": true,
+      "nombre": "Ato"
+    },
+    {
+      "portero": false,
+      "nombre": "Josek",
+      "posicion": "delantero",
+      "dorsal": "27",
+      "capitan": false
+    },
+    {
+      "capitan": false,
+      "posicion": "centrocampista",
+      "dorsal": "14",
+      "nombre": "Claus",
+      "portero": false
+    },
+    {
+      "capitan": false,
+      "posicion": "centrocampista",
+      "nombre": "Juanjo",
+      "dorsal": "11",
+      "portero": false
+    },
+    {
+      "dorsal": "3",
+      "capitan": false,
+      "posicion": "defensa",
+      "portero": false,
+      "nombre": "Nieva"
+    },
+    {
+      "nombre": "Vik",
+      "posicion": "centrocampista",
+      "capitan": false,
+      "portero": false,
+      "dorsal": "10"
+    },
+    {
+      "dorsal": "1",
+      "capitan": false,
+      "posicion": "portero",
+      "portero": true,
+      "nombre": "Gato"
+    }
+  ],
+  "golesRival": [],
+  "grupo": "Liga privada",
+  "tarjetas": [],
+  "suplentes": [
+    {
+      "nombre": "Afa",
+      "dorsal": "5"
+    },
+    {
+      "nombre": "Ricardo",
+      "dorsal": "6"
+    },
+    {
+      "nombre": "Lolo",
+      "dorsal": "47"
+    }
+  ],
+  "resultado": {
+    "propioLocal": true,
+    "escudoPropioUrl": "",
+    "visitante": 0,
+    "rival": "La Plata",
+    "local": 5,
+    "equipoPropio": "C.D. VILLA DE BUITRAGO",
+    "escudoRivalUrl": ""
+  },
+  "fecha": "17-08-2026",
+  "categoria": "VETERANOS",
+  "campo": "Peñalta, Buitrago del Lozoya",
+  "jornada": "",
+  "hatTricks": [],
+  "expulsiones": []
+}
