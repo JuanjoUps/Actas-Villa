@@ -399,54 +399,75 @@ async function pintarAlineacion(datos) {
 // ============================================================
 
 async function pintarGoles(datos) {
-  document.getElementById("goles-nombre-propio").textContent =
-    datos.resultado.equipoPropio;
-  document.getElementById("goles-nombre-rival").textContent =
-    datos.resultado.rival;
+  // Los contenedores "propio"/"rival" del HTML son en realidad las
+  // columnas IZQUIERDA/DERECHA — el LOCAL va siempre a la izquierda
+  // y el VISITANTE a la derecha, sea "nosotros" el que sea (igual
+  // que ya hace el marcador).
+  const propioLocal = datos.resultado.propioLocal;
 
-  const contPropios = document.getElementById("lista-goles-propios");
-  const contRival = document.getElementById("lista-goles-rival");
-  contPropios.innerHTML = "";
-  contRival.innerHTML = "";
+  const izquierda = {
+    nombre: propioLocal ? datos.resultado.equipoPropio : datos.resultado.rival,
+    goles: propioLocal ? datos.golesPropios : datos.golesRival,
+    esPropio: propioLocal,
+  };
+  const derecha = {
+    nombre: propioLocal ? datos.resultado.rival : datos.resultado.equipoPropio,
+    goles: propioLocal ? datos.golesRival : datos.golesPropios,
+    esPropio: !propioLocal,
+  };
+
+  document.getElementById("goles-nombre-propio").textContent = izquierda.nombre;
+  document.getElementById("goles-nombre-rival").textContent = derecha.nombre;
+
+  const contIzquierda = document.getElementById("lista-goles-propios");
+  const contDerecha = document.getElementById("lista-goles-rival");
+  contIzquierda.innerHTML = "";
+  contDerecha.innerHTML = "";
 
   // Si no hay minuto (partidos sin cronometrar, como los del
   // equipo de veteranos), los dejamos en el orden en que se
   // guardaron en vez de intentar ordenar por un número que no existe.
-  const propios = [...datos.golesPropios].sort(
-    (a, b) => (Number(a.minuto) || 0) - (Number(b.minuto) || 0)
-  );
-  const rival = [...datos.golesRival].sort(
-    (a, b) => (Number(a.minuto) || 0) - (Number(b.minuto) || 0)
-  );
+  const ordenar = (goles) =>
+    [...goles].sort((a, b) => (Number(a.minuto) || 0) - (Number(b.minuto) || 0));
 
-  if (propios.length === 0 && rival.length === 0) {
+  const golesIzquierda = ordenar(izquierda.goles);
+  const golesDerecha = ordenar(derecha.goles);
+
+  if (golesIzquierda.length === 0 && golesDerecha.length === 0) {
     return;
   }
 
   // Intercalamos la aparición de ambas columnas para que el
   // vídeo no se quede "vacío" mirando una sola columna vacía.
-  const maxLen = Math.max(propios.length, rival.length);
+  const maxLen = Math.max(golesIzquierda.length, golesDerecha.length);
+
+  function pintarGol(gol, esPropio) {
+    const el = document.createElement("div");
+    el.className = "gol";
+    if (esPropio) {
+      // Los nuestros: con nombre del goleador y minuto si lo hay.
+      const etiquetaMinuto = gol.minuto
+        ? ` <span class="minuto">${gol.minuto}'</span>`
+        : "";
+      el.innerHTML = `<span class="balon">⚽</span> ${gol.jugador}` + etiquetaMinuto;
+    } else {
+      // Los del rival: solo el balón (no sabemos quién marcó).
+      el.innerHTML = `<span class="balon">⚽</span>`;
+    }
+    return el;
+  }
 
   for (let i = 0; i < maxLen; i++) {
-    if (propios[i]) {
-      const el = document.createElement("div");
-      el.className = "gol";
-      const etiquetaMinuto = propios[i].minuto
-        ? ` <span class="minuto">${propios[i].minuto}'</span>`
-        : "";
-      el.innerHTML =
-        `<span class="balon">⚽</span> ${propios[i].jugador}` +
-        etiquetaMinuto;
-      contPropios.appendChild(el);
+    if (golesIzquierda[i]) {
+      const el = pintarGol(golesIzquierda[i], izquierda.esPropio);
+      contIzquierda.appendChild(el);
       void el.offsetWidth;
       el.classList.add("visible");
     }
 
-    if (rival[i]) {
-      const el = document.createElement("div");
-      el.className = "gol";
-      el.innerHTML = `<span class="balon">⚽</span>`;
-      contRival.appendChild(el);
+    if (golesDerecha[i]) {
+      const el = pintarGol(golesDerecha[i], derecha.esPropio);
+      contDerecha.appendChild(el);
       void el.offsetWidth;
       el.classList.add("visible");
     }
