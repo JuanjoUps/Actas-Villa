@@ -19,7 +19,10 @@
  *   video-pendiente.json                        (si se generó algo,
  *                                                 lo usa el workflow
  *                                                 para decidir si
- *                                                 manda el email)
+ *                                                 manda el email, e
+ *                                                 incluye el rival y
+ *                                                 su Instagram para
+ *                                                 poder mencionarlo)
  *
  * Lleva su propio registro en estado-videos.json para no volver a
  * grabar un partido ya procesado.
@@ -50,6 +53,9 @@ const VIDEOS_DIR = path.join(RAIZ_REPO, "videos-generados");
 const ESTADO_VIDEOS_PATH = path.join(RAIZ_REPO, "estado-videos.json");
 const VIDEO_PENDIENTE_PATH = path.join(RAIZ_REPO, "video-pendiente.json");
 
+// Mapeo equipo rival -> @usuario de Instagram (ver proyecto rivales-instagram.json)
+const RIVALES_INSTAGRAM_PATH = path.join(RAIZ_REPO, "rivales-instagram.json");
+
 // ============================================================
 // ESTADO (qué codacta ya tiene vídeo generado)
 // ============================================================
@@ -61,6 +67,42 @@ function cargarEstadoVideos() {
 
 function guardarEstadoVideos(estado) {
   fs.writeFileSync(ESTADO_VIDEOS_PATH, JSON.stringify(estado, null, 2));
+}
+
+// ============================================================
+// MENCIÓN DE INSTAGRAM DEL RIVAL
+// ============================================================
+
+function cargarRivalesInstagram() {
+  if (!fs.existsSync(RIVALES_INSTAGRAM_PATH)) {
+    console.log(
+      "⚠️ No existe rivales-instagram.json — no se añadirán menciones."
+    );
+    return {};
+  }
+  return JSON.parse(fs.readFileSync(RIVALES_INSTAGRAM_PATH, "utf-8"));
+}
+
+/**
+ * Lee resultados-partidos/resultado-<codacta>.json para sacar el
+ * nombre del rival de ESE partido concreto.
+ *
+ * OJO: el nombre tiene que coincidir EXACTAMENTE (mismas mayúsculas,
+ * comillas, espacios) con la clave usada en rivales-instagram.json,
+ * o no encontrará la mención (sin dar error, simplemente no la pondrá).
+ */
+function obtenerRivalDeResultado(codacta) {
+  const ruta = path.join(RESULTADOS_DIR, `resultado-${codacta}.json`);
+
+  if (!fs.existsSync(ruta)) return null;
+
+  try {
+    const datos = JSON.parse(fs.readFileSync(ruta, "utf-8"));
+    return datos.rival || null;
+  } catch (err) {
+    console.log(`⚠️ No se pudo leer el rival de ${ruta}: ${err.message}`);
+    return null;
+  }
 }
 
 // ============================================================
@@ -126,6 +168,7 @@ async function main() {
   }
 
   const estadoVideos = cargarEstadoVideos();
+  const rivalesInstagram = cargarRivalesInstagram();
 
   const codactas = fs
     .readdirSync(RESULTADOS_DIR)
@@ -170,9 +213,32 @@ async function main() {
   guardarEstadoVideos(estadoVideos);
 
   if (generados.length > 0) {
+    // Por cada partido generado, buscamos su rival y, si está en el
+    // mapeo, su @usuario de Instagram — para que el paso de email
+    // pueda sugerir la mención.
+    const partidos = generados.map((codacta) => {
+      const rival = obtenerRivalDeResultado(codacta);
+      const instagram = rival ? rivalesInstagram[rival] || null : null;
+
+      if (rival && !instagram) {
+        console.log(
+          `ℹ️ Rival "${rival}" (partido ${codacta}) sin Instagram en el mapeo — se enviará sin mención.`
+        );
+      }
+
+      return { codacta, rival, instagram };
+    });
+
     fs.writeFileSync(
       VIDEO_PENDIENTE_PATH,
-      JSON.stringify({ codactas: generados }, null, 2)
+      JSON.stringify(
+        {
+          codactas: generados, // se mantiene igual, por si algo más lo usa
+          partidos, // nuevo: rival + instagram por cada vídeo generado
+        },
+        null,
+        2
+      )
     );
   }
 
