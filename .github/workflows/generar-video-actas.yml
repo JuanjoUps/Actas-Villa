@@ -85,6 +85,7 @@ jobs:
 
       # ========================================================
       # 3. GENERAR VÍDEO DE LOS RESULTADOS NUEVOS
+      #    (incluye rival + Instagram en video-pendiente.json)
       # ========================================================
 
       - name: Generar vídeo
@@ -130,6 +131,16 @@ jobs:
 
 
       # ========================================================
+      # PREPARAR CUERPO DEL CORREO (con menciones de Instagram)
+      # ========================================================
+
+      - name: Preparar cuerpo del correo con menciones
+        if: steps.check.outputs.hay_video == 'true'
+        id: mensaje
+        run: node preparar-cuerpo-email.js
+
+
+      # ========================================================
       # ENVIAR VÍDEO(S) POR EMAIL
       #
       # Misma configuración que el workflow de video-partidos.
@@ -146,14 +157,7 @@ jobs:
           from: Actas Villa de Buitrago
           to: ${{ secrets.EMAIL_DESTINO }}
           subject: "Vídeo de resultado - C.D. Villa de Buitrago"
-          body: |
-            Hola,
-
-            Ya está generado el vídeo de resultado del/de los partido(s)
-            finalizado(s). Se adjunta listo para subir como historia de
-            Instagram.
-
-            Un saludo.
+          body: ${{ steps.mensaje.outputs.cuerpo }}
           attachments: videos-generados/*.mp4
 
 
