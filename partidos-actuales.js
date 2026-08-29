@@ -59,16 +59,23 @@ const EQUIPOS_CLUB = new Set([
 
 const CALENDARIO_URLS = [
 
-  "https://www.rffm.es/competicion/calendario?temporada=21&tipojuego=1&competicion=24762963&grupo=24762965",
+  // Temporada 2026-2027 (temporada=22) — sustituye por completo a
+  // las de temporada=21, que ya no reciben partidos nuevos.
 
-  "https://www.rffm.es/competicion/calendario?temporada=21&tipojuego=1&competicion=24897923&grupo=24897945",
+  // Senior (Segunda Aficionado)
+  "https://www.rffm.es/competicion/calendario?temporada=22&tipojuego=1&competicion=26738300&grupo=26738302",
 
-  "https://www.rffm.es/competicion/calendario?temporada=21&tipojuego=1&competicion=24037637&grupo=24037640",
+  // Alevín (fútbol 7 — nota el tipojuego=2)
+  "https://www.rffm.es/competicion/calendario?temporada=22&tipojuego=2&competicion=26738141&grupo=26738146",
 
-  "https://www.rffm.es/competicion/calendario?temporada=21&tipojuego=1&competicion=24037730&grupo=24037732",
+  // Juvenil
+  "https://www.rffm.es/competicion/calendario?temporada=22&tipojuego=1&competicion=26737724&grupo=26737728",
 
-  // Primera Alevín F-7 (fútbol 7 — nota el tipojuego=2)
-  "https://www.rffm.es/competicion/calendario?temporada=21&tipojuego=2&competicion=26603934&grupo=26698004",
+  // Infantil
+  "https://www.rffm.es/competicion/calendario?temporada=22&tipojuego=1&competicion=26737828&grupo=26737830",
+
+  // Fútbol femenino
+  "https://www.rffm.es/competicion/calendario?temporada=22&tipojuego=1&competicion=26737874&grupo=26737876",
 
 ];
 
