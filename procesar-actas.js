@@ -76,23 +76,20 @@ function tieneActaReal(partido) {
 // ============================================================
 // PROBAR UN ACTA CONCRETA (por número), sin depender de fechas —
 // si está puesto, se procesa SOLO esa acta e ignora el rango de
-// fechas de abajo. Déjalo en null para volver al modo normal.
+// fechas de abajo. Déjalo en null en producción normal.
 // ============================================================
 
-const CODACTA_PRUEBA = "5569074";
+const CODACTA_PRUEBA = null;
 
 // ============================================================
 // RANGO DE FECHAS A PROCESAR (para revisar un fin de semana
 // concreto con datos reales, en vez de todo el histórico).
 //
-// Formato DD-MM-YYYY, ambos límites incluidos. Ponlo a `null`
-// para procesar TODO lo pendiente (modo producción normal).
+// Formato DD-MM-YYYY, ambos límites incluidos. En null procesa
+// TODO lo pendiente — modo producción normal, temporada en marcha.
 // ============================================================
 
-const RANGO_FECHAS_PRUEBA = {
-  desde: "01-02-2026",
-  hasta: "14-02-2026",
-};
+const RANGO_FECHAS_PRUEBA = null;
 
 function fechaEnRango(fechaDDMMYYYY, rango) {
   if (!rango) return true;
