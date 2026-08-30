@@ -29,63 +29,74 @@
   .jugador {
     position: absolute;
     transform: translate(-50%, -50%);
+    opacity: 0; /* la animación lo hace visible */
   }
 
-  /* Ahora la camiseta manda el tamaño de la caja, y la tarjeta se
-     cuelga ENCIMA con posición absoluta — así nunca se pueden
-     solapar por mucho que cambie el tamaño de la imagen. */
-  .camiseta-wrap {
-    position: relative;
-    width: 46px;
-    height: 56px;
+  /* Entrada: aparece con un pequeño "pop" — como en el vídeo de
+     referencia, no aparecen todos a la vez sino uno detrás de otro
+     (el retraso de cada uno se pone por JS, más abajo). */
+  @keyframes aparecer {
+    from {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.5) translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1) translateY(0);
+    }
   }
-  .camiseta-mini {
+  .jugador.aparece {
+    animation: aparecer 0.45s cubic-bezier(.34, 1.56, .64, 1) forwards;
+  }
+
+  /* La tarjeta ES la camiseta — no dos cosas separadas. La imagen
+     va dentro como capa de fondo, número y nombre encima. */
+  .tarjeta-jugador {
+    position: relative;
+    width: 72px;
+    height: 96px;
+    background: rgba(8, 8, 8, 0.55);
+    border: 1.5px solid rgba(244, 196, 48, 0.7);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+  }
+
+  .tarjeta-jugador .camiseta-fondo {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: contain;
-    filter: drop-shadow(0 3px 5px rgba(0,0,0,0.6));
-    display: block;
+    object-position: center 60%;
   }
 
-  /* La tarjeta flotante — como en el vídeo de referencia:
-     número grande arriba, nombre debajo, sin foto (no tenemos). */
-  .tarjeta {
+  .tarjeta-jugador .dorsal {
     position: absolute;
+    top: 5px;
     left: 50%;
-    bottom: 100%;         /* pegada justo encima de la camiseta */
-    margin-bottom: 6px;
     transform: translateX(-50%);
-    background: rgba(10, 10, 10, 0.82);
-    border: 1.5px solid rgba(244, 196, 48, 0.65);
-    border-radius: 8px;
-    padding: 5px 10px 6px;
-    text-align: center;
-    min-width: 64px;
-  }
-  .tarjeta .dorsal {
-    font-size: 26px;
+    font-size: 22px;
     font-weight: 900;
     color: #F4B400;
+    text-shadow:
+      -1px -1px 0 #000, 1px -1px 0 #000,
+      -1px  1px 0 #000, 1px  1px 0 #000;
     line-height: 1;
   }
-  .tarjeta .nombre {
-    font-size: 12px;
-    font-weight: 700;
-    color: #F6EFDD;
-    white-space: nowrap;
-    margin-top: 2px;
-  }
 
-  /* Pequeño "pico" bajo la tarjeta, apuntando al jugador */
-  .tarjeta::after {
-    content: "";
+  .tarjeta-jugador .nombre {
     position: absolute;
-    left: 50%;
-    bottom: -6px;
-    transform: translateX(-50%);
-    border-left: 6px solid transparent;
-    border-right: 6px solid transparent;
-    border-top: 6px solid rgba(10, 10, 10, 0.82);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.72);
+    color: #F6EFDD;
+    font-size: 10.5px;
+    font-weight: 700;
+    text-align: center;
+    padding: 3px 2px;
+    line-height: 1.15;
   }
 </style>
 </head>
@@ -118,21 +129,28 @@
 
   const cont = document.getElementById("jugadores");
 
-  alineacion.forEach((j) => {
+  alineacion.forEach((j, i) => {
     const el = document.createElement("div");
     el.className = "jugador";
     el.style.top = j.top;
     el.style.left = j.left;
+    // Cada jugador aparece un poco después que el anterior —
+    // el "goteo" que se ve en el vídeo de referencia.
+    el.style.animationDelay = `${i * 0.12}s`;
     el.innerHTML = `
-      <div class="camiseta-wrap">
-        <img class="camiseta-mini" src="assets/camiseta-local-v4.png" />
-        <div class="tarjeta">
-          <div class="dorsal">${j.dorsal}</div>
-          <div class="nombre">${j.nombre}</div>
-        </div>
+      <div class="tarjeta-jugador">
+        <img class="camiseta-fondo" src="assets/camiseta-local-v4.png" />
+        <div class="dorsal">${j.dorsal}</div>
+        <div class="nombre">${j.nombre}</div>
       </div>
     `;
     cont.appendChild(el);
+
+    // Forzamos el reflow antes de añadir la clase, para que la
+    // animación se dispare de verdad (si no, a veces el navegador
+    // se la salta por haberla puesto ya en el mismo frame).
+    void el.offsetWidth;
+    el.classList.add("aparece");
   });
 </script>
 
