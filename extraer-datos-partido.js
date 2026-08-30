@@ -108,6 +108,22 @@ function extraerCambios(game, esLocal) {
 
   if (!Array.isArray(cambios) || cambios.length === 0) return null;
 
+  // Plantilla completa (titulares + suplentes), con dorsal fiable —
+  // la usamos para rellenar el dorsal del que entra, en vez de
+  // fiarnos del nombre del campo dentro de "cambios" (que varía
+  // según categoría y no siempre acertamos a adivinar).
+  const plantillaCompleta = esLocal
+    ? game.jugadores_equipo_local
+    : game.jugadores_equipo_visitante;
+
+  function buscarDorsalPorNombre(nombreCrudo) {
+    if (!Array.isArray(plantillaCompleta)) return "";
+    const encontrado = plantillaCompleta.find(
+      (j) => j.nombre_jugador === nombreCrudo
+    );
+    return encontrado ? encontrado.dorsal || "" : "";
+  }
+
   const vistos = new Set();
   const resultado = [];
 
@@ -116,7 +132,8 @@ function extraerCambios(game, esLocal) {
     // probamos las variantes más habituales.
     const nombreEntra =
       c.nombre_jugador_entra || c.jugador_entra || c.entra || c.nombre_entra;
-    const dorsalEntra = c.dorsal_entra || c.dorsal_jugador_entra || "";
+    const dorsalEntraCampo = c.dorsal_entra || c.dorsal_jugador_entra || "";
+    const dorsalEntra = dorsalEntraCampo || buscarDorsalPorNombre(nombreEntra);
 
     if (nombreEntra && !vistos.has(nombreEntra)) {
       vistos.add(nombreEntra);
