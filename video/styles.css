@@ -393,11 +393,17 @@ html, body {
   transform: translate(-50%, -50%);
   font-size: 25px;
   font-weight: 900;
-  color: #F4B400;
+  color: #000;
   text-shadow:
-    -1.5px -1.5px 0 #000, 1.5px -1.5px 0 #000,
-    -1.5px  1.5px 0 #000, 1.5px  1.5px 0 #000;
+    -1.5px -1.5px 0 rgba(255, 255, 255, 0.85), 1.5px -1.5px 0 rgba(255, 255, 255, 0.85),
+    -1.5px  1.5px 0 rgba(255, 255, 255, 0.85), 1.5px  1.5px 0 rgba(255, 255, 255, 0.85);
   line-height: 1;
+}
+.tarjeta-jugador.portero .dorsal-tarjeta {
+  color: #fff;
+  text-shadow:
+    -1.5px -1.5px 0 rgba(0, 0, 0, 0.85), 1.5px -1.5px 0 rgba(0, 0, 0, 0.85),
+    -1.5px  1.5px 0 rgba(0, 0, 0, 0.85), 1.5px  1.5px 0 rgba(0, 0, 0, 0.85);
 }
 
 .tarjeta-jugador .nombre-tarjeta {
@@ -405,12 +411,12 @@ html, body {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.72);
+  background: rgba(0, 0, 0, 0.78);
   color: #F6EFDD;
-  font-size: 10.5px;
+  font-size: 13.5px;
   font-weight: 700;
   text-align: center;
-  padding: 3px 2px;
+  padding: 4px 2px;
   line-height: 1.15;
   white-space: nowrap;
   overflow: hidden;
