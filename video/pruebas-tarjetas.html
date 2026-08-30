@@ -53,13 +53,13 @@
      va dentro como capa de fondo, número y nombre encima. */
   .tarjeta-jugador {
     position: relative;
-    width: 72px;
-    height: 96px;
+    width: 104px;
+    height: 138px;
     background: rgba(8, 8, 8, 0.55);
-    border: 1.5px solid rgba(244, 196, 48, 0.7);
-    border-radius: 10px;
+    border: 2px solid rgba(244, 196, 48, 0.7);
+    border-radius: 13px;
     overflow: hidden;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    box-shadow: 0 5px 12px rgba(0,0,0,0.5);
   }
 
   .tarjeta-jugador .camiseta-fondo {
@@ -73,15 +73,15 @@
 
   .tarjeta-jugador .dorsal {
     position: absolute;
-    top: 5px;
+    top: 50%;
     left: 50%;
-    transform: translateX(-50%);
-    font-size: 22px;
+    transform: translate(-50%, -50%);
+    font-size: 34px;
     font-weight: 900;
     color: #F4B400;
     text-shadow:
-      -1px -1px 0 #000, 1px -1px 0 #000,
-      -1px  1px 0 #000, 1px  1px 0 #000;
+      -1.5px -1.5px 0 #000, 1.5px -1.5px 0 #000,
+      -1.5px  1.5px 0 #000, 1.5px  1.5px 0 #000;
     line-height: 1;
   }
 
@@ -92,7 +92,7 @@
     bottom: 0;
     background: rgba(0, 0, 0, 0.72);
     color: #F6EFDD;
-    font-size: 10.5px;
+    font-size: 14px;
     font-weight: 700;
     text-align: center;
     padding: 3px 2px;
