@@ -162,7 +162,7 @@ function crearTarjetaJugador(jugador, esPartidoLocal) {
     : RUTAS_CAMISETA.visitante;
 
   const tarjeta = document.createElement("div");
-  tarjeta.className = "tarjeta-jugador";
+  tarjeta.className = "tarjeta-jugador" + (jugador.portero ? " portero" : "");
 
   const img = document.createElement("img");
   img.className = "camiseta-fondo";
