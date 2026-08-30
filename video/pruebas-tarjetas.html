@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<title>PRUEBA — tarjetas flotantes sobre el campo</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1080px;
+    height: 1920px;
+    background: #04140a;
+    font-family: -apple-system, Roboto, Arial, sans-serif;
+    overflow: hidden;
+  }
+
+  #campo {
+    position: relative;
+    width: 1080px;
+    height: 1920px;
+  }
+  #campo img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .jugador {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transform: translate(-50%, -50%);
+  }
+
+  /* La camiseta, pequeña y simple debajo de la tarjeta */
+  .camiseta-mini {
+    width: 46px;
+    height: 56px;
+    object-fit: contain;
+    filter: drop-shadow(0 3px 5px rgba(0,0,0,0.6));
+  }
+
+  /* La tarjeta flotante — como en el vídeo de referencia:
+     número grande arriba, nombre debajo, sin foto (no tenemos). */
+  .tarjeta {
+    background: rgba(10, 10, 10, 0.82);
+    border: 1.5px solid rgba(244, 196, 48, 0.65);
+    border-radius: 8px;
+    padding: 5px 10px 6px;
+    margin-bottom: 4px;
+    text-align: center;
+    min-width: 64px;
+  }
+  .tarjeta .dorsal {
+    font-size: 26px;
+    font-weight: 900;
+    color: #F4B400;
+    line-height: 1;
+  }
+  .tarjeta .nombre {
+    font-size: 12px;
+    font-weight: 700;
+    color: #F6EFDD;
+    white-space: nowrap;
+    margin-top: 2px;
+  }
+
+  /* Pequeño "pico" bajo la tarjeta, apuntando al jugador */
+  .tarjeta::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -6px;
+    transform: translateX(-50%);
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid rgba(10, 10, 10, 0.82);
+  }
+</style>
+</head>
+<body>
+
+<div id="campo">
+  <img src="assets/campo-generico-v4.jpg" alt="" />
+  <div id="jugadores"></div>
+</div>
+
+<script>
+  // Datos de ejemplo — cámbialos por los que quieras probar.
+  const alineacion = [
+    { dorsal: 1,  nombre: "GONZÁLEZ", top: "82%", left: "50%" },
+
+    { dorsal: 4,  nombre: "MARTÍN",   top: "66%", left: "22%" },
+    { dorsal: 5,  nombre: "SÁNCHEZ",  top: "68%", left: "50%" },
+    { dorsal: 6,  nombre: "LÓPEZ",    top: "66%", left: "78%" },
+
+    { dorsal: 8,  nombre: "GARCÍA",   top: "50%", left: "18%" },
+    { dorsal: 10, nombre: "RUIZ",     top: "48%", left: "50%" },
+    { dorsal: 7,  nombre: "DÍAZ",     top: "50%", left: "82%" },
+
+    { dorsal: 11, nombre: "MORENO",   top: "38%", left: "20%" },
+    { dorsal: 9,  nombre: "TORRES",   top: "34%", left: "50%" },
+    { dorsal: 17, nombre: "ROMERO",   top: "38%", left: "80%" },
+
+    { dorsal: 15, nombre: "VEGA",     top: "22%", left: "50%" },
+  ];
+
+  const cont = document.getElementById("jugadores");
+
+  alineacion.forEach((j) => {
+    const el = document.createElement("div");
+    el.className = "jugador";
+    el.style.top = j.top;
+    el.style.left = j.left;
+    el.innerHTML = `
+      <div class="tarjeta">
+        <div class="dorsal">${j.dorsal}</div>
+        <div class="nombre">${j.nombre}</div>
+      </div>
+      <img class="camiseta-mini" src="assets/camiseta-local-v4.png" />
+    `;
+    cont.appendChild(el);
+  });
+</script>
+
+</body>
+</html>
