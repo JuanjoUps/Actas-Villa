@@ -111,8 +111,11 @@ const FRASES_EXTRA_CIERRE = [
 
 // Duraciones de cada pantalla (ms)
 const DURACION_RESULTADO = 1800;
-const DURACION_ALINEACION_LISTA = 2600;
-const DURACION_ALINEACION_CAMPO = 3000;
+// Fase 1 (presentación, repartidos por la sección) + fase 2 (ya
+// contraídos dentro del terreno de juego) — el total se mantiene
+// parecido al que había antes.
+const DURACION_ALINEACION_PRESENTACION = 1800;
+const DURACION_ALINEACION_CONTRAIDA = 3200;
 const DURACION_ENTRE_GOLES = 900;
 const DURACION_GOLES_FINAL = 1800;
 const DURACION_MASCOTA = 5000;
@@ -151,37 +154,39 @@ const RUTAS_CAMISETA = {
   portero: "assets/camiseta-portero-v4.png",
 };
 
-function crearCamisetaCanvas(jugador, esPartidoLocal) {
+function crearTarjetaJugador(jugador, esPartidoLocal) {
   const ruta = jugador.portero
     ? RUTAS_CAMISETA.portero
     : esPartidoLocal
     ? RUTAS_CAMISETA.local
     : RUTAS_CAMISETA.visitante;
 
-  const envoltura = document.createElement("div");
-  envoltura.className = "camiseta-envoltura";
+  const tarjeta = document.createElement("div");
+  tarjeta.className = "tarjeta-jugador";
 
   const img = document.createElement("img");
-  img.className = "camiseta";
+  img.className = "camiseta-fondo";
   img.src = ruta;
-  envoltura.appendChild(img);
+  tarjeta.appendChild(img);
 
-  // Dorsal: negro de normal, blanco si es portero — con un
-  // pequeño fondo detrás para que se lea bien pase lo que pase
-  // debajo (petición: "que sea legible").
   const dorsal = document.createElement("div");
-  dorsal.className = "camiseta-dorsal" + (jugador.portero ? " portero" : "");
+  dorsal.className = "dorsal-tarjeta";
   dorsal.textContent = jugador.dorsal;
-  envoltura.appendChild(dorsal);
+  tarjeta.appendChild(dorsal);
+
+  const nombre = document.createElement("div");
+  nombre.className = "nombre-tarjeta";
+  nombre.textContent = jugador.nombre;
+  tarjeta.appendChild(nombre);
 
   if (jugador.capitan) {
     const capitan = document.createElement("div");
-    capitan.className = "camiseta-capitan";
+    capitan.className = "capitan-tarjeta";
     capitan.textContent = "C";
-    envoltura.appendChild(capitan);
+    tarjeta.appendChild(capitan);
   }
 
-  return envoltura;
+  return tarjeta;
 }
 
 
@@ -254,7 +259,15 @@ function repartirEnFilas(cantidad) {
 // para cuando sí sabemos la posición de cada jugador (equipo de
 // veteranos, sin acta de la federación) — coloca a cada uno en su
 // línea de verdad, no en un reparto genérico por número.
-function posicionesPorRolFutbolistico(alineacion) {
+// Dos repartos por altura: "amplio" para la presentación inicial
+// (ocupa toda la caja, incluida la parte de fondo oscuro de la
+// imagen) y "compacto" para cuando se contraen — medido a mano
+// para que quede dentro del césped visible de verdad (que en nuestras
+// imágenes de fondo empieza sobre el 40-42% de la caja, no antes).
+const ALTURAS_AMPLIO = { portero: "88%", defensa: "68%", centrocampista: "45%", delantero: "22%" };
+const ALTURAS_COMPACTO = { portero: "88%", defensa: "72%", centrocampista: "56%", delantero: "40%" };
+
+function posicionesPorRolFutbolistico(alineacion, alturas = ALTURAS_AMPLIO) {
   const grupos = { portero: [], defensa: [], centrocampista: [], delantero: [] };
 
   alineacion.forEach((j) => {
@@ -263,10 +276,10 @@ function posicionesPorRolFutbolistico(alineacion) {
   });
 
   const filas = [
-    { jugadores: grupos.portero, top: "88%" },
-    { jugadores: grupos.defensa, top: "68%" },
-    { jugadores: grupos.centrocampista, top: "45%" },
-    { jugadores: grupos.delantero, top: "22%" },
+    { jugadores: grupos.portero, top: alturas.portero },
+    { jugadores: grupos.defensa, top: alturas.defensa },
+    { jugadores: grupos.centrocampista, top: alturas.centrocampista },
+    { jugadores: grupos.delantero, top: alturas.delantero },
   ];
 
   const mapa = new Map();
@@ -280,14 +293,14 @@ function posicionesPorRolFutbolistico(alineacion) {
   return mapa;
 }
 
-function posicionesEnCampo(numJugadores) {
+function posicionesEnCampo(numJugadores, alturas = ALTURAS_AMPLIO) {
   const posiciones = [];
 
   // Portero: centrado, cerca de la parte baja del campo.
-  posiciones.push({ top: "88%", left: "50%" });
+  posiciones.push({ top: alturas.portero, left: "50%" });
 
   const filas = repartirEnFilas(numJugadores - 1);
-  const alturaFilas = ["68%", "45%", "22%"]; // defensa, centro, ataque
+  const alturaFilas = [alturas.defensa, alturas.centrocampista, alturas.delantero];
 
   filas.forEach((cantidadFila, indiceFila) => {
     for (let i = 0; i < cantidadFila; i++) {
@@ -334,39 +347,6 @@ async function pintarAlineacion(datos) {
     (a, b) => Number(b.portero) - Number(a.portero)
   );
 
-  // --- Paso 1: lista de tarjetas, centradas verticalmente ---
-  const altoCampo = campo.clientHeight;
-  const altoTarjeta = Math.min(62, (altoCampo - 30) / alineacion.length);
-  const inicioY = altoCampo / 2 - (alineacion.length * altoTarjeta) / 2;
-
-  alineacion.forEach((jugador, i) => {
-    const el = document.createElement("div");
-    el.className = "jugador en-lista";
-    el.style.top = `${inicioY + i * altoTarjeta + altoTarjeta / 2}px`;
-    el.style.left = "50%";
-
-    const camiseta = crearCamisetaCanvas(jugador, datos.resultado.propioLocal);
-    // Tamaño de la camiseta ajustado al hueco real disponible por
-    // fila — si no, con muchos jugadores se solapan unas con otras.
-    const altoCamiseta = Math.max(30, altoTarjeta * 0.86);
-    camiseta.style.height = `${altoCamiseta}px`;
-    camiseta.style.width = `${altoCamiseta * 0.82}px`;
-    el.appendChild(camiseta);
-
-    const nombre = document.createElement("div");
-    nombre.className = "nombre";
-    nombre.textContent = jugador.nombre + (jugador.capitan ? " (C)" : "");
-    el.appendChild(nombre);
-
-    cont.appendChild(el);
-  });
-
-  await esperar(DURACION_ALINEACION_LISTA);
-
-  // --- Paso 2: las mismas camisetas (ya ondeando) se mueven a su
-  // posición en el campo — no desaparecen y reaparecen, se
-  // desplazan con una transición CSS ---
-  //
   // Si TODOS los jugadores traen una "posicion" guardada (caso del
   // equipo de veteranos, sin acta oficial), los colocamos por rol
   // real en vez del reparto genérico en 3 líneas.
@@ -378,19 +358,53 @@ async function pintarAlineacion(datos) {
     ? null
     : posicionesEnCampo(alineacion.length);
 
-  const elementos = cont.querySelectorAll(".jugador");
-
-  elementos.forEach((el, i) => {
-    el.classList.remove("en-lista");
-    const jugador = alineacion[i];
+  // Cada jugador aparece directamente en su posición del campo,
+  // con un pequeño "pop" — uno detrás de otro, sin pasar antes
+  // por una lista de nombres.
+  alineacion.forEach((jugador, i) => {
+    const el = document.createElement("div");
+    el.className = "jugador";
     const pos = usaPosicionesReales
       ? mapaPosiciones.get(jugador.dorsal) || { top: "50%", left: "50%" }
       : posiciones[i] || { top: "50%", left: "50%" };
     el.style.top = pos.top;
     el.style.left = pos.left;
+    el.style.animationDelay = `${i * 0.12}s`;
+
+    el.appendChild(crearTarjetaJugador(jugador, datos.resultado.propioLocal));
+    cont.appendChild(el);
+
+    // Forzamos el reflow antes de añadir la clase, para que la
+    // animación se dispare de verdad.
+    void el.offsetWidth;
+    el.classList.add("aparece");
   });
 
-  await esperar(DURACION_ALINEACION_CAMPO);
+  // Fase de presentación: se ven repartidos por toda la sección.
+  await esperar(DURACION_ALINEACION_PRESENTACION);
+
+  // Fase 2: se contraen hacia el terreno de juego real — la imagen
+  // de fondo del campo no llena toda la caja (queda fondo oscuro
+  // en la parte de arriba), así que usamos un reparto por alturas
+  // distinto, medido para caer dentro del césped visible de verdad.
+  const mapaPosicionesCompacto = usaPosicionesReales
+    ? posicionesPorRolFutbolistico(alineacion, ALTURAS_COMPACTO)
+    : null;
+  const posicionesCompacto = usaPosicionesReales
+    ? null
+    : posicionesEnCampo(alineacion.length, ALTURAS_COMPACTO);
+
+  const elementos = cont.querySelectorAll(".jugador");
+  elementos.forEach((el, i) => {
+    const jugador = alineacion[i];
+    const pos = usaPosicionesReales
+      ? mapaPosicionesCompacto.get(jugador.dorsal) || { top: "50%", left: "50%" }
+      : posicionesCompacto[i] || { top: "50%", left: "50%" };
+    el.style.top = pos.top;
+    el.style.left = pos.left;
+  });
+
+  await esperar(DURACION_ALINEACION_CONTRAIDA);
 }
 
 
