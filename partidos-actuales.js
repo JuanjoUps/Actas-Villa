@@ -89,17 +89,12 @@ const NOMBRE_CLUB_FILTRO = "BUITRAGO";
 // RANGO DE PRUEBA
 // ============================================================
 //
-// SOLO PARA ESTA PRUEBA.
-//
-// Cuando pasemos a producción:
-// const RANGO_FIJO_PRUEBA = null;
+// Ya en producción — la temporada ha empezado de verdad, así que
+// dejamos de acotar a un finde concreto.
 //
 // ============================================================
 
-const RANGO_FIJO_PRUEBA = {
-  desde: "01-02-2026",
-  hasta: "14-02-2026"
-};
+const RANGO_FIJO_PRUEBA = null;
 
 
 const DIAS_VENTANA = 9;
