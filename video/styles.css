@@ -337,6 +337,43 @@ html, body {
   inset: 0;
 }
 
+/* Fase 0: lista de nombres antes de que aparezcan las tarjetas */
+.fila-lista {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 86%;
+  max-width: 460px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: rgba(15, 40, 24, 0.55);
+  border: 2px solid rgba(244, 196, 48, 0.55);
+  border-radius: 10px;
+  padding: 6px 16px;
+}
+.fila-lista .dorsal-lista {
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--color-oro);
+  color: #0F2716;
+  font-weight: 900;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.fila-lista .nombre-lista {
+  color: #F6EFDD;
+  font-size: 17px;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .jugador {
   position: absolute;
   transform: translate(-50%, -50%);
