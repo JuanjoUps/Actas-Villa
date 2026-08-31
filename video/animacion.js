@@ -111,9 +111,9 @@ const FRASES_EXTRA_CIERRE = [
 
 // Duraciones de cada pantalla (ms)
 const DURACION_RESULTADO = 1800;
-// Fase 1 (presentación, repartidos por la sección) + fase 2 (ya
-// contraídos dentro del terreno de juego) — el total se mantiene
-// parecido al que había antes.
+// Fase 0 (lista de nombres) + fase 1 (presentación, repartidos por
+// la sección) + fase 2 (ya contraídos dentro del terreno de juego).
+const DURACION_ALINEACION_LISTA = 2400;
 const DURACION_ALINEACION_PRESENTACION = 1800;
 const DURACION_ALINEACION_CONTRAIDA = 3200;
 const DURACION_ENTRE_GOLES = 900;
@@ -341,11 +341,31 @@ async function pintarAlineacion(datos) {
     )
     .join("");
 
+  // --- Fase 0: lista de nombres, como al principio (antes de que
+  // aparezcan las tarjetas en el campo) ---
   // Portero primero (si lo detectamos), luego el resto en el
   // orden en que viene el acta.
   const alineacion = [...datos.alineacion].sort(
     (a, b) => Number(b.portero) - Number(a.portero)
   );
+
+  const altoCampo = campo.clientHeight;
+  const altoFila = Math.min(56, (altoCampo - 24) / alineacion.length);
+  const inicioY = altoCampo / 2 - (alineacion.length * altoFila) / 2;
+
+  alineacion.forEach((jugador, i) => {
+    const fila = document.createElement("div");
+    fila.className = "fila-lista";
+    fila.style.top = `${inicioY + i * altoFila + altoFila / 2}px`;
+    fila.innerHTML = `
+      <span class="dorsal-lista">${jugador.dorsal}</span>
+      <span class="nombre-lista">${jugador.nombre}${jugador.capitan ? " (C)" : ""}</span>
+    `;
+    cont.appendChild(fila);
+  });
+
+  await esperar(DURACION_ALINEACION_LISTA);
+  cont.innerHTML = "";
 
   // Si TODOS los jugadores traen una "posicion" guardada (caso del
   // equipo de veteranos, sin acta oficial), los colocamos por rol
