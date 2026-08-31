@@ -1,1 +1,27 @@
-{}
+{
+  "Senior (Segunda Aficionado)": {
+    "posicion": 11,
+    "puntos": 0,
+    "totalEquipos": 15
+  },
+  "Alevín F-7": {
+    "posicion": 10,
+    "puntos": 0,
+    "totalEquipos": 12
+  },
+  "Juvenil": {
+    "posicion": 10,
+    "puntos": 0,
+    "totalEquipos": 18
+  },
+  "Infantil": {
+    "posicion": 7,
+    "puntos": 0,
+    "totalEquipos": 16
+  },
+  "Fútbol femenino": {
+    "posicion": 7,
+    "puntos": 0,
+    "totalEquipos": 13
+  }
+}
