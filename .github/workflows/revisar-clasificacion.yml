@@ -3,9 +3,6 @@ name: Revisar clasificación
 on:
   workflow_dispatch:
   schedule:
-    # Una vez al día — como no todos los equipos juegan el mismo
-    # día/hora, no hay una hora fija en la que la RFFM actualice
-    # todas las tablas; revisar a diario es lo más simple y fiable.
     - cron: "0 8 * * *"
 
 jobs:
@@ -30,30 +27,23 @@ jobs:
             echo "hay_cambios=false" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Preparar cuerpo del email
+      - name: Enviar cambios a Telegram
         if: steps.comprobar.outputs.hay_cambios == 'true'
         run: |
           node -e "
           const cambios = require('./clasificacion-cambios.json');
-          let cuerpo = 'Cambios de posición detectados:\n\n';
           cambios.forEach(c => {
-            const flecha = c.subio ? 'SUBE' : 'BAJA';
-            cuerpo += \`\${flecha} — \${c.categoria}: puesto \${c.posicionAnterior} -> \${c.posicionNueva} de \${c.totalEquipos} (\${c.puntos} puntos)\n\`;
+            const flecha = c.subio ? '⬆️ SUBE' : '⬇️ BAJA';
+            console.log(\`\${flecha} — \${c.categoria}: puesto \${c.posicionAnterior} -> \${c.posicionNueva} de \${c.totalEquipos} (\${c.puntos} puntos)\`);
           });
-          require('fs').writeFileSync('cuerpo-email.txt', cuerpo);
-          "
+          " > mensajes-clasificacion.txt
 
-      - if: steps.comprobar.outputs.hay_cambios == 'true'
-        uses: dawidd6/action-send-mail@v3
-        with:
-          server_address: smtp.gmail.com
-          server_port: 465
-          username: ${{ secrets.EMAIL_USUARIO }}
-          password: ${{ secrets.EMAIL_CLAVE }}
-          subject: "Cambios en la clasificación — C.D. Villa de Buitrago"
-          to: ${{ secrets.EMAIL_DESTINO }}
-          from: Actas Villa
-          body: file://cuerpo-email.txt
+          while IFS= read -r linea; do
+            curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
+              -F chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
+              -F message_thread_id="${{ secrets.TELEGRAM_TEMA_CLASIFICACION }}" \
+              -F text="📊 ${linea}"
+          done < mensajes-clasificacion.txt
 
       - run: |
           git config user.name "github-actions"
@@ -61,3 +51,11 @@ jobs:
           git add clasificacion-estado.json
           git commit -m "Actualiza estado de clasificación" || echo "Nada que guardar"
           git push
+
+      - name: Avisar por Telegram si algo falló
+        if: failure()
+        run: |
+          curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
+            -F chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
+            -F message_thread_id="${{ secrets.TELEGRAM_TEMA_ERRORES }}" \
+            -F text="⚠️ Falló el workflow de clasificación. Revisa el log en GitHub Actions."
