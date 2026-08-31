@@ -50,14 +50,49 @@ const EQUIPOS_CLUB = new Set([
 ]);
 
 // ============================================================
+// ÚLTIMA JORNADA JUGADA POR CATEGORÍA — la RFFM no da la última
+// clasificación por defecto si no le pasas "jornada" en la URL
+// (sin ese parámetro, siempre devuelve la jornada 1). La sacamos
+// de partidos-video.json, que el propio proyecto ya mantiene al
+// día con la jornada de cada partido.
+// ============================================================
+
+function ultimaJornadaPorCategoria() {
+  const rutaPartidos = path.join(__dirname, "partidos-video.json");
+  const resultado = {};
+
+  if (!fs2.existsSync(rutaPartidos)) {
+    console.log(
+      "  Aviso: no existe partidos-video.json — se usará la jornada 1 " +
+      "por defecto (ejecuta antes partidos-actuales.js si puedes)."
+    );
+    return resultado;
+  }
+
+  const partidos = JSON.parse(fs2.readFileSync(rutaPartidos, "utf-8"));
+
+  partidos.forEach((p) => {
+    if (!p.finalizado) return;
+    const clave = `${p.temporada}|${p.competicion}|${p.grupo}`;
+    const jornadaNum = Number(p.jornada) || 0;
+    if (!resultado[clave] || jornadaNum > resultado[clave]) {
+      resultado[clave] = jornadaNum;
+    }
+  });
+
+  return resultado;
+}
+
+// ============================================================
 // DESCARGA + PARSEO (mismo patrón que obtenerCalendario)
 // ============================================================
 
-async function obtenerClasificacion(categoria) {
+async function obtenerClasificacion(categoria, jornada) {
   const url =
     `https://www.rffm.es/competicion/clasificaciones?temporada=${categoria.temporada}` +
     `&tipojuego=${categoria.tipojuego}&competicion=${categoria.competicion}` +
-    `&grupo=${categoria.grupo}`;
+    `&grupo=${categoria.grupo}` +
+    (jornada ? `&jornada=${jornada}` : "");
 
   console.log(`Consultando: ${url}`);
 
@@ -105,25 +140,15 @@ function diagnosticar(pageProps, nombreCategoria) {
 // ============================================================
 
 function extraerTabla(pageProps) {
-  const posibles = ["classification", "clasificacion", "standing", "table", "ranking"];
-  for (const clave of posibles) {
-    if (Array.isArray(pageProps[clave])) return pageProps[clave];
-    if (pageProps[clave]?.rows) return pageProps[clave].rows;
-    if (pageProps[clave]?.data) return pageProps[clave].data;
-  }
-  return null;
+  // Confirmado con datos reales: la tabla vive en
+  // pageProps.standings.clasificacion (no en la raíz de pageProps).
+  return pageProps?.standings?.clasificacion || null;
 }
 
 function encontrarFilaDelClub(tabla) {
   if (!Array.isArray(tabla)) return null;
-  // Probamos varios nombres de campo posibles para el código de
-  // equipo dentro de cada fila de la tabla.
-  return tabla.find((fila) => {
-    const codigo = String(
-      fila.codigo_equipo || fila.codigoEquipo || fila.team_code || fila.id_equipo || ""
-    );
-    return EQUIPOS_CLUB.has(codigo);
-  });
+  // El campo real se llama "codequipo" (confirmado con datos reales).
+  return tabla.find((fila) => EQUIPOS_CLUB.has(String(fila.codequipo)));
 }
 
 // ============================================================
@@ -143,9 +168,13 @@ async function main() {
   const estadoAnterior = cargarEstadoAnterior();
   const estadoNuevo = {};
   const cambios = [];
+  const jornadas = ultimaJornadaPorCategoria();
 
   for (const categoria of CATEGORIAS) {
-    const pageProps = await obtenerClasificacion(categoria);
+    const clave = `${categoria.temporada}|${categoria.competicion}|${categoria.grupo}`;
+    const jornada = jornadas[clave] || null;
+
+    const pageProps = await obtenerClasificacion(categoria, jornada);
     if (!pageProps) continue;
 
     const tabla = extraerTabla(pageProps);
