@@ -35,37 +35,49 @@ const FRASES = {
     "¡Festival de goles del Villa! ¡Qué partidazo!",
     "¡Goleada espectacular! El Villa pasa por encima del rival.",
     "¡Qué exhibición! El Villa firma una victoria arrolladora.",
-    "¡Noche de goles y fútbol! El Villa se luce a lo grande.",
+    "¡Recital de fútbol del Villa! Actuación de las que hacen afición.",
+    "¡Manita al rival! El Villa se luce a lo grande.",
+    "¡Paliza histórica! El Villa no dejó títere con cabeza.",
   ],
   victoriaMedia: [
     "¡Gran victoria del Villa! El equipo se impone con autoridad.",
     "¡Tres puntos y una actuación fantástica del equipo!",
     "¡Victoria contundente! El Villa demuestra su calidad.",
     "¡Partidazo del Villa! Victoria merecida de principio a fin.",
+    "¡El Villa manda y convence! Otra victoria para la vitrina.",
+    "¡Triunfo sólido del Villa! Trabajo en equipo de principio a fin.",
   ],
   victoriaMinima: [
     "¡Victoria trabajada hasta el último minuto!",
     "¡Tres puntos de oro en un partido de infarto!",
     "¡Sufriendo, peleando y ganando! ¡Así se consiguen estos tres puntos!",
     "¡El Villa aguanta hasta el final y se lleva una victoria de mucho mérito!",
+    "¡Un gol y toda la garra necesaria para sumar los tres puntos!",
+    "¡Se sufrió, pero se ganó! Victoria de esas que hacen equipo.",
   ],
   empate: [
     "¡Empate muy luchado por los dos equipos!",
     "¡Partido de máxima igualdad hasta el pitido final!",
     "¡Los dos equipos lo dejaron todo sobre el campo!",
     "¡Reparto de puntos después de un auténtico partidazo!",
+    "¡Un punto que sabe a esfuerzo! El Villa no bajó los brazos.",
+    "¡Empate justo en un partido muy disputado!",
   ],
   derrotaMinima: [
     "¡Derrota muy luchada! El Villa peleó hasta el final.",
     "¡Partido muy competido que esta vez cayó del lado rival!",
     "¡El equipo lo intentó hasta el último minuto!",
     "¡No pudo ser! Toca seguir trabajando y levantarse.",
+    "¡Derrota con la cara bien alta! El equipo compitió de tú a tú.",
+    "¡Se puso difícil, pero el Villa no dejó de pelear ni un segundo!",
   ],
   derrotaGrande: [
     "¡Dura derrota para el Villa en un partido complicado!",
     "¡Hoy no salió nada como esperábamos! Toca aprender y volver más fuertes.",
     "¡Resultado duro para el equipo! Ahora toca levantar la cabeza.",
     "¡Partido difícil para el Villa! Lo importante es seguir adelante.",
+    "¡Día complicado para el equipo! De estos partidos también se aprende.",
+    "¡No fue el día del Villa! A pasar página y a por el siguiente.",
   ],
 };
 
@@ -103,10 +115,12 @@ const FRASES_PORTERIA_CERO = [
 ];
 
 const FRASES_EXTRA_CIERRE = [
-  "¡Somos Villa!",
-  "¡A seguir trabajando!",
-  "¡Este equipo no para!",
-  "¡Seguimos! ¡La huella del Villa continúa!",
+  "¡Somos el Villa!",
+  "¡Vamos Buitrago!",
+  "¡Vamos verdes!",
+  "¡Con esta camiseta, hasta el final!",
+  "¡Este equipo no se rinde nunca!",
+  "¡Orgullo verde y negro!",
 ];
 
 // Duraciones de cada pantalla (ms)
@@ -128,8 +142,40 @@ function esperar(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+let semillaActual = 1;
+
+function mezclarSemilla(x) {
+  x = Math.imul(x ^ (x >>> 16), 0x45d9f3b);
+  x = Math.imul(x ^ (x >>> 16), 0x45d9f3b);
+  return (x ^ (x >>> 16)) >>> 0;
+}
+
+function fijarSemilla(codacta) {
+  let hash = 0;
+  const texto = String(codacta || "0");
+  for (let i = 0; i < texto.length; i++) {
+    hash = (hash * 31 + texto.charCodeAt(i)) >>> 0;
+  }
+  semillaActual = mezclarSemilla(hash) || 1;
+  // Calentamos el generador un par de vueltas — actas consecutivas
+  // (típico de partidos de la misma jornada) si no quedaban
+  // demasiado parecidas entre sí nada más fijar la semilla.
+  aleatorioConSemilla();
+  aleatorioConSemilla();
+}
+
+function aleatorioConSemilla() {
+  // Generador simple (xorshift) — determinista a partir de la
+  // semilla, suficiente para elegir frases sin dependencias.
+  semillaActual ^= semillaActual << 13;
+  semillaActual ^= semillaActual >>> 17;
+  semillaActual ^= semillaActual << 5;
+  semillaActual >>>= 0;
+  return semillaActual / 4294967295;
+}
+
 function elegirAleatorio(lista) {
-  return lista[Math.floor(Math.random() * lista.length)];
+  return lista[Math.floor(aleatorioConSemilla() * lista.length)];
 }
 
 function ajustarEscala() {
@@ -542,6 +588,10 @@ function frasePersonalizada(lista, nombreJugador) {
 }
 
 function pintarMascota(datos) {
+  // Semilla fija por partido — mismo acta, mismas frases; partidos
+  // distintos, alta probabilidad de frases distintas.
+  fijarSemilla(datos.codacta);
+
   const propios = datos.resultado.propioLocal
     ? datos.resultado.local
     : datos.resultado.visitante;
