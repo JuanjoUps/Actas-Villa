@@ -1,0 +1,63 @@
+name: Revisar clasificación
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Una vez al día — como no todos los equipos juegan el mismo
+    # día/hora, no hay una hora fija en la que la RFFM actualice
+    # todas las tablas; revisar a diario es lo más simple y fiable.
+    - cron: "0 8 * * *"
+
+jobs:
+  revisar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - run: npm install
+
+      - run: node revisar-clasificacion.js
+
+      - id: comprobar
+        run: |
+          if [ -f "clasificacion-cambios.json" ]; then
+            echo "hay_cambios=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "hay_cambios=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Preparar cuerpo del email
+        if: steps.comprobar.outputs.hay_cambios == 'true'
+        run: |
+          node -e "
+          const cambios = require('./clasificacion-cambios.json');
+          let cuerpo = 'Cambios de posición detectados:\n\n';
+          cambios.forEach(c => {
+            const flecha = c.subio ? 'SUBE' : 'BAJA';
+            cuerpo += \`\${flecha} — \${c.categoria}: puesto \${c.posicionAnterior} -> \${c.posicionNueva} de \${c.totalEquipos} (\${c.puntos} puntos)\n\`;
+          });
+          require('fs').writeFileSync('cuerpo-email.txt', cuerpo);
+          "
+
+      - if: steps.comprobar.outputs.hay_cambios == 'true'
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.EMAIL_USUARIO }}
+          password: ${{ secrets.EMAIL_CLAVE }}
+          subject: "Cambios en la clasificación — C.D. Villa de Buitrago"
+          to: ${{ secrets.EMAIL_DESTINO }}
+          from: Actas Villa
+          body: file://cuerpo-email.txt
+
+      - run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add clasificacion-estado.json
+          git commit -m "Actualiza estado de clasificación" || echo "Nada que guardar"
+          git push
