@@ -57,10 +57,12 @@ jobs:
         if: steps.comprobar.outputs.hay_video == 'true'
         run: |
           for archivo in videos-generados/*.mp4; do
+            codacta=$(basename "$archivo" .mp4 | sed 's/^resultado-//')
+            CAPTION=$(node construir-caption-video.js "$codacta")
             curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendVideo" \
               -F chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
               -F message_thread_id="${{ secrets.TELEGRAM_TEMA_RESULTADOS }}" \
-              -F caption="⚽ Nuevo vídeo de resultado" \
+              -F caption="${CAPTION}" \
               -F video="@${archivo}"
           done
 
