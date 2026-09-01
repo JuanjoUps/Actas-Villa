@@ -9,6 +9,11 @@
     "puntos": 0,
     "totalEquipos": 12
   },
+  "Juvenil": {
+    "posicion": 10,
+    "puntos": 0,
+    "totalEquipos": 18
+  },
   "Infantil": {
     "posicion": 7,
     "puntos": 0,
