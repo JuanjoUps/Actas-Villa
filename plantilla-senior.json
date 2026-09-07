@@ -1,23 +1,23 @@
 [
   {
     "posicion": "centrocampista",
-    "dorsal": "6",
-    "nombre": "Alber"
+    "nombre": "Alber",
+    "dorsal": "6"
   },
   {
-    "dorsal": "24",
     "posicion": "defensa",
-    "nombre": "Hidalgo"
+    "nombre": "Hidalgo",
+    "dorsal": "24"
   },
   {
-    "nombre": "Javi Somo",
     "posicion": "portero",
+    "nombre": "Javi Somo",
     "dorsal": "13"
   },
   {
     "nombre": "Chuchi",
-    "dorsal": "4",
-    "posicion": "defensa"
+    "posicion": "defensa",
+    "dorsal": "4"
   },
   {
     "nombre": "Adri",
@@ -25,33 +25,38 @@
     "posicion": "delantero"
   },
   {
-    "nombre": "Junior",
     "dorsal": "12",
-    "posicion": "defensa"
+    "posicion": "defensa",
+    "nombre": "Junior"
   },
   {
-    "nombre": "Lucas",
     "dorsal": "-",
+    "nombre": "Lucas",
     "posicion": "delantero"
   },
   {
-    "nombre": "Merino",
+    "dorsal": "0",
     "posicion": "defensa",
-    "dorsal": "0"
+    "nombre": "Merino"
+  },
+  {
+    "dorsal": "-0",
+    "nombre": "Víctor",
+    "posicion": "defensa"
+  },
+  {
+    "nombre": "Robi",
+    "dorsal": "30",
+    "posicion": "delantero"
+  },
+  {
+    "nombre": "Pastris",
+    "dorsal": "33",
+    "posicion": "centrocampista"
   },
   {
     "nombre": "Víctor",
-    "posicion": "defensa",
-    "dorsal": "-0"
-  },
-  {
-    "posicion": "delantero",
-    "dorsal": "30",
-    "nombre": "Robi"
-  },
-  {
-    "posicion": "centrocampista",
-    "nombre": "Pastris",
-    "dorsal": "33"
+    "dorsal": "00",
+    "posicion": "centrocampista"
   }
 ]
