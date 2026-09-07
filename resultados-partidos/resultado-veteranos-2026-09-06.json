@@ -1,109 +1,142 @@
-      "capitan": false,
-
-      "nombre": "Chuchi",
-
-      "portero": false
-
-    },
-
-    {
-
-      "dorsal": "13",
-
-      "posicion": "portero",
-
-      "capitan": true,
-
-      "portero": true,
-
-      "nombre": "Javi Somo"
-
-    },
-
-    {
-
-      "nombre": "Hidalgo",
-
-      "dorsal": "24",
-
-      "portero": false,
-
-      "capitan": false,
-
-      "posicion": "defensa"
-
-    },
-
-    {
-
-      "capitan": false,
-
-      "posicion": "defensa",
-
-      "dorsal": "-",
-
-      "portero": false,
-
-      "nombre": "Merino"
-
-    },
-
-    {
-
-      "dorsal": "-",
-
-      "portero": false,
-
-      "capitan": false,
-
-      "posicion": "defensa",
-
-      "nombre": "Víctor"
-
-    }
-
+{ 
+  "suplentes": [
+    {
+      "dorsal": "29",
+      "nombre": "Tello"
+    },
+        {
+      "dorsal": "6",
+      "nombre": "Alber"
+    },
+        {
+      "dorsal": "12",
+      "nombre": "Junior"
+    },
+        {
+      "dorsal": "15",
+      "nombre": "Ral"
+    },
+        {
+      "dorsal": "80",
+      "nombre": "Mario"
+    },
+     {
+      "dorsal": "28",
+      "nombre": "Adri"
+    }
+    
   ],
-
-  "grupo": "PRETEMPORADA",
-
-  "expulsiones": [],
-
-  "golesRival": [
-
-    {
-
-      "minuto": ""
-
-    }
-
+  "hatTricks": [],
+  "tarjetas": [],
+  "resultado": {
+    "equipoPropio": "C.D. VILLA DE BUITRAGO",
+    "rival": "Sporting Riazano",
+    "propioLocal": false,
+    "visitante": 2,
+    "escudoPropioUrl": "",
+    "local": 1,
+    "escudoRivalUrl": ""
+  },
+  "campo": "Riaza, Segovia",
+  "alineacion": [
+    {
+      "posicion": "delantero",
+      "dorsal": "30",
+      "nombre": "Robi",
+      "capitan": false,
+      "portero": false
+    },
+    {
+      "dorsal": "-",
+      "nombre": "Lucas",
+      "portero": false,
+      "capitan": false,
+      "posicion": "delantero"
+    },
+    {
+      "posicion": "centrocampista",
+      "capitan": false,
+      "portero": false,
+      "nombre": "Pastris",
+      "dorsal": "33"
+    },
+    {
+      "capitan": false,
+      "portero": false,
+      "nombre": "Iván",
+      "posicion": "centrocampista",
+      "dorsal": "--"
+    },
+    {
+      "portero": false,
+      "dorsal": "18",
+      "capitan": false,
+      "posicion": "centrocampista",
+      "nombre": "Jorge"
+    },
+    {
+      "dorsal": "6",
+      "posicion": "centrocampista",
+      "nombre": "Víctor",
+      "portero": false,
+      "capitan": false
+    },
+    {
+      "dorsal": "4",
+      "posicion": "defensa",
+      "capitan": false,
+      "nombre": "Chuchi",
+      "portero": false
+    },
+    {
+      "dorsal": "13",
+      "posicion": "portero",
+      "capitan": true,
+      "portero": true,
+      "nombre": "Javi Somo"
+    },
+    {
+      "nombre": "Hidalgo",
+      "dorsal": "24",
+      "portero": false,
+      "capitan": false,
+      "posicion": "defensa"
+    },
+    {
+      "capitan": false,
+      "posicion": "defensa",
+      "dorsal": "-",
+      "portero": false,
+      "nombre": "Merino"
+    },
+    {
+      "dorsal": "-",
+      "portero": false,
+      "capitan": false,
+      "posicion": "defensa",
+      "nombre": "Víctor"
+    }
   ],
-
-  "categoria": "PRETEMPORADA SENIOR",
-
-  "codacta": "veteranos-2026-09-06",
-
-  "fecha": "06-09-2026",
-
-  "golesPropios": [
-
-    {
-
-      "jugador": "Merino",
-
-      "minuto": "2ª parte"
-
-    },
-
-    {
-
-      "jugador": "Víctor",
-
-      "minuto": "2ª parte"
-
-    }
-
+  "grupo": "PRETEMPORADA",
+  "expulsiones": [],
+  "golesRival": [
+    {
+      "minuto": ""
+    }
   ],
-
-  "jornada": "PRETEMPORADA"
-
+  "categoria": "PRETEMPORADA SENIOR",
+  "codacta": "veteranos-2026-09-06",
+  "fecha": "06-09-2026",
+  "golesPropios": [
+    {
+      "jugador": "Merino",
+      "minuto": "2ª parte"
+    },
+    {
+      "jugador": "Víctor",
+      "minuto": "2ª parte"
+    }
+  ],
+  "jornada": "PRETEMPORADA"
 }
+ 
