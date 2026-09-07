@@ -6,17 +6,22 @@
   },
   {
     "dorsal": "24",
-    "posicion": "defensa",
-    "nombre": "Hidalgo"
+    "nombre": "Hidalgo",
+    "posicion": "defensa"
   },
   {
     "nombre": "Javi Somo",
-    "posicion": "portero",
-    "dorsal": "13"
+    "dorsal": "13",
+    "posicion": "portero"
   },
   {
     "nombre": "Chuchi",
     "dorsal": "4",
     "posicion": "defensa"
+  },
+  {
+    "dorsal": "28",
+    "nombre": "Adri",
+    "posicion": "delantero"
   }
 ]
