@@ -5,38 +5,43 @@
     "dorsal": "6"
   },
   {
+    "nombre": "Hidalgo",
     "dorsal": "24",
-    "posicion": "defensa",
-    "nombre": "Hidalgo"
+    "posicion": "defensa"
   },
   {
     "nombre": "Javi Somo",
-    "posicion": "portero",
-    "dorsal": "13"
+    "dorsal": "13",
+    "posicion": "portero"
   },
   {
-    "dorsal": "4",
+    "nombre": "Chuchi",
     "posicion": "defensa",
-    "nombre": "Chuchi"
+    "dorsal": "4"
   },
   {
-    "dorsal": "28",
     "posicion": "delantero",
-    "nombre": "Adri"
+    "nombre": "Adri",
+    "dorsal": "28"
   },
   {
-    "posicion": "defensa",
+    "nombre": "Junior",
     "dorsal": "12",
-    "nombre": "Junior"
+    "posicion": "defensa"
   },
   {
-    "posicion": "delantero",
     "dorsal": "-",
-    "nombre": "Lucas"
+    "nombre": "Lucas",
+    "posicion": "delantero"
   },
   {
     "dorsal": "0",
-    "posicion": "defensa",
-    "nombre": "Merino"
+    "nombre": "Merino",
+    "posicion": "defensa"
+  },
+  {
+    "dorsal": "-0",
+    "nombre": "Víctor",
+    "posicion": "defensa"
   }
 ]
