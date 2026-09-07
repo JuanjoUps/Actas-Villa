@@ -1,17 +1,22 @@
 [
   {
-    "posicion": "centrocampista",
     "nombre": "Alber",
+    "posicion": "centrocampista",
     "dorsal": "6"
   },
   {
-    "nombre": "Hidalgo",
+    "dorsal": "24",
     "posicion": "defensa",
-    "dorsal": "24"
+    "nombre": "Hidalgo"
   },
   {
-    "posicion": "portero",
     "nombre": "Javi Somo",
+    "posicion": "portero",
     "dorsal": "13"
+  },
+  {
+    "nombre": "Chuchi",
+    "dorsal": "4",
+    "posicion": "defensa"
   }
 ]
