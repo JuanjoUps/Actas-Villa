@@ -1,27 +1,27 @@
 [
   {
-    "nombre": "Alber",
     "posicion": "centrocampista",
+    "nombre": "Alber",
     "dorsal": "6"
   },
   {
-    "dorsal": "24",
     "nombre": "Hidalgo",
-    "posicion": "defensa"
+    "posicion": "defensa",
+    "dorsal": "24"
   },
   {
-    "posicion": "portero",
     "dorsal": "13",
+    "posicion": "portero",
     "nombre": "Javi Somo"
   },
   {
+    "dorsal": "4",
     "posicion": "defensa",
-    "nombre": "Chuchi",
-    "dorsal": "4"
+    "nombre": "Chuchi"
   },
   {
-    "dorsal": "28",
     "posicion": "delantero",
+    "dorsal": "28",
     "nombre": "Adri"
   },
   {
@@ -31,8 +31,8 @@
   },
   {
     "posicion": "delantero",
-    "nombre": "Lucas",
-    "dorsal": "-"
+    "dorsal": "-",
+    "nombre": "Lucas"
   },
   {
     "nombre": "Merino",
@@ -45,19 +45,19 @@
     "posicion": "defensa"
   },
   {
-    "dorsal": "30",
     "nombre": "Robi",
+    "dorsal": "30",
     "posicion": "delantero"
   },
   {
+    "nombre": "Pastris",
     "dorsal": "33",
-    "posicion": "centrocampista",
-    "nombre": "Pastris"
+    "posicion": "centrocampista"
   },
   {
-    "dorsal": "00",
     "nombre": "Víctor",
-    "posicion": "centrocampista"
+    "posicion": "centrocampista",
+    "dorsal": "00"
   },
   {
     "posicion": "centrocampista",
@@ -68,5 +68,10 @@
     "posicion": "defensa",
     "dorsal": "80",
     "nombre": "Mario"
+  },
+  {
+    "nombre": "Ral",
+    "posicion": "defensa",
+    "dorsal": "15"
   }
 ]
