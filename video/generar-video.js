@@ -123,6 +123,19 @@ async function grabarPartido(browser, codacta) {
 
   const page = await context.newPage();
 
+  // Capturamos cualquier error de JavaScript dentro de la página, y
+  // también lo que se escriba en la consola del navegador — así, si
+  // algo falla ahí dentro, lo vemos en el log de GitHub Actions en
+  // vez de solo ver "Timeout exceeded" sin más contexto.
+  page.on("pageerror", (err) => {
+    console.error(`  [ERROR JS EN LA PÁGINA] ${err.message}`);
+  });
+  page.on("console", (msg) => {
+    if (msg.type() === "error") {
+      console.error(`  [CONSOLA NAVEGADOR] ${msg.text()}`);
+    }
+  });
+
   await page.goto(
     `http://localhost:${PUERTO}/video/index.html?codacta=${codacta}`
   );
