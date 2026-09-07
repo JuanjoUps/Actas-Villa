@@ -47,7 +47,7 @@
       "portero": false
     },
     {
-      "dorsal": "-",
+      "dorsal": "90",
       "nombre": "Lucas",
       "portero": false,
       "capitan": false,
@@ -65,7 +65,7 @@
       "portero": false,
       "nombre": "Iván",
       "posicion": "centrocampista",
-      "dorsal": "--"
+      "dorsal": "93"
     },
     {
       "portero": false,
@@ -105,12 +105,12 @@
     {
       "capitan": false,
       "posicion": "defensa",
-      "dorsal": "_",
+      "dorsal": "91",
       "portero": false,
       "nombre": "Merino"
     },
     {
-      "dorsal": "__",
+      "dorsal": "92",
       "portero": false,
       "capitan": false,
       "posicion": "defensa",
