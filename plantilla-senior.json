@@ -1,13 +1,13 @@
 [
   {
     "nombre": "Alber",
-    "posicion": "centrocampista",
-    "dorsal": "6"
+    "dorsal": "6",
+    "posicion": "centrocampista"
   },
   {
-    "dorsal": "24",
+    "posicion": "defensa",
     "nombre": "Hidalgo",
-    "posicion": "defensa"
+    "dorsal": "24"
   },
   {
     "nombre": "Javi Somo",
@@ -15,13 +15,18 @@
     "posicion": "portero"
   },
   {
-    "nombre": "Chuchi",
+    "posicion": "defensa",
     "dorsal": "4",
-    "posicion": "defensa"
+    "nombre": "Chuchi"
   },
   {
+    "posicion": "delantero",
     "dorsal": "28",
-    "nombre": "Adri",
-    "posicion": "delantero"
+    "nombre": "Adri"
+  },
+  {
+    "posicion": "defensa",
+    "nombre": "Junior",
+    "dorsal": "12"
   }
 ]
