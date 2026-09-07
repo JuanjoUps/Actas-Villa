@@ -1,8 +1,8 @@
 [
   {
     "posicion": "centrocampista",
-    "nombre": "Alber",
-    "dorsal": "6"
+    "dorsal": "6",
+    "nombre": "Alber"
   },
   {
     "nombre": "Hidalgo",
@@ -11,58 +11,58 @@
   },
   {
     "dorsal": "13",
-    "posicion": "portero",
-    "nombre": "Javi Somo"
+    "nombre": "Javi Somo",
+    "posicion": "portero"
   },
   {
-    "dorsal": "4",
     "posicion": "defensa",
-    "nombre": "Chuchi"
+    "nombre": "Chuchi",
+    "dorsal": "4"
   },
   {
+    "nombre": "Adri",
     "posicion": "delantero",
-    "dorsal": "28",
-    "nombre": "Adri"
+    "dorsal": "28"
   },
   {
-    "posicion": "defensa",
     "nombre": "Junior",
-    "dorsal": "12"
-  },
-  {
-    "posicion": "delantero",
-    "dorsal": "-",
-    "nombre": "Lucas"
-  },
-  {
-    "nombre": "Merino",
-    "posicion": "defensa",
-    "dorsal": "0"
-  },
-  {
-    "nombre": "Víctor",
-    "dorsal": "-0",
+    "dorsal": "12",
     "posicion": "defensa"
   },
   {
-    "nombre": "Robi",
-    "dorsal": "30",
+    "nombre": "Lucas",
+    "dorsal": "-",
     "posicion": "delantero"
   },
   {
-    "nombre": "Pastris",
-    "dorsal": "33",
-    "posicion": "centrocampista"
+    "nombre": "Merino",
+    "dorsal": "0",
+    "posicion": "defensa"
   },
   {
+    "posicion": "defensa",
     "nombre": "Víctor",
-    "posicion": "centrocampista",
-    "dorsal": "00"
+    "dorsal": "-0"
+  },
+  {
+    "nombre": "Robi",
+    "posicion": "delantero",
+    "dorsal": "30"
   },
   {
     "posicion": "centrocampista",
-    "nombre": "Jorge",
-    "dorsal": "18"
+    "dorsal": "33",
+    "nombre": "Pastris"
+  },
+  {
+    "posicion": "centrocampista",
+    "dorsal": "00",
+    "nombre": "Víctor"
+  },
+  {
+    "dorsal": "18",
+    "posicion": "centrocampista",
+    "nombre": "Jorge"
   },
   {
     "posicion": "defensa",
@@ -70,8 +70,13 @@
     "nombre": "Mario"
   },
   {
-    "nombre": "Ral",
     "posicion": "defensa",
-    "dorsal": "15"
+    "dorsal": "15",
+    "nombre": "Ral"
+  },
+  {
+    "dorsal": "16",
+    "posicion": "centrocampista",
+    "nombre": "Tello"
   }
 ]
