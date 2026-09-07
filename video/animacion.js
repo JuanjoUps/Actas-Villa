@@ -253,12 +253,14 @@ function pintarResultado(datos) {
 
   // El equipo LOCAL siempre va primero (izquierda) y el VISITANTE
   // siempre segundo (derecha) — sea "nosotros" el que sea.
+  // OJO: el campo se llama "escudoRivalUrl" en el JSON guardado
+  // (no "escudoRival") -- por eso estaba fallando antes.
   const izquierda = datos.resultado.propioLocal
     ? { nombre: datos.resultado.equipoPropio, escudo: "/escudo-club.png", goles: golesPropios }
-    : { nombre: datos.resultado.rival, escudo: datos.resultado.escudoRival || "", goles: golesRival };
+    : { nombre: datos.resultado.rival, escudo: datos.resultado.escudoRivalUrl || "", goles: golesRival };
 
   const derecha = datos.resultado.propioLocal
-    ? { nombre: datos.resultado.rival, escudo: datos.resultado.escudoRival || "", goles: golesRival }
+    ? { nombre: datos.resultado.rival, escudo: datos.resultado.escudoRivalUrl || "", goles: golesRival }
     : { nombre: datos.resultado.equipoPropio, escudo: "/escudo-club.png", goles: golesPropios };
 
   cont.innerHTML = `
