@@ -1,0 +1,133 @@
+{
+  "grupo": "Amistoso",
+  "expulsiones": [],
+  "golesPropios": [
+    {
+      "jugador": "Víctor",
+      "minuto": "2 parte"
+    },
+    {
+      "jugador": "Merino",
+      "minuto": "2 parte"
+    }
+  ],
+  "codacta": "senior-2026-09-06",
+  "resultado": {
+    "equipoPropio": "C.D. VILLA DE BUITRAGO",
+    "escudoRivalUrl": "https://raw.githubusercontent.com/JuanjoUps/Pruebas-carteles-partidos/main/escudos-cache/SPORTING_RIAZANO.png?token=AXZT763NKKMHR3K6U3UH2R3KT3TYBAA",
+    "escudoPropioUrl": "",
+    "rival": "Sporting Riazano",
+    "visitante": 1,
+    "propioLocal": true,
+    "local": 2
+  },
+  "tarjetas": [],
+  "alineacion": [
+    {
+      "posicion": "defensa",
+      "portero": false,
+      "capitan": false,
+      "dorsal": "24",
+      "nombre": "Hidalgo"
+    },
+    {
+      "posicion": "portero",
+      "capitan": false,
+      "portero": true,
+      "dorsal": "13",
+      "nombre": "Javi Somo"
+    },
+    {
+      "portero": false,
+      "nombre": "Chuchi",
+      "posicion": "defensa",
+      "capitan": false,
+      "dorsal": "4"
+    },
+    {
+      "capitan": false,
+      "dorsal": "-",
+      "portero": false,
+      "nombre": "Lucas",
+      "posicion": "delantero"
+    },
+    {
+      "posicion": "defensa",
+      "nombre": "Merino",
+      "dorsal": "0",
+      "portero": false,
+      "capitan": false
+    },
+    {
+      "portero": false,
+      "capitan": false,
+      "posicion": "defensa",
+      "nombre": "Víctor",
+      "dorsal": "-0"
+    },
+    {
+      "dorsal": "30",
+      "capitan": false,
+      "portero": false,
+      "nombre": "Robi",
+      "posicion": "delantero"
+    },
+    {
+      "posicion": "centrocampista",
+      "portero": false,
+      "capitan": false,
+      "nombre": "Pastris",
+      "dorsal": "33"
+    },
+    {
+      "dorsal": "00",
+      "posicion": "centrocampista",
+      "nombre": "Víctor",
+      "portero": false,
+      "capitan": false
+    },
+    {
+      "dorsal": "18",
+      "nombre": "Jorge",
+      "capitan": false,
+      "portero": false,
+      "posicion": "centrocampista"
+    }
+  ],
+  "golesRival": [
+    {
+      "minuto": ""
+    }
+  ],
+  "campo": "Peñalta, Buitrago del Lozoya",
+  "categoria": "SENIOR",
+  "hatTricks": [],
+  "jornada": "",
+  "suplentes": [
+    {
+      "nombre": "Alber",
+      "dorsal": "6"
+    },
+    {
+      "dorsal": "28",
+      "nombre": "Adri"
+    },
+    {
+      "nombre": "Junior",
+      "dorsal": "12"
+    },
+    {
+      "nombre": "Mario",
+      "dorsal": "80"
+    },
+    {
+      "nombre": "Ral",
+      "dorsal": "15"
+    },
+    {
+      "dorsal": "16",
+      "nombre": "Tello"
+    }
+  ],
+  "fecha": "06-09-2026"
+}
