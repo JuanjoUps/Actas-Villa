@@ -1,0 +1,137 @@
+{
+  "fecha": "01-09-2026",
+  "tarjetas": [],
+  "resultado": {
+    "local": 0,
+    "propioLocal": false,
+    "escudoRivalUrl": "",
+    "equipoPropio": "C.D. VILLA DE BUITRAGO",
+    "rival": "sporting riazano",
+    "visitante": 0,
+    "escudoPropioUrl": ""
+  },
+  "suplentes": [],
+  "jornada": "",
+  "expulsiones": [],
+  "categoria": "SENIOR",
+  "golesRival": [],
+  "alineacion": [
+    {
+      "capitan": false,
+      "portero": false,
+      "posicion": "centrocampista",
+      "nombre": "Alber",
+      "dorsal": "6"
+    },
+    {
+      "nombre": "Hidalgo",
+      "dorsal": "24",
+      "capitan": false,
+      "portero": false,
+      "posicion": "defensa"
+    },
+    {
+      "portero": true,
+      "capitan": false,
+      "dorsal": "13",
+      "nombre": "Javi Somo",
+      "posicion": "portero"
+    },
+    {
+      "capitan": false,
+      "dorsal": "4",
+      "nombre": "Chuchi",
+      "portero": false,
+      "posicion": "defensa"
+    },
+    {
+      "portero": false,
+      "capitan": false,
+      "posicion": "delantero",
+      "nombre": "Adri",
+      "dorsal": "28"
+    },
+    {
+      "dorsal": "12",
+      "nombre": "Junior",
+      "portero": false,
+      "posicion": "defensa",
+      "capitan": false
+    },
+    {
+      "dorsal": "-",
+      "nombre": "Lucas",
+      "posicion": "delantero",
+      "capitan": false,
+      "portero": false
+    },
+    {
+      "posicion": "defensa",
+      "dorsal": "0",
+      "nombre": "Merino",
+      "capitan": false,
+      "portero": false
+    },
+    {
+      "capitan": false,
+      "portero": false,
+      "dorsal": "-0",
+      "nombre": "Víctor",
+      "posicion": "defensa"
+    },
+    {
+      "portero": false,
+      "capitan": false,
+      "posicion": "delantero",
+      "nombre": "Robi",
+      "dorsal": "30"
+    },
+    {
+      "dorsal": "33",
+      "capitan": false,
+      "nombre": "Pastris",
+      "posicion": "centrocampista",
+      "portero": false
+    },
+    {
+      "posicion": "centrocampista",
+      "portero": false,
+      "dorsal": "00",
+      "nombre": "Víctor",
+      "capitan": false
+    },
+    {
+      "dorsal": "18",
+      "nombre": "Jorge",
+      "portero": false,
+      "posicion": "centrocampista",
+      "capitan": false
+    },
+    {
+      "nombre": "Mario",
+      "dorsal": "80",
+      "capitan": false,
+      "posicion": "defensa",
+      "portero": false
+    },
+    {
+      "capitan": false,
+      "nombre": "Ral",
+      "dorsal": "15",
+      "portero": false,
+      "posicion": "defensa"
+    },
+    {
+      "portero": false,
+      "posicion": "centrocampista",
+      "capitan": false,
+      "nombre": "Tello",
+      "dorsal": "16"
+    }
+  ],
+  "grupo": "Amistoso",
+  "hatTricks": [],
+  "codacta": "senior-2026-09-01",
+  "golesPropios": [],
+  "campo": "riaza, segovia"
+}
