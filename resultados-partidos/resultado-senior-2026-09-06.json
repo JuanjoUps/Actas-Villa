@@ -1,97 +1,12 @@
 {
-  "grupo": "Amistoso",
-  "expulsiones": [],
   "golesPropios": [
     {
-      "jugador": "Víctor",
-      "minuto": "2 parte"
+      "minuto": "2 parte",
+      "jugador": "Víctor"
     },
     {
       "jugador": "Merino",
       "minuto": "2 parte"
-    }
-  ],
-  "codacta": "senior-2026-09-06",
-  "resultado": {
-    "equipoPropio": "C.D. VILLA DE BUITRAGO",
-    "escudoRivalUrl": "https://raw.githubusercontent.com/JuanjoUps/Pruebas-carteles-partidos/main/escudos-cache/SPORTING_RIAZANO.png?token=AXZT763NKKMHR3K6U3UH2R3KT3TYBAA",
-    "escudoPropioUrl": "",
-    "rival": "Sporting Riazano",
-    "visitante": 1,
-    "propioLocal": true,
-    "local": 2
-  },
-  "tarjetas": [],
-  "alineacion": [
-    {
-      "posicion": "defensa",
-      "portero": false,
-      "capitan": false,
-      "dorsal": "24",
-      "nombre": "Hidalgo"
-    },
-    {
-      "posicion": "portero",
-      "capitan": false,
-      "portero": true,
-      "dorsal": "13",
-      "nombre": "Javi Somo"
-    },
-    {
-      "portero": false,
-      "nombre": "Chuchi",
-      "posicion": "defensa",
-      "capitan": false,
-      "dorsal": "4"
-    },
-    {
-      "capitan": false,
-      "dorsal": "-",
-      "portero": false,
-      "nombre": "Lucas",
-      "posicion": "delantero"
-    },
-    {
-      "posicion": "defensa",
-      "nombre": "Merino",
-      "dorsal": "0",
-      "portero": false,
-      "capitan": false
-    },
-    {
-      "portero": false,
-      "capitan": false,
-      "posicion": "defensa",
-      "nombre": "Víctor",
-      "dorsal": "-0"
-    },
-    {
-      "dorsal": "30",
-      "capitan": false,
-      "portero": false,
-      "nombre": "Robi",
-      "posicion": "delantero"
-    },
-    {
-      "posicion": "centrocampista",
-      "portero": false,
-      "capitan": false,
-      "nombre": "Pastris",
-      "dorsal": "33"
-    },
-    {
-      "dorsal": "00",
-      "posicion": "centrocampista",
-      "nombre": "Víctor",
-      "portero": false,
-      "capitan": false
-    },
-    {
-      "dorsal": "18",
-      "nombre": "Jorge",
-      "capitan": false,
-      "portero": false,
-      "posicion": "centrocampista"
     }
   ],
   "golesRival": [
@@ -99,35 +14,120 @@
       "minuto": ""
     }
   ],
-  "campo": "Peñalta, Buitrago del Lozoya",
-  "categoria": "SENIOR",
   "hatTricks": [],
-  "jornada": "",
+  "grupo": "Amistoso",
+  "tarjetas": [],
+  "resultado": {
+    "local": 1,
+    "visitante": 2,
+    "rival": "Sporting Riazano",
+    "escudoPropioUrl": "",
+    "equipoPropio": "C.D. VILLA DE BUITRAGO",
+    "propioLocal": false,
+    "escudoRivalUrl": "https://raw.githubusercontent.com/JuanjoUps/Pruebas-carteles-partidos/main/escudos-cache/SPORTING_RIAZANO.png?token=AXZT763NKKMHR3K6U3UH2R3KT3TYBAA"
+  },
+  "categoria": "SENIOR",
+  "fecha": "06-09-2026",
+  "campo": "Riaza, Segovia",
+  "codacta": "senior-2026-09-06",
+  "expulsiones": [],
   "suplentes": [
     {
       "nombre": "Alber",
       "dorsal": "6"
     },
     {
-      "dorsal": "28",
-      "nombre": "Adri"
+      "nombre": "Adri",
+      "dorsal": "28"
     },
     {
       "nombre": "Junior",
       "dorsal": "12"
     },
     {
-      "nombre": "Mario",
-      "dorsal": "80"
+      "dorsal": "80",
+      "nombre": "Mario"
     },
     {
       "nombre": "Ral",
       "dorsal": "15"
     },
     {
-      "dorsal": "16",
-      "nombre": "Tello"
+      "nombre": "Tello",
+      "dorsal": "16"
     }
   ],
-  "fecha": "06-09-2026"
+  "alineacion": [
+    {
+      "nombre": "Hidalgo",
+      "portero": false,
+      "dorsal": "24",
+      "posicion": "defensa",
+      "capitan": false
+    },
+    {
+      "dorsal": "13",
+      "posicion": "portero",
+      "capitan": false,
+      "nombre": "Javi Somo",
+      "portero": true
+    },
+    {
+      "capitan": false,
+      "dorsal": "4",
+      "portero": false,
+      "posicion": "defensa",
+      "nombre": "Chuchi"
+    },
+    {
+      "capitan": false,
+      "nombre": "Lucas",
+      "portero": false,
+      "dorsal": "-",
+      "posicion": "delantero"
+    },
+    {
+      "posicion": "defensa",
+      "dorsal": "0",
+      "capitan": false,
+      "nombre": "Merino",
+      "portero": false
+    },
+    {
+      "posicion": "defensa",
+      "dorsal": "-0",
+      "capitan": false,
+      "nombre": "Víctor",
+      "portero": false
+    },
+    {
+      "portero": false,
+      "nombre": "Robi",
+      "capitan": false,
+      "dorsal": "30",
+      "posicion": "delantero"
+    },
+    {
+      "portero": false,
+      "capitan": false,
+      "nombre": "Pastris",
+      "posicion": "centrocampista",
+      "dorsal": "33"
+    },
+    {
+      "capitan": false,
+      "portero": false,
+      "dorsal": "00",
+      "posicion": "centrocampista",
+      "nombre": "Víctor"
+    },
+    {
+      "dorsal": "18",
+      "capitan": false,
+      "portero": false,
+      "posicion": "centrocampista",
+      "nombre": "Jorge"
+    }
+  ],
+  "jornada": ""
 }
