@@ -1,0 +1,137 @@
+{
+  "jornada": "",
+  "categoria": "SENIOR",
+  "campo": "riaza, segovia",
+  "resultado": {
+    "local": 0,
+    "escudoPropioUrl": "",
+    "propioLocal": false,
+    "visitante": 0,
+    "escudoRivalUrl": "/escudos-cache/SPORTING_RIAZANO.png",
+    "rival": "SPORTING RIAZANO",
+    "equipoPropio": "C.D. VILLA DE BUITRAGO"
+  },
+  "golesRival": [],
+  "suplentes": [],
+  "codacta": "senior-2026-09-01",
+  "expulsiones": [],
+  "fecha": "01-09-2026",
+  "grupo": "Amistoso",
+  "golesPropios": [],
+  "tarjetas": [],
+  "alineacion": [
+    {
+      "posicion": "centrocampista",
+      "capitan": false,
+      "nombre": "Alber",
+      "portero": false,
+      "dorsal": "6"
+    },
+    {
+      "dorsal": "24",
+      "portero": false,
+      "nombre": "Hidalgo",
+      "capitan": false,
+      "posicion": "defensa"
+    },
+    {
+      "posicion": "portero",
+      "portero": true,
+      "dorsal": "13",
+      "nombre": "Javi Somo",
+      "capitan": false
+    },
+    {
+      "nombre": "Chuchi",
+      "portero": false,
+      "dorsal": "4",
+      "posicion": "defensa",
+      "capitan": false
+    },
+    {
+      "dorsal": "28",
+      "capitan": false,
+      "nombre": "Adri",
+      "posicion": "delantero",
+      "portero": false
+    },
+    {
+      "portero": false,
+      "posicion": "defensa",
+      "capitan": false,
+      "dorsal": "12",
+      "nombre": "Junior"
+    },
+    {
+      "portero": false,
+      "posicion": "delantero",
+      "nombre": "Lucas",
+      "capitan": false,
+      "dorsal": "-"
+    },
+    {
+      "posicion": "defensa",
+      "capitan": false,
+      "portero": false,
+      "dorsal": "0",
+      "nombre": "Merino"
+    },
+    {
+      "portero": false,
+      "dorsal": "-0",
+      "capitan": false,
+      "posicion": "defensa",
+      "nombre": "Víctor"
+    },
+    {
+      "portero": false,
+      "nombre": "Robi",
+      "capitan": false,
+      "posicion": "delantero",
+      "dorsal": "30"
+    },
+    {
+      "dorsal": "33",
+      "capitan": false,
+      "posicion": "centrocampista",
+      "nombre": "Pastris",
+      "portero": false
+    },
+    {
+      "dorsal": "00",
+      "capitan": false,
+      "nombre": "Víctor",
+      "portero": false,
+      "posicion": "centrocampista"
+    },
+    {
+      "posicion": "centrocampista",
+      "capitan": false,
+      "nombre": "Jorge",
+      "portero": false,
+      "dorsal": "18"
+    },
+    {
+      "capitan": false,
+      "posicion": "defensa",
+      "portero": false,
+      "dorsal": "80",
+      "nombre": "Mario"
+    },
+    {
+      "posicion": "defensa",
+      "capitan": false,
+      "nombre": "Ral",
+      "portero": false,
+      "dorsal": "15"
+    },
+    {
+      "portero": false,
+      "nombre": "Tello",
+      "capitan": false,
+      "posicion": "centrocampista",
+      "dorsal": "16"
+    }
+  ],
+  "hatTricks": []
+}
