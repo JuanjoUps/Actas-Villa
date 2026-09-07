@@ -213,7 +213,7 @@
 
       "posicion": "defensa",
 
-      "dorsal": "-",
+      "dorsal": "00",
 
       "portero": false,
 
@@ -223,7 +223,7 @@
 
     {
 
-      "dorsal": "-",
+      "dorsal": "0",
 
       "portero": false,
 
