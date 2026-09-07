@@ -1,7 +1,12 @@
 [
   {
-    "dorsal": "6",
     "nombre": "Alber",
-    "posicion": "centrocampista"
+    "posicion": "centrocampista",
+    "dorsal": "6"
+  },
+  {
+    "dorsal": "24",
+    "posicion": "defensa",
+    "nombre": "Hidalgo"
   }
 ]
