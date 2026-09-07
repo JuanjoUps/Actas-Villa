@@ -105,12 +105,12 @@
     {
       "capitan": false,
       "posicion": "defensa",
-      "dorsal": "-",
+      "dorsal": "_",
       "portero": false,
       "nombre": "Merino"
     },
     {
-      "dorsal": "-",
+      "dorsal": "__",
       "portero": false,
       "capitan": false,
       "posicion": "defensa",
