@@ -24,7 +24,7 @@
     "escudoPropioUrl": "",
     "equipoPropio": "C.D. VILLA DE BUITRAGO",
     "propioLocal": false,
-    "escudoRivalUrl": "https://raw.githubusercontent.com/JuanjoUps/Pruebas-carteles-partidos/main/escudos-cache/SPORTING_RIAZANO.png?token=AXZT763NKKMHR3K6U3UH2R3KT3TYBAA"
+     "escudoRivalUrl": "/escudos-cache/SPORTING_RIAZANO.png",
   },
   "categoria": "SENIOR",
   "fecha": "06-09-2026",
