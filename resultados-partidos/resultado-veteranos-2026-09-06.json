@@ -1,0 +1,134 @@
+{
+  "suplentes": [
+    {
+      "dorsal": "27",
+      "nombre": "Josek"
+    }
+  ],
+  "hatTricks": [],
+  "tarjetas": [],
+  "resultado": {
+    "equipoPropio": "C.D. VILLA DE BUITRAGO",
+    "rival": "Sporting Riazano",
+    "propioLocal": false,
+    "visitante": 2,
+    "escudoPropioUrl": "",
+    "local": 1,
+    "escudoRivalUrl": ""
+  },
+  "campo": "Riaza, Segovia",
+  "alineacion": [
+    {
+      "posicion": "delantero",
+      "dorsal": "9",
+      "nombre": "Xory",
+      "capitan": false,
+      "portero": false
+    },
+    {
+      "dorsal": "5",
+      "nombre": "Afa",
+      "portero": false,
+      "capitan": false,
+      "posicion": "delantero"
+    },
+    {
+      "posicion": "delantero",
+      "capitan": false,
+      "portero": false,
+      "nombre": "Danilo",
+      "dorsal": "23"
+    },
+    {
+      "capitan": false,
+      "portero": false,
+      "nombre": "Gelo",
+      "posicion": "centrocampista",
+      "dorsal": "99"
+    },
+    {
+      "portero": false,
+      "dorsal": "51",
+      "capitan": false,
+      "posicion": "defensa",
+      "nombre": "Chaski"
+    },
+    {
+      "dorsal": "6",
+      "posicion": "defensa",
+      "nombre": "Ricardo",
+      "portero": false,
+      "capitan": false
+    },
+    {
+      "dorsal": "24",
+      "posicion": "defensa",
+      "capitan": false,
+      "nombre": "Lean",
+      "portero": false
+    },
+    {
+      "dorsal": "88",
+      "posicion": "portero",
+      "capitan": false,
+      "portero": true,
+      "nombre": "Ato"
+    },
+    {
+      "portero": false,
+      "capitan": false,
+      "dorsal": "14",
+      "nombre": "Claus",
+      "posicion": "centrocampista"
+    },
+    {
+      "posicion": "centrocampista",
+      "nombre": "Juanjo",
+      "dorsal": "11",
+      "portero": false,
+      "capitan": false
+    },
+    {
+      "nombre": "Nieva",
+      "dorsal": "3",
+      "portero": false,
+      "capitan": false,
+      "posicion": "defensa"
+    },
+    {
+      "capitan": false,
+      "posicion": "centrocampista",
+      "dorsal": "10",
+      "portero": false,
+      "nombre": "Vik"
+    },
+    {
+      "dorsal": "47",
+      "portero": false,
+      "capitan": false,
+      "posicion": "defensa",
+      "nombre": "Lolo"
+    }
+  ],
+  "grupo": "Liga privada",
+  "expulsiones": [],
+  "golesRival": [
+    {
+      "minuto": ""
+    }
+  ],
+  "categoria": "VETERANOS",
+  "codacta": "veteranos-2026-09-06",
+  "fecha": "06-09-2026",
+  "golesPropios": [
+    {
+      "jugador": "Lean",
+      "minuto": ""
+    },
+    {
+      "jugador": "Lean",
+      "minuto": ""
+    }
+  ],
+  "jornada": ""
+}
