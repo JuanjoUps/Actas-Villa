@@ -1,0 +1,143 @@
+{
+  "hatTricks": [],
+  "expulsiones": [],
+  "resultado": {
+    "local": 1,
+    "equipoPropio": "C.D. VILLA DE BUITRAGO",
+    "rival": "Sporting Riazano",
+    "escudoRivalUrl": "",
+    "escudoPropioUrl": "",
+    "propioLocal": false,
+    "visitante": 2
+  },
+  "alineacion": [
+    {
+      "nombre": "Xory",
+      "portero": false,
+      "capitan": false,
+      "dorsal": "9",
+      "posicion": "delantero"
+    },
+    {
+      "nombre": "Afa",
+      "capitan": false,
+      "portero": false,
+      "posicion": "delantero",
+      "dorsal": "5"
+    },
+    {
+      "dorsal": "23",
+      "capitan": false,
+      "portero": false,
+      "nombre": "Danilo",
+      "posicion": "delantero"
+    },
+    {
+      "dorsal": "99",
+      "posicion": "centrocampista",
+      "nombre": "Gelo",
+      "portero": false,
+      "capitan": false
+    },
+    {
+      "capitan": false,
+      "portero": false,
+      "nombre": "Chaski",
+      "dorsal": "51",
+      "posicion": "defensa"
+    },
+    {
+      "capitan": false,
+      "portero": false,
+      "posicion": "defensa",
+      "dorsal": "6",
+      "nombre": "Ricardo"
+    },
+    {
+      "nombre": "Lean",
+      "portero": false,
+      "capitan": false,
+      "posicion": "defensa",
+      "dorsal": "24"
+    },
+    {
+      "portero": true,
+      "nombre": "Ato",
+      "capitan": false,
+      "posicion": "portero",
+      "dorsal": "88"
+    },
+    {
+      "capitan": false,
+      "posicion": "delantero",
+      "portero": false,
+      "nombre": "Josek",
+      "dorsal": "27"
+    },
+    {
+      "dorsal": "14",
+      "capitan": false,
+      "portero": false,
+      "posicion": "centrocampista",
+      "nombre": "Claus"
+    },
+    {
+      "dorsal": "11",
+      "nombre": "Juanjo",
+      "portero": false,
+      "capitan": false,
+      "posicion": "centrocampista"
+    },
+    {
+      "capitan": false,
+      "portero": false,
+      "posicion": "defensa",
+      "dorsal": "3",
+      "nombre": "Nieva"
+    },
+    {
+      "dorsal": "10",
+      "posicion": "centrocampista",
+      "nombre": "Vik",
+      "portero": false,
+      "capitan": false
+    },
+    {
+      "capitan": false,
+      "portero": false,
+      "nombre": "Lolo",
+      "posicion": "defensa",
+      "dorsal": "47"
+    },
+    {
+      "posicion": "portero",
+      "portero": true,
+      "capitan": false,
+      "nombre": "Gato",
+      "dorsal": "1"
+    }
+  ],
+  "golesPropios": [
+    {
+      "jugador": "Xory",
+      "minuto": ""
+    },
+    {
+      "jugador": "Xory",
+      "minuto": ""
+    }
+  ],
+  "grupo": "Liga privada",
+  "campo": "Riaza, Segovia",
+  "tarjetas": [],
+  "codacta": "veteranos-2026-09-06",
+  "suplentes": [],
+  "categoria": "VETERANOS",
+  "jornada": "",
+  "golesRival": [
+    {
+      "minuto": ""
+    }
+  ],
+  "fecha": "06-09-2026"
+}
