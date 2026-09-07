@@ -1,283 +1,130 @@
-
 {
-
-  "suplentes": [
-
-    {
-
-      "dorsal": "29",
-
-      "nombre": "Tello"
-
-    },
-
-        {
-
-      "dorsal": "6",
-
-      "nombre": "Alber"
-
-    },
-
-        {
-
-      "dorsal": "12",
-
-      "nombre": "Junior"
-
-    },
-
-        {
-
-      "dorsal": "15",
-
-      "nombre": "Ral"
-
-    },
-
-        {
-
-      "dorsal": "80",
-
-      "nombre": "Mario"
-
-    },
-
-     {
-
-      "dorsal": "28",
-
-      "nombre": "Adri"
-
-    }
-
-   
-
-  ],
-
-  "hatTricks": [],
-
-  "tarjetas": [],
-
-  "resultado": {
-
-    "equipoPropio": "C.D. VILLA DE BUITRAGO",
-
-    "rival": "SPORTING RIAZANO",
-
-    "propioLocal": false,
-
-    "visitante": 2,
-
-    "escudoPropioUrl": "",
-
-    "local": 1,
-
-    "escudoRivalUrl": "SPORTING_RIAZANO.png"
-
-  },
-
-  "campo": "Riaza, Segovia",
-
-  "alineacion": [
-
-    {
-
-      "posicion": "delantero",
-
-      "dorsal": "30",
-
-      "nombre": "Robi",
-
-      "capitan": false,
-
-      "portero": false
-
-    },
-
-    {
-
-      "dorsal": "-",
-
-      "nombre": "Lucas",
-
-      "portero": false,
-
-      "capitan": false,
-
-      "posicion": "delantero"
-
-    },
-
-    {
-
-      "posicion": "centrocampista",
-
-      "capitan": false,
-
-      "portero": false,
-
-      "nombre": "Pastris",
-
-      "dorsal": "33"
-
-    },
-
-    {
-
-      "capitan": false,
-
-      "portero": false,
-
-      "nombre": "Iván",
-
-      "posicion": "centrocampista",
-
-      "dorsal": "--"
-
-    },
-
-    {
-
-      "portero": false,
-
-      "dorsal": "18",
-
-      "capitan": false,
-
-      "posicion": "centrocampista",
-
-      "nombre": "Jorge"
-
-    },
-
-    {
-
-      "dorsal": "6",
-
-      "posicion": "centrocampista",
-
-      "nombre": "Víctor",
-
-      "portero": false,
-
-      "capitan": false
-
-    },
-
-    {
-
-      "dorsal": "4",
-
-      "posicion": "defensa",
-
-      "capitan": false,
-
-      "nombre": "Chuchi",
-
-      "portero": false
-
-    },
-
-    {
-
-      "dorsal": "13",
-
-      "posicion": "portero",
-
-      "capitan": true,
-
-      "portero": true,
-
-      "nombre": "Javi Somo"
-
-    },
-
-    {
-
-      "nombre": "Hidalgo",
-
-      "dorsal": "24",
-
-      "portero": false,
-
-      "capitan": false,
-
-      "posicion": "defensa"
-
-    },
-
-    {
-
-      "capitan": false,
-
-      "posicion": "defensa",
-
-      "dorsal": "00",
-
-      "portero": false,
-
-      "nombre": "Merino"
-
-    },
-
-    {
-
-      "dorsal": "0",
-
-      "portero": false,
-
-      "capitan": false,
-
-      "posicion": "defensa",
-
-      "nombre": "Víctor"
-
-    }
-
-  ],
-
-  "grupo": "PRETEMPORADA",
-
-  "expulsiones": [],
-
-  "golesRival": [
-
-    {
-
-      "minuto": ""
-
-    }
-
-  ],
-
-  "categoria": "PRETEMPORADA SENIOR",
-
   "codacta": "veteranos-2026-09-06",
-
+  "jornada": "",
+  "golesRival": [],
+  "tarjetas": [],
+  "resultado": {
+    "escudoRivalUrl": "https://raw.githubusercontent.com/JuanjoUps/Pruebas-carteles-partidos/main/escudos-cache/SPORTING_RIAZANO.png?token=AXZT76Z27XVIWVOK23CVELTKT3ODXAA",
+    "equipoPropio": "C.D. VILLA DE BUITRAGO",
+    "escudoPropioUrl": "",
+    "propioLocal": true,
+    "local": 0,
+    "rival": "Sporting riazano",
+    "visitante": 0
+  },
   "fecha": "06-09-2026",
-
-  "golesPropios": [
-
+  "categoria": "VETERANOS",
+  "hatTricks": [],
+  "golesPropios": [],
+  "campo": "Peñalta, Buitrago del Lozoya",
+  "grupo": "Amistoso",
+  "expulsiones": [],
+  "suplentes": [],
+  "alineacion": [
     {
-
-      "jugador": "Merino",
-
-      "minuto": "2ª parte"
-
+      "capitan": false,
+      "portero": false,
+      "posicion": "delantero",
+      "nombre": "Xory",
+      "dorsal": "9"
     },
-
     {
-
-      "jugador": "Víctor",
-
-      "minuto": "2ª parte"
-
+      "dorsal": "5",
+      "nombre": "Afa",
+      "portero": false,
+      "posicion": "delantero",
+      "capitan": false
+    },
+    {
+      "posicion": "delantero",
+      "capitan": false,
+      "portero": false,
+      "nombre": "Danilo",
+      "dorsal": "23"
+    },
+    {
+      "posicion": "centrocampista",
+      "capitan": false,
+      "portero": false,
+      "dorsal": "99",
+      "nombre": "Gelo"
+    },
+    {
+      "nombre": "Chaski",
+      "dorsal": "51",
+      "posicion": "defensa",
+      "portero": false,
+      "capitan": false
+    },
+    {
+      "dorsal": "6",
+      "nombre": "Ricardo",
+      "posicion": "defensa",
+      "capitan": false,
+      "portero": false
+    },
+    {
+      "dorsal": "24",
+      "nombre": "Lean",
+      "posicion": "defensa",
+      "capitan": false,
+      "portero": false
+    },
+    {
+      "capitan": false,
+      "portero": true,
+      "posicion": "portero",
+      "dorsal": "88",
+      "nombre": "Ato"
+    },
+    {
+      "portero": false,
+      "capitan": false,
+      "posicion": "delantero",
+      "nombre": "Josek",
+      "dorsal": "27"
+    },
+    {
+      "posicion": "centrocampista",
+      "dorsal": "14",
+      "capitan": false,
+      "nombre": "Claus",
+      "portero": false
+    },
+    {
+      "portero": false,
+      "capitan": false,
+      "posicion": "centrocampista",
+      "nombre": "Juanjo",
+      "dorsal": "11"
+    },
+    {
+      "dorsal": "3",
+      "nombre": "Nieva",
+      "capitan": false,
+      "posicion": "defensa",
+      "portero": false
+    },
+    {
+      "posicion": "centrocampista",
+      "dorsal": "10",
+      "nombre": "Vik",
+      "capitan": false,
+      "portero": false
+    },
+    {
+      "portero": false,
+      "capitan": false,
+      "posicion": "defensa",
+      "dorsal": "47",
+      "nombre": "Lolo"
+    },
+    {
+      "capitan": false,
+      "posicion": "portero",
+      "portero": true,
+      "nombre": "Gato",
+      "dorsal": "1"
     }
-
-  ],
-
-  "jornada": "PRETEMPORADA"
-
+  ]
 }
-
