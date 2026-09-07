@@ -114,6 +114,14 @@
       "posicion": "centrocampista",
       "dorsal": "33"
     },
+    ,
+    {
+      "portero": false,
+      "capitan": false,
+      "nombre": "Iván",
+      "posicion": "centrocampista",
+      "dorsal": "91"
+    },
     {
       "capitan": false,
       "portero": false,
