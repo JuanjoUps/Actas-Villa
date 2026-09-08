@@ -589,7 +589,7 @@ function frasePersonalizada(lista, nombreJugador) {
   return elegirAleatorio(lista).replace("[JUGADOR]", nombreJugador);
 }
 
-function pintarMascota(datos) {
+async function pintarMascota(datos) {
   // Semilla fija por partido — mismo acta, mismas frases; partidos
   // distintos, alta probabilidad de frases distintas.
   fijarSemilla(datos.codacta);
@@ -611,18 +611,31 @@ function pintarMascota(datos) {
   const campo = datos.resultado.propioLocal ? "local" : "visitante";
 
   const imgMascota = document.getElementById("img-mascota");
-  imgMascota.src = MASCOTA_IMG[tipo][campo];
-  imgMascota.onerror = () => {
-    // Si no existe el archivo de imagen, mostramos un emoji grande
-    // en su lugar para no dejar el hueco vacío.
-    imgMascota.replaceWith(
-      Object.assign(document.createElement("div"), {
-        id: "img-mascota",
-        style: "font-size: 220px;",
-        textContent: MASCOTA_EMOJI_RESPALDO[tipo],
-      })
-    );
-  };
+  // Esperamos a que la imagen esté REALMENTE lista (decodificada
+  // del todo) antes de seguir -- si no, Playwright puede grabar un
+  // fotograma con la imagen a medio cargar (se ve "partida").
+  await new Promise((resolve) => {
+    imgMascota.onload = () => {
+      if (imgMascota.decode) {
+        imgMascota.decode().then(resolve).catch(resolve);
+      } else {
+        resolve();
+      }
+    };
+    imgMascota.onerror = () => {
+      // Si no existe el archivo de imagen, mostramos un emoji grande
+      // en su lugar para no dejar el hueco vacío.
+      imgMascota.replaceWith(
+        Object.assign(document.createElement("div"), {
+          id: "img-mascota",
+          style: "font-size: 220px;",
+          textContent: MASCOTA_EMOJI_RESPALDO[tipo],
+        })
+      );
+      resolve();
+    };
+    imgMascota.src = MASCOTA_IMG[tipo][campo];
+  });
 
   const categoria = categoriaResultado(diferencia);
 
@@ -693,7 +706,7 @@ async function reproducirVideo(datos) {
   mostrarBloque("bloque-goles");
   await pintarGoles(datos);
 
-  pintarMascota(datos);
+  await pintarMascota(datos);
   mostrarBloque("bloque-mascota");
   await esperar(DURACION_MASCOTA);
 
