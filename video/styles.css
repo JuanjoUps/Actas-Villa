@@ -151,7 +151,7 @@ html, body {
 }
 
 .resultado-nombre {
-  font-size: 22px;
+  font-size: 25px;
   font-weight: 900;
   line-height: 1.15;
   text-transform: uppercase;
@@ -197,9 +197,6 @@ html, body {
   height: 100%;
 }
 
-/* El campo es una imagen real de fondo (tu campo si jugáis en
-   casa, uno genérico si jugáis fuera), con las líneas del campo
-   dibujadas encima en CSS. */
 #campo {
   position: relative;
   flex: 1;
@@ -218,8 +215,6 @@ html, body {
   object-fit: cover;
 }
 
-/* Oscurece un poco la foto para que las camisetas/nombres se
-   sigan leyendo bien encima */
 #campo::after {
   content: "";
   position: absolute;
@@ -228,7 +223,6 @@ html, body {
   pointer-events: none;
 }
 
-/* Focos de estadio, arriba a cada lado */
 .foco {
   position: absolute;
   top: -60px;
@@ -254,7 +248,7 @@ html, body {
 }
 
 #suplentes-titulo {
-  font-size: 15px;
+  font-size: 17px;
   font-weight: 900;
   color: var(--color-oro);
   text-align: center;
@@ -275,21 +269,22 @@ html, body {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 13px;
+  font-size: 16px;
   font-weight: 700;
 }
 
 .suplente .dorsal-suplente {
   flex-shrink: 0;
-  width: 22px;
-  height: 22px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   background: rgba(244, 196, 48, 0.18);
   border: 1px solid rgba(244, 196, 48, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 11px;
+  font-size: 14px;
+  font-weight: 800;
   color: var(--color-oro);
 }
 
@@ -337,7 +332,6 @@ html, body {
   inset: 0;
 }
 
-/* Fase 0: lista de nombres antes de que aparezcan las tarjetas */
 .fila-lista {
   position: absolute;
   left: 50%;
@@ -367,7 +361,7 @@ html, body {
 }
 .fila-lista .nombre-lista {
   color: #F6EFDD;
-  font-size: 17px;
+  font-size: 20px;
   font-weight: 700;
   white-space: nowrap;
   overflow: hidden;
@@ -377,16 +371,10 @@ html, body {
 .jugador {
   position: absolute;
   transform: translate(-50%, -50%);
-  opacity: 0; /* la animación de aparición lo hace visible */
-  /* Para la segunda fase (contracción hacia el terreno de juego) —
-     esto no afecta a la aparición inicial, que va por su propia
-     animación de opacidad/escala. */
+  opacity: 0;
   transition: top 1.1s ease, left 1.1s ease;
 }
 
-/* Aparece con un pequeño "pop", uno detrás de otro (el retraso de
-   cada jugador se pone por JS) — en vez del viejo paso de "lista
-   de nombres que luego se mueve al campo". */
 @keyframes aparecerJugador {
   from {
     opacity: 0;
@@ -401,8 +389,6 @@ html, body {
   animation: aparecerJugador 0.45s cubic-bezier(.34, 1.56, .64, 1) forwards;
 }
 
-/* La tarjeta ES la camiseta: la imagen va dentro como fondo, con
-   el dorsal centrado encima y el nombre en una franja abajo. */
 .tarjeta-jugador {
   position: relative;
   width: 78px;
@@ -450,7 +436,7 @@ html, body {
   bottom: 0;
   background: rgba(0, 0, 0, 0.78);
   color: #F6EFDD;
-  font-size: 13.5px;
+  font-size: 16px;
   font-weight: 700;
   text-align: center;
   padding: 4px 2px;
@@ -513,7 +499,7 @@ html, body {
 }
 
 .columna-goles-nombre {
-  font-size: 17px;
+  font-size: 19px;
   font-weight: 900;
   text-align: center;
   text-transform: uppercase;
@@ -525,7 +511,7 @@ html, body {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 19px;
+  font-size: 22px;
   font-weight: 700;
   opacity: 0;
   transform: translateY(10px);
@@ -552,8 +538,6 @@ html, body {
    ============================================================ */
 
 #bloque-mascota {
-  /* FIJO: siempre a la misma distancia del fondo, sin importar
-     cuánto ocupe el contenido de arriba (justo encima del banner). */
   position: absolute;
   left: 0;
   right: 0;
@@ -619,8 +603,6 @@ html, body {
    ============================================================ */
 
 #banner-patrocina {
-  /* FIJO: siempre pegado al fondo del lienzo, estático, no forma
-     parte del flujo elástico de los bloques de arriba. */
   position: absolute;
   left: 0;
   right: 0;
