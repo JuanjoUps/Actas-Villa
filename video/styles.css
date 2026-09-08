@@ -101,7 +101,7 @@ html, body {
 }
 
 #cabecera-categoria {
-  font-size: 27px;
+  font-size: 32px;
   font-weight: 700;
   color: var(--color-oro);
   text-transform: uppercase;
@@ -474,7 +474,7 @@ html, body {
 }
 
 #goles-cabecera {
-  font-size: 34px;
+  font-size: 26px;
   font-weight: 900;
   color: var(--color-oro);
   letter-spacing: 3px;
