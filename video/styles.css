@@ -94,14 +94,14 @@ html, body {
 }
 
 #cabecera-titulo {
-  font-size: 44px;
+  font-size: 50px;
   line-height: 0.95;
   font-weight: 900;
   letter-spacing: 1px;
 }
 
 #cabecera-categoria {
-  font-size: 22px;
+  font-size: 27px;
   font-weight: 700;
   color: var(--color-oro);
   text-transform: uppercase;
@@ -151,7 +151,7 @@ html, body {
 }
 
 .resultado-nombre {
-  font-size: 25px;
+  font-size: 31px;
   font-weight: 900;
   line-height: 1.15;
   text-transform: uppercase;
@@ -236,7 +236,7 @@ html, body {
 
 #panel-suplentes {
   flex-shrink: 0;
-  width: 190px;
+  width: 215px;
   background: linear-gradient(180deg, var(--color-panel), #061a0e);
   border: 2px solid var(--color-oro);
   border-radius: 14px;
@@ -248,7 +248,7 @@ html, body {
 }
 
 #suplentes-titulo {
-  font-size: 17px;
+  font-size: 19px;
   font-weight: 900;
   color: var(--color-oro);
   text-align: center;
@@ -269,7 +269,7 @@ html, body {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 700;
 }
 
@@ -278,14 +278,14 @@ html, body {
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  background: rgba(244, 196, 48, 0.18);
-  border: 1px solid rgba(244, 196, 48, 0.5);
+  background: var(--color-oro);
+  border: 1px solid rgba(244, 196, 48, 0.9);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 14px;
   font-weight: 800;
-  color: var(--color-oro);
+  color: #0F2716;
 }
 
 .suplente .nombre-suplente {
@@ -391,8 +391,8 @@ html, body {
 
 .tarjeta-jugador {
   position: relative;
-  width: 78px;
-  height: 104px;
+  width: 88px;
+  height: 110px;
   background: rgba(8, 8, 8, 0.55);
   border: 2px solid rgba(244, 196, 48, 0.7);
   border-radius: 11px;
@@ -436,7 +436,8 @@ html, body {
   bottom: 0;
   background: rgba(0, 0, 0, 0.78);
   color: #F6EFDD;
-  font-size: 16px;
+  font-size: 18px;
+  letter-spacing: -0.3px;
   font-weight: 700;
   text-align: center;
   padding: 4px 2px;
@@ -473,7 +474,7 @@ html, body {
 }
 
 #goles-cabecera {
-  font-size: 32px;
+  font-size: 34px;
   font-weight: 900;
   color: var(--color-oro);
   letter-spacing: 3px;
@@ -499,7 +500,7 @@ html, body {
 }
 
 .columna-goles-nombre {
-  font-size: 19px;
+  font-size: 23px;
   font-weight: 900;
   text-align: center;
   text-transform: uppercase;
