@@ -137,7 +137,10 @@ const DURACION_ALINEACION_PRESENTACION = 1800;
 const DURACION_ALINEACION_CONTRAIDA = 3200;
 const DURACION_ENTRE_GOLES = 900;
 const DURACION_GOLES_FINAL = 1100;
-const DURACION_MASCOTA = 5000;
+// Acortado: el bloque final (mascota + mensaje + footer) no debe
+// quedarse esperando a que se lea todo -- si alguien quiere leerlo
+// con calma, pausa la story. El vídeo sigue su ritmo normal.
+const DURACION_MASCOTA = 3200;
 
 // ============================================================
 // UTILIDADES
