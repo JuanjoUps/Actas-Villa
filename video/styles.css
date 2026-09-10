@@ -627,6 +627,26 @@ html, body {
   gap: 10px;
   text-align: center;
   padding: 10px 40px;
+  position: relative;   /* necesario para que el brillo se recorte dentro */
+  overflow: hidden;
+}
+
+/* Brillo que recorre el banner de lado a lado en bucle -- da la
+   sensación de anuncio "vivo", no un cartel estático. */
+#banner-patrocina::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -40%;
+  width: 35%;
+  background: linear-gradient(100deg, transparent, rgba(244, 180, 0, 0.35), transparent);
+  animation: brilloBanner 3s linear infinite;
+  pointer-events: none;
+}
+@keyframes brilloBanner {
+  from { left: -40%; }
+  to   { left: 120%; }
 }
 
 #patrocina-texto {
@@ -637,6 +657,11 @@ html, body {
   text-transform: uppercase;
   color: white;
   text-shadow: 2px 3px 0 rgba(0, 0, 0, 0.45);
+  animation: latidoTexto 1.8s ease-in-out infinite;
+}
+@keyframes latidoTexto {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.045); }
 }
 
 #patrocina-accion {
@@ -651,4 +676,10 @@ html, body {
   text-transform: uppercase;
   transform: rotate(-1deg);
   box-shadow: 3px 4px 0 rgba(0, 0, 0, 0.35);
+  position: relative;
+  animation: pulsoBoton 1.8s ease-in-out infinite;
+}
+@keyframes pulsoBoton {
+  0%, 100% { box-shadow: 3px 4px 0 rgba(0, 0, 0, 0.35), 0 0 0 0 rgba(244, 180, 0, 0.5); }
+  50%      { box-shadow: 3px 4px 0 rgba(0, 0, 0, 0.35), 0 0 0 8px rgba(244, 180, 0, 0); }
 }
