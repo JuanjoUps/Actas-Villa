@@ -124,7 +124,12 @@ const FRASES_EXTRA_CIERRE = [
 ];
 
 // Duraciones de cada pantalla (ms)
-const DURACION_RESULTADO = 1800;
+// Acortado a propósito: en Instagram Stories la atención se decide
+// en los primeros 1-2 segundos. Antes el marcador ocupaba casi todo
+// ese hueco él solo, quieto; ahora la alineación (que sí tiene
+// movimiento) empieza a entrar casi de inmediato, solapando con el
+// marcador en vez de esperar a que termine.
+const DURACION_RESULTADO = 700;
 // Fase 0 (lista de nombres) + fase 1 (presentación, repartidos por
 // la sección) + fase 2 (ya contraídos dentro del terreno de juego).
 const DURACION_ALINEACION_LISTA = 2400;
