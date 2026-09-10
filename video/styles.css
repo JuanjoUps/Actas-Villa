@@ -627,7 +627,6 @@ html, body {
   gap: 10px;
   text-align: center;
   padding: 10px 40px;
-  position: relative;   /* necesario para que el brillo se recorte dentro */
   overflow: hidden;
 }
 
