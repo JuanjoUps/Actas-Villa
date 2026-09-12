@@ -1,18 +1,18 @@
 [
   {
-    "nombre": "Xory",
     "dorsal": "9",
-    "posicion": "delantero"
+    "posicion": "delantero",
+    "nombre": "Xory"
   },
   {
     "dorsal": "5",
-    "nombre": "Afa",
-    "posicion": "delantero"
+    "posicion": "delantero",
+    "nombre": "Afa"
   },
   {
-    "posicion": "delantero",
     "nombre": "Danilo",
-    "dorsal": "23"
+    "dorsal": "23",
+    "posicion": "delantero"
   },
   {
     "posicion": "centrocampista",
@@ -25,39 +25,39 @@
     "nombre": "Chaski"
   },
   {
-    "posicion": "defensa",
     "dorsal": "6",
+    "posicion": "defensa",
     "nombre": "Ricardo"
   },
   {
-    "posicion": "defensa",
+    "nombre": "Lean",
     "dorsal": "24",
-    "nombre": "Lean"
+    "posicion": "defensa"
   },
   {
-    "dorsal": "88",
     "nombre": "Ato",
+    "dorsal": "88",
     "posicion": "portero"
   },
   {
-    "posicion": "centrocampista",
     "nombre": "Dieguito",
-    "dorsal": "27"
+    "dorsal": "27",
+    "posicion": "centrocampista"
   },
   {
-    "posicion": "centrocampista",
+    "dorsal": "14",
     "nombre": "Claus",
-    "dorsal": "14"
+    "posicion": "centrocampista"
   },
   {
-    "posicion": "centrocampista",
     "dorsal": "11",
-    "nombre": "Juanjo"
+    "nombre": "Juanjo",
+    "posicion": "centrocampista"
   },
   {
-    "posicion": "defensa",
     "nombre": "Nieva",
-    "dorsal": "3"
+    "dorsal": "3",
+    "posicion": "defensa"
   },
   {
     "dorsal": "10",
@@ -70,8 +70,13 @@
     "nombre": "Lolo"
   },
   {
-    "posicion": "portero",
     "nombre": "Gato",
+    "posicion": "portero",
     "dorsal": "1"
+  },
+  {
+    "posicion": "centrocampista",
+    "nombre": "Anuar",
+    "dorsal": "61"
   }
 ]
