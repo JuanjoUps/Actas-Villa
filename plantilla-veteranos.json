@@ -5,74 +5,74 @@
     "dorsal": "9"
   },
   {
-    "posicion": "delantero",
     "nombre": "Afa",
+    "posicion": "delantero",
     "dorsal": "5"
   },
   {
+    "dorsal": "23",
     "posicion": "delantero",
-    "nombre": "Danilo",
-    "dorsal": "23"
+    "nombre": "Danilo"
   },
   {
-    "nombre": "Gelo",
     "dorsal": "99",
+    "nombre": "Gelo",
     "posicion": "centrocampista"
   },
   {
-    "dorsal": "51",
     "nombre": "Chaski",
+    "dorsal": "51",
     "posicion": "defensa"
   },
   {
     "dorsal": "6",
-    "posicion": "defensa",
-    "nombre": "Ricardo"
-  },
-  {
-    "nombre": "Lean",
-    "dorsal": "24",
+    "nombre": "Ricardo",
     "posicion": "defensa"
   },
   {
-    "dorsal": "88",
+    "posicion": "defensa",
+    "dorsal": "24",
+    "nombre": "Lean"
+  },
+  {
     "posicion": "portero",
+    "dorsal": "88",
     "nombre": "Ato"
   },
   {
-    "nombre": "Dieguito",
     "posicion": "centrocampista",
-    "dorsal": "27"
+    "dorsal": "27",
+    "nombre": "Dieguito"
   },
   {
-    "nombre": "Claus",
     "posicion": "centrocampista",
-    "dorsal": "14"
+    "dorsal": "14",
+    "nombre": "Claus"
   },
   {
-    "nombre": "Juanjo",
     "posicion": "centrocampista",
-    "dorsal": "11"
+    "dorsal": "11",
+    "nombre": "Juanjo"
   },
   {
-    "nombre": "Nieva",
     "posicion": "defensa",
+    "nombre": "Nieva",
     "dorsal": "3"
   },
   {
-    "nombre": "Vik",
+    "posicion": "centrocampista",
     "dorsal": "10",
-    "posicion": "centrocampista"
+    "nombre": "Vik"
   },
   {
+    "posicion": "defensa",
     "nombre": "Lolo",
-    "dorsal": "47",
-    "posicion": "defensa"
+    "dorsal": "47"
   },
   {
-    "dorsal": "1",
+    "nombre": "Gato",
     "posicion": "portero",
-    "nombre": "Gato"
+    "dorsal": "1"
   },
   {
     "nombre": "Anuar",
@@ -85,8 +85,13 @@
     "dorsal": "7"
   },
   {
-    "dorsal": "63",
     "nombre": "Álvaro",
-    "posicion": "defensa"
+    "posicion": "defensa",
+    "dorsal": "63"
+  },
+  {
+    "dorsal": "65",
+    "posicion": "defensa",
+    "nombre": "Publio"
   }
 ]
