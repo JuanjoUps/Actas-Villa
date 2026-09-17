@@ -5,19 +5,19 @@
     "dorsal": "9"
   },
   {
-    "posicion": "delantero",
     "nombre": "Afa",
-    "dorsal": "5"
+    "dorsal": "5",
+    "posicion": "delantero"
   },
   {
-    "posicion": "delantero",
     "nombre": "Danilo",
-    "dorsal": "23"
+    "dorsal": "23",
+    "posicion": "delantero"
   },
   {
-    "dorsal": "99",
+    "nombre": "Gelo",
     "posicion": "centrocampista",
-    "nombre": "Gelo"
+    "dorsal": "99"
   },
   {
     "nombre": "Ricardo",
@@ -31,8 +31,8 @@
   },
   {
     "dorsal": "88",
-    "posicion": "portero",
-    "nombre": "Ato"
+    "nombre": "Ato",
+    "posicion": "portero"
   },
   {
     "dorsal": "27",
@@ -41,18 +41,18 @@
   },
   {
     "dorsal": "14",
-    "nombre": "Claus",
-    "posicion": "centrocampista"
-  },
-  {
-    "nombre": "Juanjo",
     "posicion": "centrocampista",
-    "dorsal": "11"
+    "nombre": "Claus"
   },
   {
-    "posicion": "defensa",
+    "dorsal": "11",
+    "posicion": "centrocampista",
+    "nombre": "Juanjo"
+  },
+  {
     "nombre": "Nieva",
-    "dorsal": "3"
+    "dorsal": "3",
+    "posicion": "defensa"
   },
   {
     "dorsal": "10",
@@ -60,34 +60,34 @@
     "nombre": "Vik"
   },
   {
-    "dorsal": "47",
     "posicion": "defensa",
-    "nombre": "Lolo"
+    "nombre": "Lolo",
+    "dorsal": "47"
   },
   {
-    "dorsal": "1",
     "posicion": "portero",
-    "nombre": "Gato"
+    "nombre": "Gato",
+    "dorsal": "1"
   },
   {
-    "nombre": "Víctor",
+    "posicion": "defensa",
     "dorsal": "7",
-    "posicion": "defensa"
+    "nombre": "Víctor"
   },
   {
-    "dorsal": "8",
-    "nombre": "César",
-    "posicion": "delantero"
-  },
-  {
-    "nombre": "Josek",
-    "dorsal": "26",
-    "posicion": "delantero"
-  },
-  {
-    "nombre": "Miguel",
     "posicion": "delantero",
-    "dorsal": "34"
+    "nombre": "César",
+    "dorsal": "8"
+  },
+  {
+    "posicion": "delantero",
+    "dorsal": "26",
+    "nombre": "Josek"
+  },
+  {
+    "dorsal": "34",
+    "posicion": "delantero",
+    "nombre": "Miguel"
   },
   {
     "nombre": "Álvaro",
@@ -95,69 +95,69 @@
     "dorsal": "44"
   },
   {
-    "posicion": "centrocampista",
     "nombre": "Pana",
+    "posicion": "centrocampista",
     "dorsal": "20"
   },
   {
+    "nombre": "Richy",
     "posicion": "centrocampista",
-    "dorsal": "2",
-    "nombre": "Richy"
+    "dorsal": "2"
   },
   {
-    "posicion": "centrocampista",
     "nombre": "Barbu",
-    "dorsal": "4"
+    "dorsal": "4",
+    "posicion": "centrocampista"
   },
   {
     "dorsal": "98",
-    "posicion": "centrocampista",
-    "nombre": "Puli"
+    "nombre": "Puli",
+    "posicion": "centrocampista"
   },
   {
+    "nombre": "Uge",
     "dorsal": "15",
-    "posicion": "centrocampista",
-    "nombre": "Uge"
+    "posicion": "centrocampista"
   },
   {
+    "dorsal": "17",
     "posicion": "centrocampista",
-    "nombre": "Alber",
-    "dorsal": "17"
+    "nombre": "Alber"
   },
   {
+    "dorsal": "18",
     "nombre": "Sacha",
-    "posicion": "defensa",
-    "dorsal": "18"
-  },
-  {
-    "nombre": "Pache",
-    "posicion": "defensa",
-    "dorsal": "21"
-  },
-  {
-    "nombre": "Edu",
-    "posicion": "centrocampista",
-    "dorsal": "22"
-  },
-  {
-    "nombre": "Joaquín",
-    "dorsal": "25",
-    "posicion": "centrocampista"
-  },
-  {
-    "dorsal": "28",
-    "nombre": "Rober",
-    "posicion": "centrocampista"
-  },
-  {
-    "nombre": "Mini",
-    "dorsal": "31",
     "posicion": "defensa"
   },
   {
-    "dorsal": "49",
+    "dorsal": "21",
+    "nombre": "Pache",
+    "posicion": "defensa"
+  },
+  {
+    "posicion": "centrocampista",
+    "dorsal": "22",
+    "nombre": "Edu"
+  },
+  {
+    "posicion": "centrocampista",
+    "dorsal": "25",
+    "nombre": "Joaquín"
+  },
+  {
+    "dorsal": "28",
+    "posicion": "centrocampista",
+    "nombre": "Rober"
+  },
+  {
+    "dorsal": "31",
+    "posicion": "defensa",
+    "nombre": "Mini"
+  },
+  {
     "nombre": "Javi",
-    "posicion": "centrocampista"
+    "posicion": "centrocampista",
+    "dorsal": "49"
   },
   {
     "dorsal": "50",
@@ -165,8 +165,13 @@
     "nombre": "Chaski"
   },
   {
-    "nombre": "Anuar",
     "posicion": "centrocampista",
+    "nombre": "Anuar",
     "dorsal": "77"
+  },
+  {
+    "posicion": "defensa",
+    "nombre": "Chencho",
+    "dorsal": "96"
   }
 ]
