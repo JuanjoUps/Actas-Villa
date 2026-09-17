@@ -1,8 +1,8 @@
 [
   {
-    "dorsal": "9",
+    "posicion": "delantero",
     "nombre": "Xory",
-    "posicion": "delantero"
+    "dorsal": "9"
   },
   {
     "dorsal": "5",
@@ -15,14 +15,14 @@
     "nombre": "Danilo"
   },
   {
-    "nombre": "Gelo",
     "dorsal": "99",
+    "nombre": "Gelo",
     "posicion": "centrocampista"
   },
   {
-    "dorsal": "51",
+    "posicion": "defensa",
     "nombre": "Chaski",
-    "posicion": "defensa"
+    "dorsal": "51"
   },
   {
     "nombre": "Ricardo",
@@ -30,9 +30,9 @@
     "posicion": "defensa"
   },
   {
+    "nombre": "Lean",
     "posicion": "defensa",
-    "dorsal": "24",
-    "nombre": "Lean"
+    "dorsal": "24"
   },
   {
     "nombre": "Ato",
@@ -40,19 +40,19 @@
     "posicion": "portero"
   },
   {
-    "posicion": "centrocampista",
+    "dorsal": "27",
     "nombre": "Dieguito",
-    "dorsal": "27"
+    "posicion": "centrocampista"
   },
   {
-    "posicion": "centrocampista",
+    "dorsal": "14",
     "nombre": "Claus",
-    "dorsal": "14"
+    "posicion": "centrocampista"
   },
   {
-    "posicion": "centrocampista",
+    "dorsal": "11",
     "nombre": "Juanjo",
-    "dorsal": "11"
+    "posicion": "centrocampista"
   },
   {
     "posicion": "defensa",
@@ -60,34 +60,29 @@
     "nombre": "Nieva"
   },
   {
-    "dorsal": "10",
+    "posicion": "centrocampista",
     "nombre": "Vik",
-    "posicion": "centrocampista"
-  },
-  {
-    "dorsal": "47",
-    "nombre": "Lolo",
-    "posicion": "defensa"
-  },
-  {
-    "posicion": "portero",
-    "dorsal": "1",
-    "nombre": "Gato"
-  },
-  {
-    "nombre": "Anuar",
-    "dorsal": "61",
-    "posicion": "centrocampista"
+    "dorsal": "10"
   },
   {
     "posicion": "defensa",
-    "nombre": "Víctor",
-    "dorsal": "7"
+    "dorsal": "47",
+    "nombre": "Lolo"
   },
   {
+    "dorsal": "1",
+    "posicion": "portero",
+    "nombre": "Gato"
+  },
+  {
+    "posicion": "defensa",
+    "dorsal": "7",
+    "nombre": "Víctor"
+  },
+  {
+    "posicion": "defensa",
     "dorsal": "63",
-    "nombre": "Álvaro",
-    "posicion": "defensa"
+    "nombre": "Álvaro"
   },
   {
     "posicion": "delantero",
