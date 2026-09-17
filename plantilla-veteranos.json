@@ -1,18 +1,18 @@
 [
   {
     "nombre": "Xory",
-    "dorsal": "9",
-    "posicion": "delantero"
-  },
-  {
-    "nombre": "Afa",
     "posicion": "delantero",
-    "dorsal": "5"
+    "dorsal": "9"
   },
   {
-    "nombre": "Danilo",
+    "posicion": "delantero",
+    "dorsal": "5",
+    "nombre": "Afa"
+  },
+  {
+    "posicion": "delantero",
     "dorsal": "23",
-    "posicion": "delantero"
+    "nombre": "Danilo"
   },
   {
     "dorsal": "99",
@@ -20,49 +20,49 @@
     "nombre": "Gelo"
   },
   {
-    "posicion": "defensa",
     "dorsal": "6",
+    "posicion": "defensa",
     "nombre": "Ricardo"
   },
   {
     "dorsal": "24",
-    "nombre": "Lean",
-    "posicion": "defensa"
+    "posicion": "defensa",
+    "nombre": "Lean"
   },
   {
     "posicion": "portero",
-    "dorsal": "88",
-    "nombre": "Ato"
+    "nombre": "Ato",
+    "dorsal": "88"
   },
   {
-    "posicion": "centrocampista",
     "nombre": "Dieguito",
+    "posicion": "centrocampista",
     "dorsal": "27"
   },
   {
     "posicion": "centrocampista",
-    "nombre": "Claus",
-    "dorsal": "14"
+    "dorsal": "14",
+    "nombre": "Claus"
   },
   {
-    "posicion": "centrocampista",
     "nombre": "Juanjo",
+    "posicion": "centrocampista",
     "dorsal": "11"
   },
   {
+    "dorsal": "3",
     "posicion": "defensa",
-    "nombre": "Nieva",
-    "dorsal": "3"
+    "nombre": "Nieva"
   },
   {
     "posicion": "centrocampista",
-    "nombre": "Vik",
-    "dorsal": "10"
+    "dorsal": "10",
+    "nombre": "Vik"
   },
   {
-    "posicion": "defensa",
     "dorsal": "47",
-    "nombre": "Lolo"
+    "nombre": "Lolo",
+    "posicion": "defensa"
   },
   {
     "dorsal": "1",
@@ -70,14 +70,14 @@
     "nombre": "Gato"
   },
   {
-    "posicion": "defensa",
     "dorsal": "7",
-    "nombre": "Víctor"
+    "nombre": "Víctor",
+    "posicion": "defensa"
   },
   {
-    "posicion": "delantero",
     "dorsal": "8",
-    "nombre": "César"
+    "nombre": "César",
+    "posicion": "delantero"
   },
   {
     "nombre": "Josek",
@@ -85,78 +85,83 @@
     "dorsal": "26"
   },
   {
-    "posicion": "delantero",
     "dorsal": "34",
-    "nombre": "Miguel"
+    "nombre": "Miguel",
+    "posicion": "delantero"
   },
   {
-    "dorsal": "44",
+    "nombre": "Álvaro",
     "posicion": "defensa",
-    "nombre": "Álvaro"
+    "dorsal": "44"
   },
   {
-    "posicion": "centrocampista",
     "nombre": "Pana",
+    "posicion": "centrocampista",
     "dorsal": "20"
   },
   {
-    "nombre": "Richy",
     "dorsal": "2",
-    "posicion": "centrocampista"
+    "posicion": "centrocampista",
+    "nombre": "Richy"
   },
   {
-    "nombre": "Barbu",
+    "posicion": "centrocampista",
     "dorsal": "4",
-    "posicion": "centrocampista"
+    "nombre": "Barbu"
   },
   {
     "posicion": "centrocampista",
-    "nombre": "Puli",
-    "dorsal": "98"
+    "dorsal": "98",
+    "nombre": "Puli"
   },
   {
-    "nombre": "Uge",
     "dorsal": "15",
-    "posicion": "centrocampista"
+    "posicion": "centrocampista",
+    "nombre": "Uge"
   },
   {
-    "dorsal": "17",
+    "nombre": "Alber",
     "posicion": "centrocampista",
-    "nombre": "Alber"
+    "dorsal": "17"
   },
   {
     "posicion": "defensa",
-    "nombre": "Sacha",
-    "dorsal": "18"
+    "dorsal": "18",
+    "nombre": "Sacha"
   },
   {
+    "posicion": "defensa",
     "nombre": "Pache",
-    "dorsal": "21",
-    "posicion": "defensa"
+    "dorsal": "21"
   },
   {
-    "nombre": "Edu",
     "posicion": "centrocampista",
+    "nombre": "Edu",
     "dorsal": "22"
   },
   {
-    "nombre": "Joaquín",
     "posicion": "centrocampista",
+    "nombre": "Joaquín",
     "dorsal": "25"
   },
   {
-    "dorsal": "28",
     "nombre": "Rober",
-    "posicion": "centrocampista"
+    "posicion": "centrocampista",
+    "dorsal": "28"
   },
   {
-    "dorsal": "31",
     "nombre": "Mini",
-    "posicion": "defensa"
+    "posicion": "defensa",
+    "dorsal": "31"
   },
   {
-    "dorsal": "49",
     "nombre": "Javi",
+    "dorsal": "49",
     "posicion": "centrocampista"
+  },
+  {
+    "nombre": "Chaski",
+    "posicion": "defensa",
+    "dorsal": "50"
   }
 ]
