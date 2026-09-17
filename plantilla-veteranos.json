@@ -1,88 +1,88 @@
 [
   {
-    "nombre": "Xory",
+    "posicion": "delantero",
     "dorsal": "9",
-    "posicion": "delantero"
+    "nombre": "Xory"
   },
   {
     "nombre": "Afa",
-    "posicion": "delantero",
-    "dorsal": "5"
+    "dorsal": "5",
+    "posicion": "delantero"
   },
   {
     "nombre": "Danilo",
-    "posicion": "delantero",
-    "dorsal": "23"
+    "dorsal": "23",
+    "posicion": "delantero"
   },
   {
+    "nombre": "Gelo",
     "posicion": "centrocampista",
-    "dorsal": "99",
-    "nombre": "Gelo"
+    "dorsal": "99"
   },
   {
-    "posicion": "defensa",
     "nombre": "Chaski",
+    "posicion": "defensa",
     "dorsal": "51"
   },
   {
+    "nombre": "Ricardo",
     "posicion": "defensa",
-    "dorsal": "6",
-    "nombre": "Ricardo"
+    "dorsal": "6"
   },
   {
-    "posicion": "defensa",
+    "nombre": "Lean",
     "dorsal": "24",
-    "nombre": "Lean"
+    "posicion": "defensa"
   },
   {
+    "nombre": "Ato",
     "dorsal": "88",
-    "posicion": "portero",
-    "nombre": "Ato"
+    "posicion": "portero"
   },
   {
-    "posicion": "centrocampista",
     "dorsal": "27",
+    "posicion": "centrocampista",
     "nombre": "Dieguito"
   },
   {
     "nombre": "Claus",
-    "posicion": "centrocampista",
-    "dorsal": "14"
+    "dorsal": "14",
+    "posicion": "centrocampista"
   },
   {
-    "posicion": "centrocampista",
     "dorsal": "11",
+    "posicion": "centrocampista",
     "nombre": "Juanjo"
   },
   {
+    "dorsal": "3",
     "nombre": "Nieva",
-    "posicion": "defensa",
-    "dorsal": "3"
-  },
-  {
-    "nombre": "Vik",
-    "posicion": "centrocampista",
-    "dorsal": "10"
-  },
-  {
-    "nombre": "Lolo",
-    "dorsal": "47",
     "posicion": "defensa"
   },
   {
+    "dorsal": "10",
+    "nombre": "Vik",
+    "posicion": "centrocampista"
+  },
+  {
+    "dorsal": "47",
+    "nombre": "Lolo",
+    "posicion": "defensa"
+  },
+  {
+    "posicion": "portero",
     "nombre": "Gato",
-    "dorsal": "1",
-    "posicion": "portero"
+    "dorsal": "1"
   },
   {
-    "dorsal": "7",
+    "nombre": "Víctor",
     "posicion": "defensa",
-    "nombre": "Víctor"
+    "dorsal": "7"
   },
   {
-    "nombre": "César",
+    "posicion": "delantero",
     "dorsal": "8",
-    "posicion": "delantero"
+    "nombre": "César"
   },
   {
     "dorsal": "26",
@@ -91,8 +91,8 @@
   },
   {
     "dorsal": "34",
-    "posicion": "delantero",
-    "nombre": "Miguel"
+    "nombre": "Miguel",
+    "posicion": "delantero"
   },
   {
     "dorsal": "44",
@@ -100,18 +100,23 @@
     "nombre": "Álvaro"
   },
   {
+    "dorsal": "20",
     "nombre": "Pana",
-    "posicion": "centrocampista",
-    "dorsal": "20"
+    "posicion": "centrocampista"
   },
   {
+    "nombre": "Richy",
     "posicion": "centrocampista",
-    "dorsal": "2",
-    "nombre": "Richy"
+    "dorsal": "2"
   },
   {
-    "nombre": "Barbu",
+    "dorsal": "4",
     "posicion": "centrocampista",
-    "dorsal": "4"
+    "nombre": "Barbu"
+  },
+  {
+    "nombre": "Puli",
+    "posicion": "centrocampista",
+    "dorsal": "98"
   }
 ]
