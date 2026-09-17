@@ -1,58 +1,58 @@
 [
   {
-    "posicion": "delantero",
+    "nombre": "Xory",
     "dorsal": "9",
-    "nombre": "Xory"
+    "posicion": "delantero"
   },
   {
-    "nombre": "Afa",
+    "posicion": "delantero",
     "dorsal": "5",
-    "posicion": "delantero"
+    "nombre": "Afa"
   },
   {
-    "nombre": "Danilo",
     "dorsal": "23",
-    "posicion": "delantero"
+    "posicion": "delantero",
+    "nombre": "Danilo"
   },
   {
     "posicion": "centrocampista",
-    "nombre": "Gelo",
-    "dorsal": "99"
+    "dorsal": "99",
+    "nombre": "Gelo"
   },
   {
-    "posicion": "defensa",
     "nombre": "Chaski",
-    "dorsal": "51"
-  },
-  {
-    "nombre": "Ricardo",
-    "posicion": "defensa",
-    "dorsal": "6"
-  },
-  {
-    "nombre": "Lean",
-    "dorsal": "24",
+    "dorsal": "51",
     "posicion": "defensa"
   },
   {
-    "nombre": "Ato",
+    "posicion": "defensa",
+    "dorsal": "6",
+    "nombre": "Ricardo"
+  },
+  {
+    "dorsal": "24",
+    "nombre": "Lean",
+    "posicion": "defensa"
+  },
+  {
     "posicion": "portero",
+    "nombre": "Ato",
     "dorsal": "88"
   },
   {
+    "posicion": "centrocampista",
     "dorsal": "27",
-    "nombre": "Dieguito",
-    "posicion": "centrocampista"
+    "nombre": "Dieguito"
   },
   {
-    "nombre": "Claus",
     "posicion": "centrocampista",
+    "nombre": "Claus",
     "dorsal": "14"
   },
   {
+    "posicion": "centrocampista",
     "dorsal": "11",
-    "nombre": "Juanjo",
-    "posicion": "centrocampista"
+    "nombre": "Juanjo"
   },
   {
     "dorsal": "3",
@@ -60,9 +60,9 @@
     "posicion": "defensa"
   },
   {
+    "posicion": "centrocampista",
     "dorsal": "10",
-    "nombre": "Vik",
-    "posicion": "centrocampista"
+    "nombre": "Vik"
   },
   {
     "dorsal": "47",
@@ -71,8 +71,8 @@
   },
   {
     "dorsal": "1",
-    "posicion": "portero",
-    "nombre": "Gato"
+    "nombre": "Gato",
+    "posicion": "portero"
   },
   {
     "dorsal": "7",
@@ -80,18 +80,23 @@
     "nombre": "Víctor"
   },
   {
+    "dorsal": "63",
     "nombre": "Álvaro",
-    "posicion": "defensa",
-    "dorsal": "63"
+    "posicion": "defensa"
   },
   {
+    "dorsal": "8",
     "nombre": "César",
-    "posicion": "delantero",
-    "dorsal": "8"
+    "posicion": "delantero"
   },
   {
     "nombre": "Josek",
+    "dorsal": "26",
+    "posicion": "delantero"
+  },
+  {
+    "dorsal": "34",
     "posicion": "delantero",
-    "dorsal": "26"
+    "nombre": "Miguel"
   }
 ]
