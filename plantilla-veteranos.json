@@ -1,33 +1,33 @@
 [
   {
+    "dorsal": "9",
     "nombre": "Xory",
-    "posicion": "delantero",
-    "dorsal": "9"
+    "posicion": "delantero"
   },
   {
-    "nombre": "Afa",
+    "dorsal": "5",
     "posicion": "delantero",
-    "dorsal": "5"
+    "nombre": "Afa"
   },
   {
     "dorsal": "23",
-    "posicion": "delantero",
-    "nombre": "Danilo"
+    "nombre": "Danilo",
+    "posicion": "delantero"
   },
   {
+    "posicion": "centrocampista",
     "dorsal": "99",
-    "nombre": "Gelo",
-    "posicion": "centrocampista"
+    "nombre": "Gelo"
   },
   {
-    "nombre": "Chaski",
+    "posicion": "defensa",
     "dorsal": "51",
-    "posicion": "defensa"
+    "nombre": "Chaski"
   },
   {
-    "dorsal": "6",
+    "posicion": "defensa",
     "nombre": "Ricardo",
-    "posicion": "defensa"
+    "dorsal": "6"
   },
   {
     "posicion": "defensa",
@@ -36,62 +36,57 @@
   },
   {
     "posicion": "portero",
-    "dorsal": "88",
-    "nombre": "Ato"
+    "nombre": "Ato",
+    "dorsal": "88"
+  },
+  {
+    "nombre": "Dieguito",
+    "posicion": "centrocampista",
+    "dorsal": "27"
   },
   {
     "posicion": "centrocampista",
-    "dorsal": "27",
-    "nombre": "Dieguito"
+    "nombre": "Claus",
+    "dorsal": "14"
   },
   {
     "posicion": "centrocampista",
-    "dorsal": "14",
-    "nombre": "Claus"
+    "nombre": "Juanjo",
+    "dorsal": "11"
   },
   {
-    "posicion": "centrocampista",
-    "dorsal": "11",
-    "nombre": "Juanjo"
-  },
-  {
-    "posicion": "defensa",
     "nombre": "Nieva",
+    "posicion": "defensa",
     "dorsal": "3"
   },
   {
     "posicion": "centrocampista",
-    "dorsal": "10",
-    "nombre": "Vik"
+    "nombre": "Vik",
+    "dorsal": "10"
   },
   {
     "posicion": "defensa",
-    "nombre": "Lolo",
-    "dorsal": "47"
+    "dorsal": "47",
+    "nombre": "Lolo"
   },
   {
-    "nombre": "Gato",
     "posicion": "portero",
+    "nombre": "Gato",
     "dorsal": "1"
   },
   {
-    "nombre": "Anuar",
     "posicion": "centrocampista",
-    "dorsal": "61"
+    "dorsal": "61",
+    "nombre": "Anuar"
   },
   {
-    "nombre": "Víctor",
     "posicion": "defensa",
-    "dorsal": "7"
+    "dorsal": "7",
+    "nombre": "Víctor"
   },
   {
-    "nombre": "Álvaro",
     "posicion": "defensa",
-    "dorsal": "63"
-  },
-  {
-    "dorsal": "65",
-    "posicion": "defensa",
-    "nombre": "Publio"
+    "dorsal": "63",
+    "nombre": "Álvaro"
   }
 ]
