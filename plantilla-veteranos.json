@@ -1,38 +1,38 @@
 [
   {
     "posicion": "delantero",
-    "dorsal": "9",
-    "nombre": "Xory"
+    "nombre": "Xory",
+    "dorsal": "9"
   },
   {
+    "nombre": "Afa",
     "posicion": "delantero",
-    "dorsal": "5",
-    "nombre": "Afa"
+    "dorsal": "5"
   },
   {
+    "nombre": "Danilo",
     "posicion": "delantero",
-    "dorsal": "23",
-    "nombre": "Danilo"
+    "dorsal": "23"
   },
   {
     "posicion": "centrocampista",
-    "dorsal": "99",
-    "nombre": "Gelo"
+    "nombre": "Gelo",
+    "dorsal": "99"
   },
   {
+    "nombre": "Chaski",
     "posicion": "defensa",
-    "dorsal": "51",
-    "nombre": "Chaski"
+    "dorsal": "51"
   },
   {
-    "nombre": "Ricardo",
     "dorsal": "6",
-    "posicion": "defensa"
+    "posicion": "defensa",
+    "nombre": "Ricardo"
   },
   {
+    "dorsal": "24",
     "posicion": "defensa",
-    "nombre": "Lean",
-    "dorsal": "24"
+    "nombre": "Lean"
   },
   {
     "dorsal": "88",
@@ -40,29 +40,29 @@
     "nombre": "Ato"
   },
   {
-    "posicion": "centrocampista",
     "nombre": "Dieguito",
-    "dorsal": "27"
+    "dorsal": "27",
+    "posicion": "centrocampista"
   },
   {
-    "posicion": "centrocampista",
     "dorsal": "14",
+    "posicion": "centrocampista",
     "nombre": "Claus"
   },
   {
-    "posicion": "centrocampista",
     "nombre": "Juanjo",
-    "dorsal": "11"
+    "dorsal": "11",
+    "posicion": "centrocampista"
   },
   {
     "posicion": "defensa",
-    "dorsal": "3",
-    "nombre": "Nieva"
+    "nombre": "Nieva",
+    "dorsal": "3"
   },
   {
     "nombre": "Vik",
-    "dorsal": "10",
-    "posicion": "centrocampista"
+    "posicion": "centrocampista",
+    "dorsal": "10"
   },
   {
     "posicion": "defensa",
@@ -71,32 +71,37 @@
   },
   {
     "nombre": "Gato",
-    "dorsal": "1",
-    "posicion": "portero"
+    "posicion": "portero",
+    "dorsal": "1"
   },
   {
     "posicion": "defensa",
-    "nombre": "Víctor",
-    "dorsal": "7"
+    "dorsal": "7",
+    "nombre": "Víctor"
   },
   {
+    "posicion": "delantero",
     "nombre": "César",
-    "dorsal": "8",
-    "posicion": "delantero"
+    "dorsal": "8"
   },
   {
     "posicion": "delantero",
-    "nombre": "Josek",
-    "dorsal": "26"
+    "dorsal": "26",
+    "nombre": "Josek"
   },
   {
-    "posicion": "delantero",
     "dorsal": "34",
+    "posicion": "delantero",
     "nombre": "Miguel"
   },
   {
+    "nombre": "Álvaro",
     "posicion": "defensa",
-    "dorsal": "44",
-    "nombre": "Álvaro"
+    "dorsal": "44"
+  },
+  {
+    "nombre": "Pana",
+    "posicion": "centrocampista",
+    "dorsal": "20"
   }
 ]
