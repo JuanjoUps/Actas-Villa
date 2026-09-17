@@ -5,13 +5,13 @@
     "nombre": "Xory"
   },
   {
-    "nombre": "Afa",
     "posicion": "delantero",
-    "dorsal": "5"
+    "dorsal": "5",
+    "nombre": "Afa"
   },
   {
-    "dorsal": "23",
     "posicion": "delantero",
+    "dorsal": "23",
     "nombre": "Danilo"
   },
   {
@@ -21,13 +21,13 @@
   },
   {
     "posicion": "defensa",
-    "nombre": "Chaski",
-    "dorsal": "51"
+    "dorsal": "51",
+    "nombre": "Chaski"
   },
   {
-    "posicion": "defensa",
     "nombre": "Ricardo",
-    "dorsal": "6"
+    "dorsal": "6",
+    "posicion": "defensa"
   },
   {
     "posicion": "defensa",
@@ -35,9 +35,9 @@
     "dorsal": "24"
   },
   {
-    "nombre": "Ato",
+    "dorsal": "88",
     "posicion": "portero",
-    "dorsal": "88"
+    "nombre": "Ato"
   },
   {
     "posicion": "centrocampista",
@@ -46,52 +46,57 @@
   },
   {
     "posicion": "centrocampista",
-    "nombre": "Claus",
-    "dorsal": "14"
+    "dorsal": "14",
+    "nombre": "Claus"
   },
   {
     "posicion": "centrocampista",
-    "dorsal": "11",
-    "nombre": "Juanjo"
+    "nombre": "Juanjo",
+    "dorsal": "11"
   },
   {
-    "dorsal": "3",
     "posicion": "defensa",
+    "dorsal": "3",
     "nombre": "Nieva"
   },
   {
-    "dorsal": "10",
     "nombre": "Vik",
+    "dorsal": "10",
     "posicion": "centrocampista"
   },
   {
-    "dorsal": "47",
     "posicion": "defensa",
-    "nombre": "Lolo"
+    "nombre": "Lolo",
+    "dorsal": "47"
   },
   {
-    "dorsal": "1",
     "nombre": "Gato",
+    "dorsal": "1",
     "posicion": "portero"
   },
   {
-    "nombre": "Víctor",
     "posicion": "defensa",
+    "nombre": "Víctor",
     "dorsal": "7"
   },
   {
-    "dorsal": "8",
     "nombre": "César",
+    "dorsal": "8",
     "posicion": "delantero"
   },
   {
-    "nombre": "Josek",
     "posicion": "delantero",
+    "nombre": "Josek",
     "dorsal": "26"
   },
   {
     "posicion": "delantero",
-    "nombre": "Miguel",
-    "dorsal": "34"
+    "dorsal": "34",
+    "nombre": "Miguel"
+  },
+  {
+    "posicion": "defensa",
+    "dorsal": "44",
+    "nombre": "Álvaro"
   }
 ]
