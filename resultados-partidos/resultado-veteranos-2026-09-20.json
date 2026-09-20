@@ -1,144 +1,154 @@
 {
-  "resultado": {
-    "propioLocal": true,
-    "escudoRivalUrl": "",
-    "local": 3,
-    "equipoPropio": "C.D. VILLA DE BUITRAGO",
-    "visitante": 0,
-    "rival": "Daganzo",
-    "escudoPropioUrl": ""
-  },
-  "codacta": "veteranos-2026-09-20",
-  "hatTricks": [],
-  "golesRival": [],
-  "campo": "Peñalta, Buitrago del Lozoya",
-  "expulsiones": [],
-  "tarjetas": [],
-  "fecha": "20-09-2026",
-  "suplentes": [
-    {
-      "dorsal": "99",
-      "nombre": "Gelo"
-    },
-    {
-      "dorsal": "24",
-      "nombre": "Lean"
-    },
-    {
-      "dorsal": "14",
-      "nombre": "Claus"
-    },
-    {
-      "dorsal": "11",
-      "nombre": "Juanjo"
-    },
-    {
-      "nombre": "Pana",
-      "dorsal": "20"
-    },
-    {
-      "nombre": "Rober",
-      "dorsal": "28"
-    },
-    {
-      "nombre": "Mini",
-      "dorsal": "31"
-    }
-  ],
-  "alineacion": [
-    {
-      "portero": false,
-      "dorsal": "9",
-      "nombre": "Xory",
-      "posicion": "delantero",
-      "capitan": false
-    },
-    {
-      "dorsal": "6",
-      "portero": false,
-      "nombre": "Ricardo",
-      "posicion": "defensa",
-      "capitan": false
-    },
-    {
-      "capitan": false,
-      "dorsal": "27",
-      "portero": false,
-      "nombre": "Dieguito",
-      "posicion": "centrocampista"
-    },
-    {
-      "capitan": false,
-      "posicion": "defensa",
-      "nombre": "Nieva",
-      "portero": false,
-      "dorsal": "3"
-    },
-    {
-      "posicion": "portero",
-      "capitan": false,
-      "dorsal": "1",
-      "nombre": "Gato",
-      "portero": true
-    },
-    {
-      "dorsal": "8",
-      "portero": false,
-      "nombre": "César",
-      "capitan": false,
-      "posicion": "delantero"
-    },
-    {
-      "portero": false,
-      "dorsal": "98",
-      "nombre": "Puli",
-      "capitan": false,
-      "posicion": "centrocampista"
-    },
-    {
-      "capitan": false,
-      "nombre": "Alber",
-      "dorsal": "17",
-      "portero": false,
-      "posicion": "centrocampista"
-    },
-    {
-      "capitan": false,
-      "nombre": "Sacha",
-      "dorsal": "18",
-      "posicion": "defensa",
-      "portero": false
-    },
-    {
-      "posicion": "centrocampista",
-      "capitan": false,
-      "nombre": "Javi",
-      "dorsal": "49",
-      "portero": false
-    },
-    {
-      "portero": false,
-      "capitan": false,
-      "dorsal": "50",
-      "posicion": "defensa",
-      "nombre": "Chaski"
-    }
-  ],
-  "grupo": "Liga privada",
   "golesPropios": [
     {
       "jugador": "Nieva",
       "minuto": "28"
     },
     {
-      "jugador": "Gelo",
-      "minuto": "32"
+      "minuto": "32",
+      "jugador": "Gelo"
     },
     {
-      "minuto": "72",
-      "jugador": "Xory"
+      "jugador": "Xory",
+      "minuto": "72"
     }
   ],
+  "golesRival": [
+    {
+      "minuto": ""
+    },
+    {
+      "minuto": ""
+    },
+    {
+      "minuto": ""
+    }
+  ],
+  "campo": "Peñalta, Buitrago del Lozoya",
+  "codacta": "veteranos-2026-09-20",
+  "jornada": "",
+  "alineacion": [
+    {
+      "nombre": "Xory",
+      "dorsal": "9",
+      "portero": false,
+      "capitan": false,
+      "posicion": "delantero"
+    },
+    {
+      "nombre": "Ricardo",
+      "dorsal": "6",
+      "posicion": "defensa",
+      "portero": false,
+      "capitan": false
+    },
+    {
+      "nombre": "Dieguito",
+      "posicion": "centrocampista",
+      "dorsal": "27",
+      "capitan": false,
+      "portero": false
+    },
+    {
+      "portero": false,
+      "capitan": false,
+      "nombre": "Nieva",
+      "dorsal": "3",
+      "posicion": "defensa"
+    },
+    {
+      "capitan": false,
+      "dorsal": "1",
+      "portero": true,
+      "nombre": "Gato",
+      "posicion": "portero"
+    },
+    {
+      "posicion": "delantero",
+      "nombre": "César",
+      "capitan": false,
+      "portero": false,
+      "dorsal": "8"
+    },
+    {
+      "nombre": "Puli",
+      "posicion": "centrocampista",
+      "capitan": false,
+      "portero": false,
+      "dorsal": "98"
+    },
+    {
+      "dorsal": "17",
+      "nombre": "Alber",
+      "portero": false,
+      "capitan": false,
+      "posicion": "centrocampista"
+    },
+    {
+      "dorsal": "18",
+      "nombre": "Sacha",
+      "posicion": "defensa",
+      "portero": false,
+      "capitan": false
+    },
+    {
+      "nombre": "Javi",
+      "posicion": "centrocampista",
+      "dorsal": "49",
+      "capitan": false,
+      "portero": false
+    },
+    {
+      "portero": false,
+      "capitan": false,
+      "posicion": "defensa",
+      "nombre": "Chaski",
+      "dorsal": "50"
+    }
+  ],
+  "resultado": {
+    "rival": "Daganzo",
+    "escudoRivalUrl": "",
+    "equipoPropio": "C.D. VILLA DE BUITRAGO",
+    "escudoPropioUrl": "",
+    "visitante": 3,
+    "local": 3,
+    "propioLocal": true
+  },
+  "grupo": "Liga privada",
+  "tarjetas": [],
+  "fecha": "20-09-2026",
+  "hatTricks": [],
+  "expulsiones": [],
   "categoria": "VETERANOS",
-  "jornada": ""
+  "suplentes": [
+    {
+      "nombre": "Gelo",
+      "dorsal": "99"
+    },
+    {
+      "nombre": "Lean",
+      "dorsal": "24"
+    },
+    {
+      "nombre": "Claus",
+      "dorsal": "14"
+    },
+    {
+      "nombre": "Juanjo",
+      "dorsal": "11"
+    },
+    {
+      "nombre": "Pana",
+      "dorsal": "20"
+    },
+    {
+      "dorsal": "28",
+      "nombre": "Rober"
+    },
+    {
+      "nombre": "Mini",
+      "dorsal": "31"
+    }
+  ]
 }
