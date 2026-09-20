@@ -1,0 +1,270 @@
+{
+  "tarjetas": [],
+  "alineacion": [
+    {
+      "capitan": false,
+      "portero": false,
+      "dorsal": "9",
+      "nombre": "Xory",
+      "posicion": "delantero"
+    },
+    {
+      "nombre": "Afa",
+      "portero": false,
+      "dorsal": "5",
+      "capitan": false,
+      "posicion": "delantero"
+    },
+    {
+      "portero": false,
+      "posicion": "delantero",
+      "dorsal": "23",
+      "capitan": false,
+      "nombre": "Danilo"
+    },
+    {
+      "portero": false,
+      "posicion": "centrocampista",
+      "dorsal": "99",
+      "nombre": "Gelo",
+      "capitan": false
+    },
+    {
+      "nombre": "Ricardo",
+      "dorsal": "6",
+      "portero": false,
+      "capitan": false,
+      "posicion": "defensa"
+    },
+    {
+      "dorsal": "24",
+      "portero": false,
+      "nombre": "Lean",
+      "posicion": "defensa",
+      "capitan": false
+    },
+    {
+      "portero": true,
+      "posicion": "portero",
+      "nombre": "Ato",
+      "capitan": false,
+      "dorsal": "88"
+    },
+    {
+      "capitan": false,
+      "portero": false,
+      "dorsal": "27",
+      "posicion": "centrocampista",
+      "nombre": "Dieguito"
+    },
+    {
+      "capitan": false,
+      "nombre": "Claus",
+      "portero": false,
+      "dorsal": "14",
+      "posicion": "centrocampista"
+    },
+    {
+      "posicion": "centrocampista",
+      "portero": false,
+      "capitan": false,
+      "nombre": "Juanjo",
+      "dorsal": "11"
+    },
+    {
+      "capitan": false,
+      "dorsal": "3",
+      "portero": false,
+      "posicion": "defensa",
+      "nombre": "Nieva"
+    },
+    {
+      "posicion": "centrocampista",
+      "nombre": "Vik",
+      "portero": false,
+      "dorsal": "10",
+      "capitan": false
+    },
+    {
+      "nombre": "Lolo",
+      "dorsal": "47",
+      "portero": false,
+      "capitan": false,
+      "posicion": "defensa"
+    },
+    {
+      "capitan": false,
+      "posicion": "portero",
+      "nombre": "Gato",
+      "portero": true,
+      "dorsal": "1"
+    },
+    {
+      "capitan": false,
+      "nombre": "Víctor",
+      "portero": false,
+      "dorsal": "7",
+      "posicion": "defensa"
+    },
+    {
+      "dorsal": "8",
+      "capitan": false,
+      "posicion": "delantero",
+      "nombre": "César",
+      "portero": false
+    },
+    {
+      "portero": false,
+      "nombre": "Josek",
+      "posicion": "delantero",
+      "capitan": false,
+      "dorsal": "26"
+    },
+    {
+      "portero": false,
+      "dorsal": "34",
+      "nombre": "Miguel",
+      "capitan": false,
+      "posicion": "delantero"
+    },
+    {
+      "portero": false,
+      "posicion": "defensa",
+      "dorsal": "44",
+      "nombre": "Álvaro",
+      "capitan": false
+    },
+    {
+      "nombre": "Pana",
+      "dorsal": "20",
+      "portero": false,
+      "posicion": "centrocampista",
+      "capitan": false
+    },
+    {
+      "portero": false,
+      "posicion": "centrocampista",
+      "dorsal": "2",
+      "nombre": "Richy",
+      "capitan": false
+    },
+    {
+      "nombre": "Barbu",
+      "capitan": false,
+      "dorsal": "4",
+      "portero": false,
+      "posicion": "centrocampista"
+    },
+    {
+      "nombre": "Puli",
+      "portero": false,
+      "dorsal": "98",
+      "capitan": false,
+      "posicion": "centrocampista"
+    },
+    {
+      "portero": false,
+      "posicion": "centrocampista",
+      "nombre": "Uge",
+      "dorsal": "15",
+      "capitan": false
+    },
+    {
+      "portero": false,
+      "nombre": "Alber",
+      "posicion": "centrocampista",
+      "dorsal": "17",
+      "capitan": false
+    },
+    {
+      "dorsal": "18",
+      "posicion": "defensa",
+      "nombre": "Sacha",
+      "capitan": false,
+      "portero": false
+    },
+    {
+      "posicion": "defensa",
+      "capitan": false,
+      "nombre": "Pache",
+      "dorsal": "21",
+      "portero": false
+    },
+    {
+      "capitan": false,
+      "portero": false,
+      "dorsal": "22",
+      "posicion": "centrocampista",
+      "nombre": "Edu"
+    },
+    {
+      "capitan": false,
+      "dorsal": "25",
+      "posicion": "centrocampista",
+      "nombre": "Joaquín",
+      "portero": false
+    },
+    {
+      "capitan": false,
+      "dorsal": "28",
+      "posicion": "centrocampista",
+      "nombre": "Rober",
+      "portero": false
+    },
+    {
+      "portero": false,
+      "posicion": "defensa",
+      "dorsal": "31",
+      "nombre": "Mini",
+      "capitan": false
+    },
+    {
+      "portero": false,
+      "nombre": "Javi",
+      "posicion": "centrocampista",
+      "capitan": false,
+      "dorsal": "49"
+    },
+    {
+      "posicion": "defensa",
+      "dorsal": "50",
+      "portero": false,
+      "nombre": "Chaski",
+      "capitan": false
+    },
+    {
+      "capitan": false,
+      "posicion": "centrocampista",
+      "nombre": "Anuar",
+      "dorsal": "77",
+      "portero": false
+    },
+    {
+      "dorsal": "96",
+      "capitan": false,
+      "nombre": "Chencho",
+      "posicion": "defensa",
+      "portero": false
+    }
+  ],
+  "jornada": "",
+  "golesPropios": [],
+  "golesRival": [],
+  "codacta": "veteranos-2026-07-07",
+  "grupo": "Amistoso",
+  "categoria": "VETERANOS",
+  "resultado": {
+    "equipoPropio": "C.D. VILLA DE BUITRAGO",
+    "local": 0,
+    "visitante": 0,
+    "escudoPropioUrl": "",
+    "escudoRivalUrl": "/escudos-cache/DAGANZO.png",
+    "propioLocal": true,
+    "rival": "daga"
+  },
+  "hatTricks": [],
+  "suplentes": [],
+  "campo": "Peñalta, Buitrago del Lozoya",
+  "expulsiones": [],
+  "fecha": "07-07-2026"
+}
