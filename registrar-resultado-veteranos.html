@@ -40,7 +40,6 @@
   }
   .jugador-fila .nombre{ flex:1; font-size:14px; }
   .jugador-fila select{ width:auto; flex:0 0 150px; padding:6px 8px; font-size:13px; }
-
   .fila-gol{ display:flex; gap:8px; margin-bottom:8px; align-items:center; }
   .fila-gol select{ flex:2; }
   .fila-gol input{ flex:1; }
@@ -94,7 +93,7 @@
     <input type="text" id="campo" placeholder="Ej: Talamanca del Jarama" />
   </div>
 
-  <label>Escudo del rival (opcional)</label>
+  <label>Escudo del rival (opcional — si ya lo guardaste desde Sofascore en escudos-cache/, déjalo vacío, se busca solo)</label>
   <input type="file" id="escudo" accept="image/*" />
 
   <label>Marcador</label>
@@ -142,7 +141,6 @@
       Accept: 'application/vnd.github+json',
     };
   }
-
   function mostrar(html, esError){
     const el = $('estado');
     el.innerHTML = '<span class="' + (esError ? 'error' : 'ok') + '">' + html + '</span>';
@@ -215,8 +213,6 @@
       cont.appendChild(fila);
     });
   }
-
-  // Solo los que juegan (titular o suplente) pueden aparecer como goleadores
   function pintarSelectorGoles(){
     const select = $('golSelectJugador');
     select.innerHTML = '';
@@ -258,7 +254,6 @@
       });
       cont.appendChild(div);
     });
-    // El marcador de goles propios sigue automáticamente al número de goles añadidos
     $('golesPropios').value = golesAñadidos.length;
   }
 
@@ -289,6 +284,20 @@
       reader.onerror = reject;
       reader.readAsDataURL(file);
     });
+  }
+
+  // NUEVO: si no subiste archivo en "Escudo del rival", busca si ya
+  // existe uno guardado desde el flujo de Sofascore — mismo nombre
+  // que usa claveEquipo() (rival en mayúsculas, sin acentos),
+  // probando las extensiones más comunes.
+  async function buscarEscudoYaGuardado(rival, cab){
+    const clave = claveEquipo(rival);
+    for (const ext of ['png', 'jpg', 'jpeg']) {
+      const ruta = `escudos-cache/${clave}.${ext}`;
+      const resultado = await leerArchivoGitHub(ruta, cab);
+      if (resultado.existe) return ruta;
+    }
+    return '';
   }
 
   $('btnGuardar').addEventListener('click', async () => {
@@ -323,6 +332,7 @@
 
     try {
       let escudoRivalUrl = '';
+
       if (archivoEscudo) {
         const clave = claveEquipo(rival);
         const ext = archivoEscudo.type.includes('png') ? 'png' : 'jpg';
@@ -335,10 +345,12 @@
           'Añade escudo de ' + rival, cab
         );
         escudoRivalUrl = rutaEscudo;
+      } else {
+        escudoRivalUrl = await buscarEscudoYaGuardado(rival, cab);
       }
 
       const fecha = fechaDDMMYYYY(fechaValor);
-      const idPartido = 'veteranos-' + fechaValor; // YYYY-MM-DD, ordenable
+      const idPartido = 'veteranos-' + fechaValor;
 
       const resultado = {
         codacta: idPartido,
@@ -380,7 +392,12 @@
         'Resultado veteranos vs ' + rival, cab
       );
 
-      mostrar('✓ Guardado en ' + rutaResultado + '. Se generará el vídeo en la próxima ejecución del workflow.', false);
+      mostrar(
+        '✓ Guardado en ' + rutaResultado +
+        (escudoRivalUrl ? ' (escudo encontrado: ' + escudoRivalUrl + ')' : ' (sin escudo del rival — no se encontró ninguno guardado con ese nombre)') +
+        '. Se generará el vídeo en la próxima ejecución del workflow.',
+        false
+      );
     } catch (err) {
       mostrar('Error: ' + err.message, true);
     } finally {
