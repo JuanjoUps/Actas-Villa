@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600..900&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --verde: #1F4D2C;
+    --verde-oscuro: #0F2716;
+    --negro-estudio: #0A1810;
+    --oro: #F2A100;
+    --oro-claro: #F7C548;
+    --crema: #F6EFDD;
+    --tierra: #7A4B26;
+    --blanco: #FFFFFF;
+    --rojo-vivo: #E8442C;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  body{ font-family:'Barlow Condensed', sans-serif; }
+
+  /* Esta capa es de ANCHO FIJO 1080 pero ALTO VARIABLE — mide lo que
+     ocupe el contenido real (resultado + destacados), no un lienzo
+     de 1920. El script de ensamblado la coloca fija arriba del todo
+     en el vídeo final. */
+
+  #capa{
+    position:relative;
+    width:1080px;
+    background:linear-gradient(180deg, var(--verde) 0%, var(--verde-oscuro) 100%);
+    overflow:hidden;
+  }
+
+  .decoracion{
+    position:absolute;
+    width:170px;
+    height:8px;
+    background:var(--oro);
+    opacity:0.5;
+    z-index:1;
+  }
+  .d1{ left:-45px; top:230px; transform:rotate(-30deg); }
+
+  .cabecera-estudio{
+    position:relative;
+    height:190px;
+    background:linear-gradient(135deg, var(--negro-estudio) 0%, #142c1c 100%);
+    border-bottom:4px solid var(--oro);
+    display:flex;
+    align-items:center;
+    padding:0 48px;
+    gap:26px;
+  }
+  .cabecera-estudio .escudo-mini{
+    width:96px; height:96px; object-fit:contain;
+    filter:drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+  }
+  .cabecera-textos{ display:flex; flex-direction:column; gap:8px; }
+  .rotulo-en-vivo{
+    display:inline-flex; align-items:center; gap:10px; width:fit-content;
+    background:rgba(232,68,44,0.16); border:1px solid rgba(232,68,44,0.6);
+    border-radius:6px; padding:5px 14px; font-size:20px; font-weight:700;
+    letter-spacing:0.08em; color:#ff8a75; text-transform:uppercase;
+  }
+  .rotulo-en-vivo .punto{ width:10px; height:10px; border-radius:50%; background:var(--rojo-vivo); }
+  .cabecera-titulo{
+    font-family:'Fraunces', serif; font-weight:700; font-size:38px;
+    color:var(--crema); letter-spacing:0.01em;
+  }
+
+  .panel-resultado{
+    margin:44px 45px 0;
+    background:linear-gradient(160deg, #163823 0%, var(--negro-estudio) 100%);
+    border:2px solid rgba(242,161,0,0.5);
+    border-radius:28px;
+    padding:30px 36px 40px;
+    box-shadow:0 20px 50px rgba(0,0,0,0.4);
+  }
+
+  .resultado-cabecera{
+    display:flex; align-items:center; justify-content:space-between; margin-bottom:26px;
+  }
+  .categoria{
+    background:var(--oro); color:var(--negro-estudio); font-size:24px;
+    letter-spacing:0.06em; text-transform:uppercase; padding:8px 20px;
+    border-radius:7px; font-weight:700;
+  }
+  .condicion{
+    background:rgba(246,239,221,0.1); color:var(--crema); font-size:24px;
+    letter-spacing:0.05em; text-transform:uppercase; padding:8px 20px;
+    border-radius:7px; font-weight:700; border:1px solid rgba(246,239,221,0.25);
+  }
+
+  .marcador-fila{ display:flex; align-items:center; justify-content:center; gap:24px; }
+  .equipo{ width:260px; display:flex; flex-direction:column; align-items:center; gap:14px; }
+  .equipo .marco-escudo{
+    width:168px; height:168px; border-radius:24px;
+    background:rgba(246,239,221,0.06);
+    display:flex; align-items:center; justify-content:center; padding:14px;
+    overflow:hidden;
+  }
+  .equipo.es-club .marco-escudo{ box-shadow:0 0 0 6px var(--oro); background:var(--crema); }
+  .equipo img.escudo{ max-width:100%; max-height:100%; object-fit:contain; }
+  /* Los escudos de rival vienen de capturas de Sofascore con mucho
+     margen blanco alrededor del escudo real — se hace zoom para
+     compensar. El del Villa (es-club) es una imagen limpia, no lo
+     toca. */
+  .equipo:not(.es-club) img.escudo{ transform:scale(2); }
+  .equipo .nombre-equipo{
+    font-family:'Fraunces', serif; font-weight:700; font-size:26px;
+    line-height:1.1; color:var(--crema); text-align:center;
+  }
+  .marcador{ font-family:'Fraunces', serif; font-size:96px; color:var(--oro-claro); font-weight:800; }
+
+  .badges{ display:flex; justify-content:center; gap:16px; margin-top:24px; flex-wrap:wrap; }
+  .badge{
+    display:flex; align-items:center; gap:8px;
+    background:rgba(246,239,221,0.08); color:var(--oro-claro);
+    border:1px solid rgba(242,161,0,0.4); border-radius:40px;
+    padding:9px 20px; font-size:21px; font-weight:700;
+  }
+  .badge .emoji{ font-size:24px; }
+
+  /* Destacados: TODOS los goleadores propios + hat-tricks/expulsiones,
+     con brillo dorado estático (no parpadea, pero destaca). */
+  .destacados{ margin-top:28px; display:flex; flex-direction:column; gap:12px; }
+  .destacado{
+    display:flex; align-items:center; gap:16px;
+    background:rgba(246,239,221,0.08);
+    border:1px solid rgba(242,161,0,0.5);
+    border-radius:16px; padding:16px 22px;
+    box-shadow:0 0 24px rgba(242,161,0,0.25), inset 0 0 18px rgba(242,161,0,0.08);
+  }
+  .destacado .emoji{ font-size:34px; flex-shrink:0; }
+  .destacado .texto{ font-family:'Fraunces', serif; font-size:25px; font-weight:700; color:var(--crema); }
+  .destacado .texto .valor{ color:var(--oro-claro); }
+</style>
+</head>
+<body>
+  <div id="capa">
+    <div class="decoracion d1"></div>
+
+    <div class="cabecera-estudio">
+      <img class="escudo-mini" src="escudo-club.png" />
+      <div class="cabecera-textos">
+        <div class="rotulo-en-vivo"><span class="punto"></span>Resumen de jornada</div>
+        <div class="cabecera-titulo">C.D. Villa de Buitrago</div>
+      </div>
+    </div>
+
+    <div class="panel-resultado">
+      <div class="resultado-cabecera">
+        <div class="categoria" id="out-categoria"></div>
+        <div class="condicion" id="out-condicion"></div>
+      </div>
+
+      <div class="marcador-fila">
+        <div class="equipo" id="equipo-izquierda">
+          <div class="marco-escudo"><img class="escudo" id="escudo-izquierda" /></div>
+          <div class="nombre-equipo" id="nombre-izquierda"></div>
+        </div>
+        <div class="marcador" id="out-marcador"></div>
+        <div class="equipo" id="equipo-derecha">
+          <div class="marco-escudo"><img class="escudo" id="escudo-derecha" /></div>
+          <div class="nombre-equipo" id="nombre-derecha"></div>
+        </div>
+      </div>
+
+      <div class="badges" id="badges"></div>
+      <div class="destacados" id="destacados"></div>
+    </div>
+  </div>
+
+  <script>
+    window.__listo = false;
+    const $ = (id) => document.getElementById(id);
+    const ESCUDO_CLUB = "escudo-club.png";
+    const NOMBRE_CLUB = "VILLA DE BUITRAGO";
+
+    (async () => {
+      const params = new URLSearchParams(window.location.search);
+      const resp = await fetch(params.get("data"));
+      const d = await resp.json();
+
+      $('out-categoria').textContent = d.categoria;
+      $('out-condicion').textContent = d.esLocal ? 'EN CASA' : 'FUERA';
+
+      const club = { nombre: NOMBRE_CLUB, escudo: ESCUDO_CLUB, esClub: true, goles: d.golesPropio };
+      const rival = { nombre: d.rival, escudo: d.escudoRival || "escudo-generico.png", esClub: false, goles: d.golesRival };
+      const izquierda = d.esLocal ? club : rival;
+      const derecha = d.esLocal ? rival : club;
+
+      $('nombre-izquierda').textContent = izquierda.nombre;
+      $('escudo-izquierda').src = izquierda.escudo;
+      $('equipo-izquierda').classList.toggle('es-club', izquierda.esClub);
+      $('nombre-derecha').textContent = derecha.nombre;
+      $('escudo-derecha').src = derecha.escudo;
+      $('equipo-derecha').classList.toggle('es-club', derecha.esClub);
+      $('out-marcador').textContent = `${izquierda.goles} - ${derecha.goles}`;
+
+      const badges = $('badges');
+      if (d.racha && d.racha.tipo === "invicto") {
+        badges.innerHTML += `<div class="badge"><span class="emoji">🔥</span>${d.racha.partidos} sin perder</div>`;
+      }
+      if (d.lesiones && d.lesiones.length > 0) {
+        badges.innerHTML += `<div class="badge"><span class="emoji">🤕</span>Baja por lesión</div>`;
+      }
+
+      // TODOS los goleadores propios de este partido (no solo los de 2+).
+      const destacadosCont = $('destacados');
+      (d.goleadores || []).forEach((g) => {
+        const texto = `<span class="valor">${g.nombre}</span> — ${g.goles} ${g.goles === 1 ? "gol" : "goles"}`;
+        destacadosCont.innerHTML += `<div class="destacado"><span class="emoji">⚽</span><span class="texto">${texto}</span></div>`;
+      });
+      (d.hitos || []).forEach((h) => {
+        if (h.tipo === "hatTrick") {
+          destacadosCont.innerHTML += `<div class="destacado"><span class="emoji">🎩</span><span class="texto"><span class="valor">${h.jugador}</span> — hat-trick</span></div>`;
+        } else if (h.tipo === "expulsion") {
+          const texto = h.cantidad === 1 ? "1 expulsión en el equipo" : `${h.cantidad} expulsiones en el equipo`;
+          destacadosCont.innerHTML += `<div class="destacado"><span class="emoji">🟥</span><span class="texto">${texto}</span></div>`;
+        }
+      });
+
+      window.__listo = true;
+    })();
+  </script>
+</body>
+</html>
