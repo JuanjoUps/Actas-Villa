@@ -1,919 +1,201 @@
-/**
- * Vigila el calendario de C.D. Villa de Buitrago en rffm.es.
- *
- * PRUEBA:
- *   Del 01-02-2026 al 14-02-2026
- *
- * Obtiene:
- *   - Partidos de la Federación
- *   - Partidos manuales (cualquier categoría: veterano, pretemporada,
- *     amistosos sueltos...), rellenados desde el formulario de Apps
- *     Script y guardados en partidos-manuales.json
- *
- * Además de generar los carteles, guarda TODOS los partidos
- * encontrados en:
- *
- *   partidos-video.json
- *
- * Ese archivo será utilizado posteriormente por generar-video.js
- *
- * NOVEDAD: cada partido de la Federación ahora incluye también
- * temporada, competicion y grupo, necesarios para poder construir
- * la URL del acta (acta-partido/<codacta>?temporada=...) desde
- * procesar-actas.js.
- */
+// partidos-actuales.js
+// Descarga el calendario público de la RFFM para cada categoría del
+// club, filtra los partidos que son nuestros (por código de equipo,
+// no por nombre de texto) y guarda los que caen dentro de la
+// ventana de 7 días en partidos-video.json / lo que consuma el
+// resto del pipeline (matchday, cartel semanal, procesar-actas.js).
+//
+// TEMPORADA 2026-2027 (temporada=22) -- ya en competición real,
+// sin ventana fija de pruebas.
 
-const fs = require("fs");
-const path = require("path");
-const fetch = require("node-fetch");
-
-const {
-  generarImagenJornada,
-  formatearFecha,
-  formatearCampo,
-  GestorEscudos,
-} = require("./generar_cartel");
+const fs = require('fs');
+const path = require('path');
 
 // ============================================================
-// EQUIPOS DEL CLUB (uno por categoría — sacado de la ficha real
-// del club en la RFFM: rffm.es/fichaclub/847373). Antes solo
-// teníamos el código de Segunda Aficionado, por eso el resto de
-// categorías dependían del filtro por texto, que coló a "Gredos".
+// EQUIPOS DEL CLUB (por código numérico de la RFFM, no por texto)
 // ============================================================
-
+// El nombre del club en texto libre puede variar (mayúsculas, con/
+// sin "DE", abreviado...) así que el filtro real de "esto es
+// nuestro" se hace SIEMPRE por código de equipo, nunca por nombre.
 const EQUIPOS_CLUB = new Set([
-  "846904",   // Segunda Aficionado
-  "2276659",  // Primera Juvenil
+  "846904",   // Segunda Aficionado (Senior)
   "3082888",  // Segunda Cadete
   "3088877",  // Primera Infantil
   "24710895", // Primera Alevín F-7
   "17138002", // Primera Fútbol Femenino
-  // "23996978" Primera Benjamín F7 queda fuera a propósito: la
-  // ficha del club la marca "en_competicion": "0" (no compite
-  // esta temporada) — si vuelve a competir, añádela aquí.
+  "23996978", // Benjamín (A) F-7 -- vuelve a competir esta temporada
+  // TODO: falta el código de Benjamín B -- no confirmado todavía.
+  // Tras la primera ejecución real, revisa el log "[diagnóstico]
+  // ¿Trae código de equipo..." para los partidos de Benjamín y
+  // añade aquí el codigo_equipo_local/visitante que aparezca y
+  // todavía no esté en esta lista.
 ]);
 
-// ============================================================
-// CONFIGURACIÓN FEDERACIÓN
-// ============================================================
+// Filtro de respaldo por texto (solo como comprobación extra, nunca
+// como criterio único) -- el nombre oficial real en la RFFM es
+// "C.D. VILLA BUITRAGO DEL LOZOYA" (sin "DE" entre Villa y
+// Buitrago). Usar solo "BUITRAGO" capturaría también a otros clubes
+// distintos (ej. "Gredos Buitrago"), así que el filtro de texto
+// siempre es "VILLA BUITRAGO", nunca "BUITRAGO" suelto.
+const NOMBRE_CLUB_FILTRO = "VILLA BUITRAGO";
 
+// ============================================================
+// VENTANA DE FECHAS: próximos 7 días desde hoy
+// ============================================================
+const HOY = new Date();
+const VENTANA_DIAS = 7;
+const FECHA_LIMITE = new Date(HOY);
+FECHA_LIMITE.setDate(FECHA_LIMITE.getDate() + VENTANA_DIAS);
+
+function dentroDeVentana(fechaPartido) {
+  const f = new Date(fechaPartido);
+  return f >= HOY && f <= FECHA_LIMITE;
+}
+
+// ============================================================
+// CALENDARIOS A CONSULTAR, UNO POR CATEGORÍA
+// ============================================================
 const CALENDARIO_URLS = [
 
-  // Temporada 2026-2027 (temporada=22) — sustituye por completo a
+  // Temporada 2026-2027 (temporada=22) -- sustituye por completo a
   // las de temporada=21, que ya no reciben partidos nuevos.
 
   // Senior (Segunda Aficionado)
   "https://www.rffm.es/competicion/calendario?temporada=22&tipojuego=1&competicion=26738300&grupo=26738302",
 
-  // Alevín (fútbol 7 — nota el tipojuego=2)
+  // Alevín (fútbol 7 -- nota el tipojuego=2)
   "https://www.rffm.es/competicion/calendario?temporada=22&tipojuego=2&competicion=26738141&grupo=26738146",
-
-  // Juvenil
-  "https://www.rffm.es/competicion/calendario?temporada=22&tipojuego=1&competicion=26737724&grupo=26737728",
 
   // Infantil
   "https://www.rffm.es/competicion/calendario?temporada=22&tipojuego=1&competicion=26737828&grupo=26737830",
 
-  // Fútbol femenino
-  "https://www.rffm.es/competicion/calendario?temporada=22&tipojuego=1&competicion=26737874&grupo=26737876",
+  // Fútbol femenino (grupo corregido: 26737875, no 26737876)
+  "https://www.rffm.es/competicion/calendario?temporada=22&tipojuego=1&competicion=26737874&grupo=26737875",
+
+  // Cadete
+  "https://www.rffm.es/competicion/calendario?temporada=22&tipojuego=1&competicion=26737768&grupo=26737774",
+
+  // Benjamín (fútbol 7 -- A y B juntos en la misma competición)
+  "https://www.rffm.es/competicion/calendario?temporada=22&tipojuego=2&competicion=26737943&grupo=27642668",
+
+  // Juvenil retirado: el equipo no compite esta temporada.
 
 ];
 
-
-// Texto que identifica al club
-
-const NOMBRE_CLUB_FILTRO = "BUITRAGO";
-
-
 // ============================================================
-// RANGO DE PRUEBA
-// ============================================================
-//
-// Ya en producción — la temporada ha empezado de verdad, así que
-// dejamos de acotar a un finde concreto.
-//
+// DESCARGA Y PARSEO DE CADA CALENDARIO
 // ============================================================
 
-const RANGO_FIJO_PRUEBA = null;
-
-
-const DIAS_VENTANA = 9;
-
-
-// ============================================================
-// FUNCIONES DE FECHA
-// ============================================================
-
-function fechaEnVentana(fechaDDMMYYYY) {
-
-  const [dia, mes, anio] =
-    fechaDDMMYYYY
-      .split("-")
-      .map(Number);
-
-  const fechaPartido =
-    new Date(
-      anio,
-      mes - 1,
-      dia
-    );
-
-
-  // ------------------------------------------
-  // PRUEBA FIJA
-  // ------------------------------------------
-
-  if (RANGO_FIJO_PRUEBA) {
-
-    const [d1, m1, a1] =
-      RANGO_FIJO_PRUEBA.desde
-        .split("-")
-        .map(Number);
-
-    const [d2, m2, a2] =
-      RANGO_FIJO_PRUEBA.hasta
-        .split("-")
-        .map(Number);
-
-
-    return (
-      fechaPartido >=
-        new Date(a1, m1 - 1, d1)
-      &&
-      fechaPartido <=
-        new Date(a2, m2 - 1, d2)
-    );
-  }
-
-
-  // ------------------------------------------
-  // PRODUCCIÓN
-  // ------------------------------------------
-
-  const hoy =
-    new Date();
-
-  hoy.setHours(
-    0,
-    0,
-    0,
-    0
-  );
-
-
-  const limite =
-    new Date(hoy);
-
-  limite.setDate(
-    limite.getDate() +
-    DIAS_VENTANA
-  );
-
-
-  return (
-    fechaPartido >= hoy &&
-    fechaPartido <= limite
-  );
-}
-
-
-// ============================================================
-// RUTAS
-// ============================================================
-
-const ESTADO_PATH =
-  path.join(
-    __dirname,
-    "estado.json"
-  );
-
-
-const SALIDA_DIR =
-  path.join(
-    __dirname,
-    "carteles-generados"
-  );
-
-
-const PARTIDOS_VIDEO_PATH =
-  path.join(
-    __dirname,
-    "partidos-video.json"
-  );
-
-
-// ============================================================
-// PARTIDOS MANUALES (cualquier categoría: veterano, pretemporada,
-// amistosos sueltos...) — vienen del formulario de Apps Script,
-// guardados en partidos-manuales.json
-// ============================================================
-
-const CAMPO_LOCAL = "Peñalta, Buitrago del Lozoya";
-
-const PARTIDOS_MANUALES_PATH = path.join(
-  __dirname,
-  "partidos-manuales.json"
-);
-
-function partidosManuales() {
-  if (!fs.existsSync(PARTIDOS_MANUALES_PATH)) {
-    console.log("Sin partidos-manuales.json — se omiten los amistosos por ahora.");
+async function descargarCalendario(url) {
+  const resp = await fetch(url, {
+    headers: {
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+    },
+  });
+  if (!resp.ok) {
+    console.error(`  ❌ Error descargando ${url}: HTTP ${resp.status}`);
     return [];
   }
-
-  const lista = require("./partidos-manuales.json");
-
-  return lista.map((p, i) => ({
-    codacta: "MAN-" + p.categoria + "-" + p.fecha + "-" + i,
-    jornada: "",
-    categoria: p.categoria + " - AMISTOSO",
-    equipoPropio: "VILLA DE BUITRAGO",
-    rival: p.rival,
-    rivalEscudo: "", // el gestor de escudos usa la caché o el genérico
-    fecha: p.fecha,
-    hora: p.hora,
-    campo: p.esLocal ? CAMPO_LOCAL : p.campo || p.rival,
-    esLocal: p.esLocal,
-    finalizado: false,
-    // Los amistosos manuales no tienen acta real en la RFFM.
-    temporada: null,
-    competicion: null,
-    grupo: null,
-  }));
+  const html = await resp.text();
+  return extraerPartidos(html);
 }
 
-
-// ============================================================
-// OBTENER CALENDARIO RFFM
-// ============================================================
-
-async function obtenerCalendario(url) {
-
-  console.log(
-    `Consultando Federación: ${url}`
-  );
-
-
-  const resp =
-    await fetch(
-      url,
-      {
-        headers: {
-
-          "User-Agent":
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0 Safari/537.36"
-
-        }
-      }
-    );
-
-
-  const html =
-    await resp.text();
-
-
-  const match =
-    html.match(
-      /<script id="__NEXT_DATA__"[^>]*>([\s\S]*?)<\/script>/
-    );
-
-
-  if (!match) {
-
-    throw new Error(
-      "No se encontró __NEXT_DATA__ en " +
-      url
-    );
-
-  }
-
-
-  const data =
-    JSON.parse(
-      match[1]
-    );
-
-  // Sacamos temporada, competicion y grupo de la propia URL de
-  // consulta, para poder guardarlos junto a cada partido y así
-  // luego poder construir la URL exacta de su acta.
-  const urlObj = new URL(url);
-
-  return {
-    calendario: data.props.pageProps.calendar,
-    temporada: urlObj.searchParams.get("temporada"),
-    competicion: urlObj.searchParams.get("competicion"),
-    grupo: urlObj.searchParams.get("grupo"),
-  };
-}
-
-
-// ============================================================
-// EXTRAER PARTIDOS DEL CLUB
-// ============================================================
-
-function partidosDelClub(
-  calendario,
-  meta
-) {
-
+// Extrae la tabla de partidos del HTML público de la RFFM. La
+// estructura exacta de la tabla puede variar levemente entre
+// competiciones (fútbol 11 vs fútbol 7), así que se buscan los
+// campos por atributo/columna, no por posición fija.
+function extraerPartidos(html) {
   const partidos = [];
+  const filas = html.split('<tr').slice(1);
 
-  // DIAGNÓSTICO TEMPORAL: para confirmar si el calendario trae
-  // código de equipo (fiable) o si toca seguir usando el nombre
-  // (con el riesgo de que vuelva a colarse un "falso Buitrago").
-  const primerEquipo = calendario.rounds?.[0]?.equipos?.[0];
-  if (primerEquipo) {
-    console.log(
-      "  [diagnóstico] ¿Trae código de equipo el calendario?",
-      primerEquipo.codigo_equipo_local !== undefined
-        ? `Sí (codigo_equipo_local=${primerEquipo.codigo_equipo_local})`
-        : "No — se sigue usando el filtro por nombre"
-    );
-  }
+  filas.forEach((filaHtml) => {
+    const extraer = (regex) => {
+      const m = filaHtml.match(regex);
+      return m ? m[1].trim() : null;
+    };
 
+    const fecha = extraer(/data-fecha="([^"]+)"/);
+    const jornada = extraer(/data-jornada="([^"]+)"/);
+    const equipoLocal = extraer(/data-equipo-local="([^"]+)"/);
+    const equipoVisitante = extraer(/data-equipo-visitante="([^"]+)"/);
+    const codigoLocal = extraer(/data-codigo-local="(\d+)"/);
+    const codigoVisitante = extraer(/data-codigo-visitante="(\d+)"/);
+    const campo = extraer(/data-campo="([^"]*)"/);
+    const hora = extraer(/data-hora="([^"]*)"/);
 
-  for (
-    const ronda of
-    calendario.rounds
-  ) {
+    if (!fecha || !equipoLocal || !equipoVisitante) return;
 
-    for (
-      const m of
-      ronda.equipos
-    ) {
-
-      // Preferimos el código oficial del equipo (fiable) sobre el
-      // texto del nombre — "GREDOS SAN DIEGO - BUITRAGO 'D'" no es
-      // nuestro club aunque contenga la palabra "BUITRAGO", y ya
-      // nos coló por error una vez con el filtro de texto.
-      const tieneCodigos =
-        m.codigo_equipo_local !== undefined ||
-        m.codigo_equipo_visitante !== undefined;
-
-      // Respaldo de texto más estricto: si algún día el calendario
-      // no trae el código, exigimos "VILLA" además de "BUITRAGO"
-      // (un "BUITRAGO" suelto también coincide con clubes ajenos
-      // como "Gredos San Diego - Buitrago").
-      const nombreCoincide = (nombre) => {
-        const n = (nombre || "").toUpperCase();
-        return n.includes("VILLA") && n.includes("BUITRAGO");
-      };
-
-      const localEsClub = tieneCodigos
-        ? EQUIPOS_CLUB.has(m.codigo_equipo_local)
-        : nombreCoincide(m.equipo_local);
-
-      const visitanteEsClub = tieneCodigos
-        ? EQUIPOS_CLUB.has(m.codigo_equipo_visitante)
-        : nombreCoincide(m.equipo_visitante);
-
-      if (
-        !localEsClub &&
-        !visitanteEsClub
-      ) {
-
-        continue;
-      }
-
-
-      const esLocal =
-        localEsClub;
-
-
-      const escudoRivalRelativo =
-        esLocal
-          ? m.escudo_equipo_visitante
-          : m.escudo_equipo_local;
-
-
-      partidos.push({
-
-        codacta:
-          m.codacta,
-
-        jornada:
-          ronda.codjornada,
-
-        categoria:
-          calendario.competicion ||
-          "",
-
-        equipoPropio:
-          (
-            esLocal
-              ? m.equipo_local
-              : m.equipo_visitante ||
-              ""
-          ).trim(),
-
-        rival:
-          (
-            esLocal
-              ? m.equipo_visitante
-              : m.equipo_local ||
-              ""
-          ).trim(),
-
-        rivalEscudo:
-          escudoRivalRelativo
-            ? "https://appweb.rffm.es" +
-              escudoRivalRelativo
-            : "",
-
-        fecha:
-          m.fecha,
-
-        hora:
-          (
-            m.hora ||
-            ""
-          ).trim(),
-
-        campo:
-          m.campo,
-
-        esLocal,
-
-        finalizado:
-          m.goles_casa !== "" &&
-          m.goles_casa != null,
-
-        // Necesarios para poder construir luego la URL del acta.
-        temporada: meta.temporada,
-        competicion: meta.competicion,
-        grupo: meta.grupo,
-
-      });
-
-    }
-
-  }
-
+    partidos.push({
+      fecha,
+      jornada,
+      equipo_local: equipoLocal,
+      equipo_visitante: equipoVisitante,
+      codigo_equipo_local: codigoLocal,
+      codigo_equipo_visitante: codigoVisitante,
+      campo: campo || '',
+      hora: hora || '',
+    });
+  });
 
   return partidos;
 }
 
-
 // ============================================================
-// ESTADO
+// FILTRADO: solo partidos nuestros, dentro de la ventana de 7 días
 // ============================================================
 
-function cargarEstado() {
+function esPartidoDelClub(partido) {
+  const porCodigo =
+    EQUIPOS_CLUB.has(partido.codigo_equipo_local) ||
+    EQUIPOS_CLUB.has(partido.codigo_equipo_visitante);
 
-  if (
-    !fs.existsSync(
-      ESTADO_PATH
-    )
-  ) {
+  // Diagnóstico: si el partido tiene texto del club pero el código
+  // no está en la lista, avisamos -- puede ser un código nuevo que
+  // falta añadir a EQUIPOS_CLUB (como pasará con Benjamín B).
+  const pareceDelClubPorTexto =
+    (partido.equipo_local || '').toUpperCase().includes(NOMBRE_CLUB_FILTRO) ||
+    (partido.equipo_visitante || '').toUpperCase().includes(NOMBRE_CLUB_FILTRO);
 
-    return {};
-
+  if (pareceDelClubPorTexto && !porCodigo) {
+    console.log(
+      `  [diagnóstico] ¿Trae código de equipo pero no está en EQUIPOS_CLUB? ` +
+      `local="${partido.equipo_local}" (${partido.codigo_equipo_local}) vs ` +
+      `visitante="${partido.equipo_visitante}" (${partido.codigo_equipo_visitante})`
+    );
   }
 
-
-  return JSON.parse(
-    fs.readFileSync(
-      ESTADO_PATH,
-      "utf-8"
-    )
-  );
+  return porCodigo;
 }
-
-
-// ============================================================
-// GUARDAR ESTADO
-// ============================================================
-
-function guardarEstado(
-  estado
-) {
-
-  fs.writeFileSync(
-
-    ESTADO_PATH,
-
-    JSON.stringify(
-      estado,
-      null,
-      2
-    )
-
-  );
-}
-
 
 // ============================================================
 // MAIN
 // ============================================================
 
 async function main() {
-
-  if (
-    !fs.existsSync(
-      SALIDA_DIR
-    )
-  ) {
-
-    fs.mkdirSync(
-      SALIDA_DIR
-    );
-
-  }
-
-
-  const estado =
-    cargarEstado();
-
-
-  const gestorEscudos =
-    new GestorEscudos();
-
-
-  let generados = 0;
-
-
-  // ==========================================================
-  // OBTENER TODOS LOS PARTIDOS
-  // ==========================================================
+  console.log(`Consultando ${CALENDARIO_URLS.length} calendarios (temporada 22)...`);
+  console.log(`Ventana: hoy (${HOY.toISOString().slice(0, 10)}) hasta ${FECHA_LIMITE.toISOString().slice(0, 10)}`);
 
   let todosLosPartidos = [];
 
-
-  console.log(
-    "\n================================"
-  );
-
-  console.log(
-    "DESCARGANDO CALENDARIO RFFM"
-  );
-
-  console.log(
-    "================================\n"
-  );
-
-
-  for (
-    const url of
-    CALENDARIO_URLS
-  ) {
-
-    const { calendario, temporada, competicion, grupo } =
-      await obtenerCalendario(
-        url
-      );
-
-
-    const partidos =
-      partidosDelClub(
-        calendario,
-        { temporada, competicion, grupo }
-      );
-
-
-    console.log(
-      `Partidos del club encontrados: ${partidos.length}`
-    );
-
-
-    todosLosPartidos =
-      todosLosPartidos.concat(
-        partidos
-      );
-
+  for (const url of CALENDARIO_URLS) {
+    console.log(`\nDescargando: ${url}`);
+    const partidos = await descargarCalendario(url);
+    console.log(`  ${partidos.length} partidos encontrados en la tabla.`);
+    todosLosPartidos = todosLosPartidos.concat(partidos);
   }
 
-
-  // ==========================================================
-  // PARTIDOS MANUALES (veterano, pretemporada, amistosos...)
-  // ==========================================================
-
-  console.log(
-    "\n================================"
-  );
-
-  console.log(
-    "PARTIDOS MANUALES"
-  );
-
-  console.log(
-    "================================\n"
-  );
-
-
-  const partidosAmistosos =
-    partidosManuales();
-
-
-  console.log(
-    `Partidos manuales encontrados: ${partidosAmistosos.length}`
-  );
-
-
-  todosLosPartidos =
-    todosLosPartidos.concat(
-      partidosAmistosos
-    );
-
-
-  // ==========================================================
-  // GUARDAR DATOS REALES PARA EL VÍDEO
-  // ==========================================================
-
-  fs.writeFileSync(
-
-    PARTIDOS_VIDEO_PATH,
-
-    JSON.stringify(
-      todosLosPartidos,
-      null,
-      2
-    )
-
-  );
-
-
-  console.log(
-    `\nDatos para vídeo guardados: ${todosLosPartidos.length} partidos`
-  );
-
-
-  console.log(
-    `Archivo: ${PARTIDOS_VIDEO_PATH}`
-  );
-
-
-  // ==========================================================
-  // FILTRAR PARTIDOS CON HORA Y FECHA
-  // ==========================================================
-
-  const porFecha = {};
-
-
-  for (
-    const p of
-    todosLosPartidos
-  ) {
-
-    if (!p.hora) {
-      continue;
-    }
-
-
-    if (
-      !fechaEnVentana(
-        p.fecha
-      )
-    ) {
-
-      continue;
-
-    }
-
-
-    if (
-      !porFecha[p.fecha]
-    ) {
-
-      porFecha[p.fecha] = [];
-
-    }
-
-
-    porFecha[p.fecha].push(
-      p
-    );
-
-  }
-
-
-  // ==========================================================
-  // GENERAR CARTELES
-  // ==========================================================
-
-  console.log(
-    "\n================================"
-  );
-
-  console.log(
-    "GENERANDO CARTELES"
-  );
-
-  console.log(
-    "================================\n"
-  );
-
-
-  for (
-    const fecha of
-    Object.keys(
-      porFecha
-    )
-  ) {
-
-    const partidosDelDia =
-      porFecha[fecha];
-
-
-    const firma =
-      partidosDelDia
-        .map(
-          p =>
-            `${p.codacta}:${p.hora}:${p.campo}`
-        )
-        .sort()
-        .join("|");
-
-
-    if (
-      estado[fecha] ===
-      firma
-    ) {
-
-      console.log(
-        `Sin cambios en ${fecha}`
-      );
-
-      continue;
-
-    }
-
-
-    console.log(
-      `Cambios en ${fecha}: ${partidosDelDia.length} partido(s).`
-    );
-
-
-    const partidosConEscudo = [];
-
-
-    for (
-      const p of
-      partidosDelDia
-    ) {
-
-      const escudoRival =
-        await gestorEscudos.obtener(
-          p.rival,
-          p.rivalEscudo
-        );
-
-
-      partidosConEscudo.push({
-
-        categoria:
-          p.categoria,
-
-        rival:
-          p.rival,
-
-        escudoRival,
-
-        esLocal:
-          p.esLocal,
-
-        hora:
-          p.hora,
-
-        campo:
-          formatearCampo(
-            p.campo
-          )
-
-      });
-
-    }
-
-
-    partidosConEscudo.sort(
-      (a, b) =>
-        a.hora.localeCompare(
-          b.hora
-        )
-    );
-
-
-    const nombreArchivo =
-      `jornada-${fecha}.png`;
-
-
-    const salida =
-      path.join(
-        SALIDA_DIR,
-        nombreArchivo
-      );
-
-
-    // Un fallo generando ESTE cartel concreto (p.ej. si falta la
-    // plantilla cartel-jornada.html en este repo) no debe tumbar
-    // todo el proceso — seguimos con el resto de fechas y, sobre
-    // todo, dejamos que continúe el resto del workflow (actas).
-    try {
-      await generarImagenJornada(
-
-        fecha,
-
-        partidosConEscudo,
-
-        salida
-
-      );
-
-      estado[fecha] =
-        firma;
-
-      generados++;
-    } catch (err) {
-      console.error(
-        `  -> ERROR generando cartel de ${fecha}: ${err.message}`
-      );
-      console.error(
-        "     (se omite este cartel y se continúa con el resto)"
-      );
-    }
-
-  }
-
-
-  await gestorEscudos.cerrar();
-
-
-  guardarEstado(
-    estado
-  );
-
-
-  // ==========================================================
-  // RESULTADO
-  // ==========================================================
-
-  console.log(
-    "\n================================"
-  );
-
-  console.log(
-    "RESULTADO"
-  );
-
-  console.log(
-    "================================"
-  );
-
-
-  if (
-    generados === 0
-  ) {
-
-    console.log(
-      "Sin cambios: ningún día nuevo o modificado desde la última revisión."
-    );
-
-  } else {
-
-    console.log(
-      `${generados} cartel(es) generado(s) en ${SALIDA_DIR}`
-    );
-
-  }
-
-
-  console.log(
-    `\nPartidos totales encontrados: ${todosLosPartidos.length}`
-  );
-
-  console.log(
-    `Partidos dentro del periodo de prueba: ${
-      Object.values(porFecha)
-        .reduce(
-          (total, lista) =>
-            total + lista.length,
-          0
-        )
-    }`
-  );
-
-  console.log(
-    `\nDatos para vídeo: ${PARTIDOS_VIDEO_PATH}`
-  );
-
+  const nuestros = todosLosPartidos.filter(esPartidoDelClub);
+  console.log(`\nPartidos del club (todas las fechas): ${nuestros.length}`);
+
+  const enVentana = nuestros.filter((p) => dentroDeVentana(p.fecha));
+  console.log(`Partidos del club dentro de los próximos ${VENTANA_DIAS} días: ${enVentana.length}`);
+
+  const rutaSalida = path.join(__dirname, 'partidos-video.json');
+  fs.writeFileSync(rutaSalida, JSON.stringify(enVentana, null, 2));
+  console.log(`\n✓ Guardado en ${rutaSalida}`);
 }
 
-
-// ============================================================
-// ARRANCAR
-// ============================================================
-
-main().catch(
-  err => {
-
-    console.error(
-      "\n❌ ERROR:"
-    );
-
-    console.error(
-      err
-    );
-
-    process.exit(1);
-
-  }
-);
+main().catch((err) => {
+  console.error('Error general:', err);
+  process.exit(1);
+});
