@@ -23,12 +23,8 @@ const EQUIPOS_CLUB = new Set([
   "3088877",  // Primera Infantil
   "24710895", // Primera Alevín F-7
   "17138002", // Primera Fútbol Femenino
-  "23996978", // Benjamín (A) F-7 -- vuelve a competir esta temporada
-  // TODO: falta el código de Benjamín B -- no confirmado todavía.
-  // Tras la primera ejecución real, revisa el log "[diagnóstico]
-  // ¿Trae código de equipo..." para los partidos de Benjamín y
-  // añade aquí el codigo_equipo_local/visitante que aparezca y
-  // todavía no esté en esta lista.
+  "23996978", // Primera Benjamín F-7 'A'
+  "27703615", // Primera Benjamín F-7 'B' -- confirmado en la ficha oficial del club
 ]);
 
 // Filtro de respaldo por texto (solo como comprobación extra, nunca
@@ -151,7 +147,7 @@ function esPartidoDelClub(partido) {
 
   // Diagnóstico: si el partido tiene texto del club pero el código
   // no está en la lista, avisamos -- puede ser un código nuevo que
-  // falta añadir a EQUIPOS_CLUB (como pasará con Benjamín B).
+  // falta añadir a EQUIPOS_CLUB.
   const pareceDelClubPorTexto =
     (partido.equipo_local || '').toUpperCase().includes(NOMBRE_CLUB_FILTRO) ||
     (partido.equipo_visitante || '').toUpperCase().includes(NOMBRE_CLUB_FILTRO);
