@@ -25,6 +25,8 @@ jobs:
 
       - run: cd video && npm install
 
+- run: npm install playwright
+
       - run: npx playwright install --with-deps chromium
         working-directory: video
 
