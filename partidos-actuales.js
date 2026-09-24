@@ -10,6 +10,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { chromium } = require('playwright');
 
 // ============================================================
 // EQUIPOS DEL CLUB (por código numérico de la RFFM, no por texto)
@@ -43,8 +44,40 @@ const VENTANA_DIAS = 7;
 const FECHA_LIMITE = new Date(HOY);
 FECHA_LIMITE.setDate(FECHA_LIMITE.getDate() + VENTANA_DIAS);
 
+// Convierte la fecha tal como la mande la RFFM a un objeto Date
+// fiable, sin depender de que new Date() adivine bien el formato.
+// Acepta ISO (2026-09-24), DD-MM-YYYY y DD/MM/YYYY.
+function parsearFecha(valor) {
+  if (!valor) return null;
+
+  // ISO ya válido (2026-09-24 o con hora incluida)
+  if (/^\d{4}-\d{2}-\d{2}/.test(valor)) {
+    return new Date(valor);
+  }
+
+  // DD-MM-YYYY o DD/MM/YYYY
+  const m = String(valor).match(/^(\d{1,2})[-\/](\d{1,2})[-\/](\d{4})/);
+  if (m) {
+    const [, dia, mes, anio] = m;
+    return new Date(`${anio}-${mes.padStart(2, '0')}-${dia.padStart(2, '0')}`);
+  }
+
+  // Como último recurso, lo que JS entienda (puede fallar, por eso
+  // es el último intento, no el primero)
+  return new Date(valor);
+}
+
+let yaMostroDiagnosticoFecha = false;
+
 function dentroDeVentana(fechaPartido) {
-  const f = new Date(fechaPartido);
+  const f = parsearFecha(fechaPartido);
+
+  if (!yaMostroDiagnosticoFecha) {
+    console.log(`  [diagnóstico fecha] valor original="${fechaPartido}" -> parseado=${f} (${f && !isNaN(f) ? 'válido' : 'INVÁLIDO'})`);
+    yaMostroDiagnosticoFecha = true;
+  }
+
+  if (!f || isNaN(f)) return false;
   return f >= HOY && f <= FECHA_LIMITE;
 }
 
@@ -82,18 +115,30 @@ const CALENDARIO_URLS = [
 // DESCARGA Y PARSEO DE CADA CALENDARIO
 // ============================================================
 
-async function descargarCalendario(url) {
-  const resp = await fetch(url, {
-    headers: {
-      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
-    },
+async function descargarCalendario(url, browser) {
+  const page = await browser.newPage({
+    userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
   });
-  if (!resp.ok) {
-    console.error(`  ❌ Error descargando ${url}: HTTP ${resp.status}`);
+  try {
+    await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
+    // Esperamos un poco extra por si hay alguna comprobación de
+    // JavaScript antes de que la página termine de montar el
+    // bloque __NEXT_DATA__.
+    await page.waitForTimeout(1500);
+    const html = await page.content();
+    console.log(`  Tamaño de la respuesta: ${html.length} caracteres.`);
+    if (html.length < 5000) {
+      console.log('  ⚠️ Respuesta sospechosamente pequeña -- puede que la RFFM esté bloqueando incluso al navegador real.');
+      console.log('  Primeros 500 caracteres de lo recibido:');
+      console.log('  ' + html.slice(0, 500).replace(/\n/g, ' '));
+    }
+    return extraerPartidos(html);
+  } catch (err) {
+    console.error(`  ❌ Error descargando ${url}: ${err.message}`);
     return [];
+  } finally {
+    await page.close();
   }
-  const html = await resp.text();
-  return extraerPartidos(html);
 }
 
 // Extrae la tabla de partidos del HTML público de la RFFM. La
@@ -187,14 +232,17 @@ async function main() {
   console.log(`Consultando ${CALENDARIO_URLS.length} calendarios (temporada 22)...`);
   console.log(`Ventana: hoy (${HOY.toISOString().slice(0, 10)}) hasta ${FECHA_LIMITE.toISOString().slice(0, 10)}`);
 
+  const browser = await chromium.launch();
   let todosLosPartidos = [];
 
   for (const url of CALENDARIO_URLS) {
     console.log(`\nDescargando: ${url}`);
-    const partidos = await descargarCalendario(url);
+    const partidos = await descargarCalendario(url, browser);
     console.log(`  ${partidos.length} partidos encontrados en la tabla.`);
     todosLosPartidos = todosLosPartidos.concat(partidos);
   }
+
+  await browser.close();
 
   const nuestros = todosLosPartidos.filter(esPartidoDelClub);
   console.log(`\nPartidos del club (todas las fechas): ${nuestros.length}`);
