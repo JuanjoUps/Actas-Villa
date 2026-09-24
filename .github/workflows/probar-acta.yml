@@ -18,7 +18,10 @@ jobs:
       - name: Instalar dependencias
         run: npm install
 
-      - name: Instalar Playwright
+      - name: Instalar el paquete playwright
+        run: npm install playwright
+
+      - name: Instalar el navegador de Playwright
         run: npx playwright install --with-deps chromium
 
       - name: Probar acta (actas antiguas de ejemplo)
