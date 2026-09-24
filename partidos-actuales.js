@@ -132,7 +132,18 @@ async function descargarCalendario(url, browser) {
       console.log('  Primeros 500 caracteres de lo recibido:');
       console.log('  ' + html.slice(0, 500).replace(/\n/g, ' '));
     }
-    return extraerPartidos(html);
+    const partidos = extraerPartidos(html);
+    // Sacamos competicion+grupo de la propia URL consultada, para
+    // que cada partido lleve consigo lo necesario para construir
+    // luego la URL de su acta.
+    const paramsUrl = new URL(url).searchParams;
+    const competicion = paramsUrl.get('competicion');
+    const grupo = paramsUrl.get('grupo');
+    partidos.forEach((p) => {
+      p.competicion = competicion;
+      p.grupo_id = grupo;
+    });
+    return partidos;
   } catch (err) {
     console.error(`  ❌ Error descargando ${url}: ${err.message}`);
     return [];
