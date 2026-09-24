@@ -1,0 +1,25 @@
+name: Probar acta (solo prueba, no toca producción)
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  probar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar el repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Instalar dependencias
+        run: npm install
+
+      - name: Instalar Playwright
+        run: npx playwright install --with-deps chromium
+
+      - name: Probar acta (actas antiguas de ejemplo)
+        run: node probar-acta.js
