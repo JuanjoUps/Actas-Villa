@@ -255,8 +255,12 @@ async function main() {
     .filter((p) => p._fechaParseada && !isNaN(p._fechaParseada))
     .sort((a, b) => a._fechaParseada - b._fechaParseada);
 
-  console.log(`\n[diagnóstico] Las 10 fechas MÁS PRÓXIMAS de esos ${nuestros.length} partidos:`);
-  conFechaValida.slice(0, 10).forEach((p) => {
+  const pasados = conFechaValida.filter((p) => p._fechaParseada < HOY);
+  const futuros = conFechaValida.filter((p) => p._fechaParseada >= HOY);
+
+  console.log(`\n[diagnóstico] De ${conFechaValida.length} partidos con fecha válida: ${pasados.length} ya pasados, ${futuros.length} futuros.`);
+  console.log(`[diagnóstico] Las 10 fechas FUTURAS más próximas (>= hoy):`);
+  futuros.slice(0, 10).forEach((p) => {
     console.log(`  ${p.fecha} -- ${p.equipo_local} vs ${p.equipo_visitante} (categoria detectada por código: ${p.codigo_equipo_local}/${p.codigo_equipo_visitante})`);
   });
 
