@@ -1,5 +1,18 @@
 [
   {
+    "codacta": "5626030",
+    "fecha": "27-09-2026",
+    "jornada": "1 (27-09-2026)",
+    "equipo_local": "UNION DEPORTIVA TRES CANTOS 'B'",
+    "equipo_visitante": "C.D. VILLA BUITRAGO DEL LOZOYA",
+    "codigo_equipo_local": "3462005",
+    "codigo_equipo_visitante": "846904",
+    "campo": "TRES CANTOS - KEKA VEGA - FORESTA 2 (HA)(HA)",
+    "hora": "18:00",
+    "competicion": "26738300",
+    "grupo_id": "26738302"
+  },
+  {
     "codacta": "5620160",
     "fecha": "26-09-2026",
     "jornada": "1 (26-09-2026)",
@@ -8,6 +21,8 @@
     "codigo_equipo_local": "17151705",
     "codigo_equipo_visitante": "3088877",
     "campo": "ALGETE - URBANIZ. STO. DOMINGO (HA)(HA)",
-    "hora": "18:00"
+    "hora": "18:00",
+    "competicion": "26737828",
+    "grupo_id": "26737830"
   }
 ]
