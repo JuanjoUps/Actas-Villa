@@ -103,12 +103,14 @@ async function main() {
 
   const browser = await chromium.launch();
   let procesados = 0;
+  let erroresReales = 0;
 
   for (const partido of sinProcesar) {
     console.log(`\nProcesando acta: ${partido.codacta}...`);
 
     try {
       const url = urlDelActa(partido);
+      console.log(`  URL construida: ${url}`);
       const pageProps = await obtenerActaCruda(url, browser);
 
       if (!pageProps.game) {
@@ -130,13 +132,24 @@ async function main() {
       estadoActas[partido.codacta] = new Date().toISOString();
       procesados++;
     } catch (err) {
-      console.error(`  -> ERROR: ${err.message}`);
+      console.error(`  -> ERROR REAL procesando ${partido.codacta}: ${err.message}`);
+      erroresReales++;
     }
   }
 
   await browser.close();
   guardarEstadoActas(estadoActas);
   console.log(`\nActas nuevas procesadas: ${procesados}`);
+
+  if (erroresReales > 0) {
+    // Hacemos que el proceso termine en fallo, para que el propio
+    // workflow dispare el aviso de Telegram que ya tienes montado
+    // para errores -- sin hardcodear nada de este partido en
+    // concreto, cualquier fallo real de cualquier acta futura
+    // avisará igual.
+    console.error(`\n❌ ${erroresReales} acta(s) fallaron con un error real (no "todavía no cerrada"). Revisa el log de arriba.`);
+    process.exit(1);
+  }
 }
 
 main().catch((err) => {
