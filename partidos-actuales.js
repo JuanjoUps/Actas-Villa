@@ -101,41 +101,57 @@ async function descargarCalendario(url) {
 // competiciones (fútbol 11 vs fútbol 7), así que se buscan los
 // campos por atributo/columna, no por posición fija.
 function extraerPartidos(html) {
+  const bloque = html.match(/<script id="__NEXT_DATA__"[^>]*>([\s\S]*?)<\/script>/);
+  if (!bloque) {
+    console.error('  ❌ No se encontró el bloque __NEXT_DATA__ en la página (¿cambió la web?).');
+    return [];
+  }
+
+  let datos;
+  try {
+    datos = JSON.parse(bloque[1]);
+  } catch (err) {
+    console.error('  ❌ Error parseando __NEXT_DATA__:', err.message);
+    return [];
+  }
+
+  const calendar = datos?.props?.pageProps?.calendar;
+  if (!calendar || !Array.isArray(calendar.rounds)) {
+    console.error('  ❌ No se encontró calendar.rounds dentro de __NEXT_DATA__.');
+    console.error('  Claves disponibles en pageProps:', Object.keys(datos?.props?.pageProps || {}));
+    return [];
+  }
+
+  // Modo diagnóstico: la PRIMERA vez que hay al menos un partido,
+  // imprime el objeto completo tal cual viene de la RFFM -- así
+  // confirmamos los nombres de campo reales con datos de verdad.
+  let yaMostroDiagnostico = false;
+
   const partidos = [];
-  const filas = html.split('<tr').slice(1);
+  calendar.rounds.forEach((round) => {
+    (round.equipos || []).forEach((partido) => {
+      if (!yaMostroDiagnostico) {
+        console.log('  [diagnóstico] Primer partido tal cual llega de la RFFM:');
+        console.log('  ' + JSON.stringify(partido, null, 2).replace(/\n/g, '\n  '));
+        yaMostroDiagnostico = true;
+      }
 
-  filas.forEach((filaHtml) => {
-    const extraer = (regex) => {
-      const m = filaHtml.match(regex);
-      return m ? m[1].trim() : null;
-    };
-
-    const fecha = extraer(/data-fecha="([^"]+)"/);
-    const jornada = extraer(/data-jornada="([^"]+)"/);
-    const equipoLocal = extraer(/data-equipo-local="([^"]+)"/);
-    const equipoVisitante = extraer(/data-equipo-visitante="([^"]+)"/);
-    const codigoLocal = extraer(/data-codigo-local="(\d+)"/);
-    const codigoVisitante = extraer(/data-codigo-visitante="(\d+)"/);
-    const campo = extraer(/data-campo="([^"]*)"/);
-    const hora = extraer(/data-hora="([^"]*)"/);
-
-    if (!fecha || !equipoLocal || !equipoVisitante) return;
-
-    partidos.push({
-      fecha,
-      jornada,
-      equipo_local: equipoLocal,
-      equipo_visitante: equipoVisitante,
-      codigo_equipo_local: codigoLocal,
-      codigo_equipo_visitante: codigoVisitante,
-      campo: campo || '',
-      hora: hora || '',
+      partidos.push({
+        codacta: partido.codacta,
+        fecha: partido.fecha || partido.Fecha || partido.fecha_partido,
+        jornada: round.jornada || round.numero_jornada || round.nombre || '',
+        equipo_local: partido.equipo_local || partido.local || partido.nombre_local,
+        equipo_visitante: partido.equipo_visitante || partido.visitante || partido.nombre_visitante,
+        codigo_equipo_local: String(partido.codigo_local || partido.codigo_equipo_local || ''),
+        codigo_equipo_visitante: String(partido.codigo_visitante || partido.codigo_equipo_visitante || ''),
+        campo: partido.campo || partido.nombre_campo || '',
+        hora: partido.hora || '',
+      });
     });
   });
 
   return partidos;
 }
-
 // ============================================================
 // FILTRADO: solo partidos nuestros, dentro de la ventana de 7 días
 // ============================================================
