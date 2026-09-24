@@ -247,6 +247,19 @@ async function main() {
   const nuestros = todosLosPartidos.filter(esPartidoDelClub);
   console.log(`\nPartidos del club (todas las fechas): ${nuestros.length}`);
 
+  // Mostramos las fechas más próximas de los 98, ordenadas -- así
+  // vemos de un vistazo si el partido del sábado está ahí o no,
+  // en vez de adivinar con un solo ejemplo.
+  const conFechaValida = nuestros
+    .map((p) => ({ ...p, _fechaParseada: parsearFecha(p.fecha) }))
+    .filter((p) => p._fechaParseada && !isNaN(p._fechaParseada))
+    .sort((a, b) => a._fechaParseada - b._fechaParseada);
+
+  console.log(`\n[diagnóstico] Las 10 fechas MÁS PRÓXIMAS de esos ${nuestros.length} partidos:`);
+  conFechaValida.slice(0, 10).forEach((p) => {
+    console.log(`  ${p.fecha} -- ${p.equipo_local} vs ${p.equipo_visitante} (categoria detectada por código: ${p.codigo_equipo_local}/${p.codigo_equipo_visitante})`);
+  });
+
   const enVentana = nuestros.filter((p) => dentroDeVentana(p.fecha));
   console.log(`Partidos del club dentro de los próximos ${VENTANA_DIAS} días: ${enVentana.length}`);
 
