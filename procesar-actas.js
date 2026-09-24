@@ -1,14 +1,23 @@
 // procesar-actas.js
 // Descarga y procesa las actas oficiales de los partidos ya
-// jugados de la RFFM (alineación, goles, tarjetas, expulsiones) y
-// las guarda en resultados-partidos/resultado-<codacta>.json, con
-// el mismo formato que usa el vídeo de resultado.
+// jugados de la RFFM y las guarda en
+// resultados-partidos/resultado-<codacta>.json, con el mismo
+// formato que usa el vídeo de resultado.
+//
+// Usa los dos módulos ya existentes y probados: obtener-acta.js
+// (descarga con Playwright + lee __NEXT_DATA__) y
+// extraer-datos-partido.js (convierte el "game" crudo de la RFFM
+// a nuestro formato) -- el mismo camino que ya confirmamos que
+// funciona en probar-acta.js, sin reinventar la extracción.
 //
 // Lleva su propio registro (estado-actas.json) para no volver a
 // procesar un acta ya guardada.
 
 const fs = require('fs');
 const path = require('path');
+const { chromium } = require('playwright');
+const { obtenerActaCruda } = require('./obtener-acta');
+const { extraerDatosPartido } = require('./extraer-datos-partido');
 
 // ============================================================
 // EQUIPOS DEL CLUB (por código numérico de la RFFM)
@@ -21,9 +30,9 @@ const EQUIPOS_CLUB = new Set([
   "17138002", // Primera Fútbol Femenino
   "23996978", // Primera Benjamín F-7 'A'
   "27703615", // Primera Benjamín F-7 'B' -- confirmado en la ficha oficial del club
+  // TODO: falta Prebenjamín ("28105851", equipo 'B') -- pendiente
+  // de confirmar la URL de calendario de esa categoría.
 ]);
-
-const NOMBRE_CLUB_FILTRO = "VILLA BUITRAGO";
 
 const RESULTADOS_DIR = path.join(__dirname, 'resultados-partidos');
 const ESTADO_ACTAS_PATH = path.join(__dirname, 'estado-actas.json');
@@ -60,61 +69,15 @@ function esPartidoDelClub(partido) {
 }
 
 // ============================================================
-// DESCARGA Y PARSEO DEL ACTA
+// URL del acta a partir de los datos que ya trae cada partido de
+// partidos-video.json (mismo formato que urlActa() en obtener-acta.js)
 // ============================================================
 
-async function descargarActa(codacta) {
-  const url = `https://www.rffm.es/partido/acta?acta=${codacta}`;
-  const resp = await fetch(url, {
-    headers: {
-      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
-    },
-  });
-  if (!resp.ok) {
-    console.error(`  ❌ Error descargando acta ${codacta}: HTTP ${resp.status}`);
-    return null;
-  }
-  return resp.text();
-}
-
-function extraerDatosActa(html, partido) {
-  const extraer = (regex) => {
-    const m = html.match(regex);
-    return m ? m[1].trim() : null;
-  };
-
-  const finalizado = /data-estado="finalizado"|FINALIZADO/i.test(html);
-  if (!finalizado) return null;
-
-  const golesLocal = extraer(/data-goles-local="(\d+)"/);
-  const golesVisitante = extraer(/data-goles-visitante="(\d+)"/);
-
-  return {
-    codacta: partido.codacta || partido.fecha + '-' + partido.equipo_local,
-    categoria: partido.categoria || '',
-    grupo: partido.jornada ? `Jornada ${partido.jornada}` : '',
-    jornada: partido.jornada || '',
-    fecha: partido.fecha,
-    campo: partido.campo || '',
-    resultado: {
-      local: golesLocal !== null ? Number(golesLocal) : null,
-      visitante: golesVisitante !== null ? Number(golesVisitante) : null,
-      propioLocal: EQUIPOS_CLUB.has(partido.codigo_equipo_local),
-      equipoPropio: 'C.D. VILLA DE BUITRAGO',
-      rival: EQUIPOS_CLUB.has(partido.codigo_equipo_local)
-        ? partido.equipo_visitante
-        : partido.equipo_local,
-      escudoPropioUrl: '',
-      escudoRivalUrl: '',
-    },
-    alineacion: [],   // se completa parseando la tabla de alineación del HTML
-    suplentes: [],
-    golesPropios: [],
-    golesRival: [],
-    tarjetas: [],
-    expulsiones: [],
-    hatTricks: [],
-  };
+function urlDelActa(partido) {
+  return (
+    `https://www.rffm.es/acta-partido/${partido.codacta}` +
+    `?temporada=22&competicion=${partido.competicion || ''}&grupo=${partido.grupo_id || ''}`
+  );
 }
 
 // ============================================================
@@ -129,9 +92,7 @@ async function main() {
   const estadoActas = cargarEstadoActas();
   const pendientes = cargarPartidosPendientes().filter(esPartidoDelClub);
 
-  const sinProcesar = pendientes.filter(
-    (p) => !estadoActas[p.codacta || p.fecha + '-' + p.equipo_local]
-  );
+  const sinProcesar = pendientes.filter((p) => !estadoActas[p.codacta]);
 
   console.log(`Partidos finalizados sin procesar: ${sinProcesar.length}`);
 
@@ -140,29 +101,40 @@ async function main() {
     return;
   }
 
+  const browser = await chromium.launch();
   let procesados = 0;
 
   for (const partido of sinProcesar) {
-    const clave = partido.codacta || partido.fecha + '-' + partido.equipo_local;
-    console.log(`\nProcesando acta: ${clave}...`);
+    console.log(`\nProcesando acta: ${partido.codacta}...`);
 
-    const html = await descargarActa(clave);
-    if (!html) continue;
+    try {
+      const url = urlDelActa(partido);
+      const pageProps = await obtenerActaCruda(url, browser);
 
-    const datos = extraerDatosActa(html, partido);
-    if (!datos) {
-      console.log('  ℹ️ Acta todavía no finalizada, se reintentará más adelante.');
-      continue;
+      if (!pageProps.game) {
+        console.log('  -> Esta página no tiene datos de partido (game).');
+        continue;
+      }
+
+      if (pageProps.game.acta_cerrada !== '1') {
+        console.log('  ℹ️ Acta todavía no cerrada, se reintentará más adelante.');
+        continue;
+      }
+
+      const datos = extraerDatosPartido(pageProps.game);
+
+      const rutaSalida = path.join(RESULTADOS_DIR, `resultado-${partido.codacta}.json`);
+      fs.writeFileSync(rutaSalida, JSON.stringify(datos, null, 2));
+      console.log(`  ✓ Guardado en ${rutaSalida}`);
+
+      estadoActas[partido.codacta] = new Date().toISOString();
+      procesados++;
+    } catch (err) {
+      console.error(`  -> ERROR: ${err.message}`);
     }
-
-    const rutaSalida = path.join(RESULTADOS_DIR, `resultado-${clave}.json`);
-    fs.writeFileSync(rutaSalida, JSON.stringify(datos, null, 2));
-    console.log(`  ✓ Guardado en ${rutaSalida}`);
-
-    estadoActas[clave] = new Date().toISOString();
-    procesados++;
   }
 
+  await browser.close();
   guardarEstadoActas(estadoActas);
   console.log(`\nActas nuevas procesadas: ${procesados}`);
 }
