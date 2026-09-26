@@ -115,27 +115,58 @@ const CALENDARIO_URLS = [
 // DESCARGA Y PARSEO DE CADA CALENDARIO
 // ============================================================
 
+// La RFFM corre sobre Liferay y en fechas de mucha carga (fichas,
+// jornadas con muchos partidos) responde lento o da 504 -- en vez
+// de rendirnos a la primera, reintentamos con una espera creciente
+// entre intentos (backoff), y un tiempo de espera más generoso.
+const REINTENTOS_MAX = 4;
+const TIMEOUT_PAGINA_MS = 60000; // subido de 30s a 60s
+
+function esperarMs(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+async function conReintentos(descripcion, fn) {
+  let ultimoError;
+  for (let intento = 1; intento <= REINTENTOS_MAX; intento++) {
+    try {
+      return await fn();
+    } catch (err) {
+      ultimoError = err;
+      const esperaMs = intento * 5000; // 5s, 10s, 15s, 20s...
+      console.log(`  ⚠️ Intento ${intento}/${REINTENTOS_MAX} falló para ${descripcion}: ${err.message}`);
+      if (intento < REINTENTOS_MAX) {
+        console.log(`  Reintentando en ${esperaMs / 1000}s...`);
+        await esperarMs(esperaMs);
+      }
+    }
+  }
+  throw ultimoError;
+}
+
 async function descargarCalendario(url, browser) {
   const page = await browser.newPage({
     userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
   });
   try {
-    await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
-    // Esperamos un poco extra por si hay alguna comprobación de
-    // JavaScript antes de que la página termine de montar el
-    // bloque __NEXT_DATA__.
-    await page.waitForTimeout(1500);
-    const html = await page.content();
+    const html = await conReintentos(url, async () => {
+      const resp = await page.goto(url, { waitUntil: 'domcontentloaded', timeout: TIMEOUT_PAGINA_MS });
+      if (resp && resp.status() >= 500) {
+        throw new Error(`HTTP ${resp.status()} (servidor sobrecargado)`);
+      }
+      // Esperamos un poco extra por si hay alguna comprobación de
+      // JavaScript antes de que la página termine de montar el
+      // bloque __NEXT_DATA__.
+      await page.waitForTimeout(1500);
+      const contenido = await page.content();
+      if (contenido.length < 5000) {
+        throw new Error(`Respuesta sospechosamente pequeña (${contenido.length} caracteres)`);
+      }
+      return contenido;
+    });
+
     console.log(`  Tamaño de la respuesta: ${html.length} caracteres.`);
-    if (html.length < 5000) {
-      console.log('  ⚠️ Respuesta sospechosamente pequeña -- puede que la RFFM esté bloqueando incluso al navegador real.');
-      console.log('  Primeros 500 caracteres de lo recibido:');
-      console.log('  ' + html.slice(0, 500).replace(/\n/g, ' '));
-    }
     const partidos = extraerPartidos(html);
-    // Sacamos competicion+grupo de la propia URL consultada, para
-    // que cada partido lleve consigo lo necesario para construir
-    // luego la URL de su acta.
     const paramsUrl = new URL(url).searchParams;
     const competicion = paramsUrl.get('competicion');
     const grupo = paramsUrl.get('grupo');
@@ -145,7 +176,7 @@ async function descargarCalendario(url, browser) {
     });
     return partidos;
   } catch (err) {
-    console.error(`  ❌ Error descargando ${url}: ${err.message}`);
+    console.error(`  ❌ Error descargando ${url} (tras ${REINTENTOS_MAX} intentos): ${err.message}`);
     return [];
   } finally {
     await page.close();
