@@ -41,6 +41,9 @@ const NOMBRE_CLUB_FILTRO = "VILLA BUITRAGO";
 // ============================================================
 const HOY = new Date();
 const VENTANA_DIAS = 7;
+const DIAS_HACIA_ATRAS = 5; // para no perder partidos ya jugados cuyo acta tarda en procesarse
+const FECHA_DESDE = new Date(HOY);
+FECHA_DESDE.setDate(FECHA_DESDE.getDate() - DIAS_HACIA_ATRAS);
 const FECHA_LIMITE = new Date(HOY);
 FECHA_LIMITE.setDate(FECHA_LIMITE.getDate() + VENTANA_DIAS);
 
@@ -78,7 +81,7 @@ function dentroDeVentana(fechaPartido) {
   }
 
   if (!f || isNaN(f)) return false;
-  return f >= HOY && f <= FECHA_LIMITE;
+  return f >= FECHA_DESDE && f <= FECHA_LIMITE;
 }
 
 // ============================================================
@@ -248,6 +251,18 @@ function esPartidoDelClub(partido) {
     EQUIPOS_CLUB.has(partido.codigo_equipo_local) ||
     EQUIPOS_CLUB.has(partido.codigo_equipo_visitante);
 
+  // Red de seguridad: si el código no coincide por lo que sea (dato
+  // raro en un partido concreto, id externo, etc.), pero el NOMBRE
+  // del equipo sí dice claramente que es el club, lo contamos
+  // igual -- mejor coger de más que perder un partido real.
+  const porNombre =
+    (partido.equipo_local || '').toUpperCase().includes(NOMBRE_CLUB_FILTRO) ||
+    (partido.equipo_visitante || '').toUpperCase().includes(NOMBRE_CLUB_FILTRO);
+
+  if (porNombre && !porCodigo) {
+    console.log(`  [diagnóstico] Partido incluido por NOMBRE, no por código (revisar por qué): ${partido.equipo_local} vs ${partido.equipo_visitante}, codigo_local=${partido.codigo_equipo_local}, codigo_visitante=${partido.codigo_equipo_visitante}`);
+  }
+
   // Diagnóstico: si el partido tiene texto del club pero el código
   // no está en la lista, avisamos -- puede ser un código nuevo que
   // falta añadir a EQUIPOS_CLUB.
@@ -263,7 +278,7 @@ function esPartidoDelClub(partido) {
     );
   }
 
-  return porCodigo;
+  return porCodigo || porNombre;
 }
 
 // ============================================================
@@ -272,7 +287,7 @@ function esPartidoDelClub(partido) {
 
 async function main() {
   console.log(`Consultando ${CALENDARIO_URLS.length} calendarios (temporada 22)...`);
-  console.log(`Ventana: hoy (${HOY.toISOString().slice(0, 10)}) hasta ${FECHA_LIMITE.toISOString().slice(0, 10)}`);
+  console.log(`Ventana: desde ${FECHA_DESDE.toISOString().slice(0, 10)} (${DIAS_HACIA_ATRAS} días atrás) hasta ${FECHA_LIMITE.toISOString().slice(0, 10)}`);
 
   const browser = await chromium.launch();
   let todosLosPartidos = [];
@@ -312,8 +327,8 @@ async function main() {
     .filter((p) => p._fechaParseada && !isNaN(p._fechaParseada))
     .sort((a, b) => a._fechaParseada - b._fechaParseada);
 
-  const pasados = conFechaValida.filter((p) => p._fechaParseada < HOY);
-  const futuros = conFechaValida.filter((p) => p._fechaParseada >= HOY);
+  const pasados = conFechaValida.filter((p) => p._fechaParseada < FECHA_DESDE);
+  const futuros = conFechaValida.filter((p) => p._fechaParseada >= FECHA_DESDE);
 
   console.log(`\n[diagnóstico] De ${conFechaValida.length} partidos con fecha válida: ${pasados.length} ya pasados, ${futuros.length} futuros.`);
   console.log(`[diagnóstico] Las 10 fechas FUTURAS más próximas (>= hoy):`);
