@@ -118,8 +118,19 @@ async function main() {
         continue;
       }
 
-      if (pageProps.game.acta_cerrada !== '1') {
-        console.log('  ℹ️ Acta todavía no cerrada, se reintentará más adelante.');
+      // Ya no bloqueamos por "acta_cerrada" -- ese indicador lo
+      // marca el árbitro a mano y puede tardar horas de más aunque
+      // el resultado y la alineación ya estén públicos del todo.
+      // Comprobamos el dato que de verdad importa: si el marcador
+      // ya tiene los dos goles rellenos.
+      const golesLocal = pageProps.game.goles_casa ?? pageProps.game.goles_local;
+      const golesVisitante = pageProps.game.goles_visitante;
+      const resultadoCompleto =
+        golesLocal !== '' && golesLocal != null &&
+        golesVisitante !== '' && golesVisitante != null;
+
+      if (!resultadoCompleto) {
+        console.log('  ℹ️ El marcador todavía no está completo, se reintentará más adelante.');
         continue;
       }
 
