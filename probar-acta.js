@@ -27,6 +27,8 @@ const ACTAS_DE_PRUEBA = [
   "https://www.rffm.es/acta-partido/5431943?temporada=21&competicion=24037730&grupo=24037732",
   "https://www.rffm.es/acta-partido/5431946?temporada=21&competicion=24037730&grupo=24037732",
   "https://www.rffm.es/acta-partido/5432490?temporada=21&competicion=24762963&grupo=24762965",
+
+"https://www.rffm.es/acta-partido/5620163?temporada=22&competicion=26737828&grupo=26737830",
 ];
 
 // ============================================================
