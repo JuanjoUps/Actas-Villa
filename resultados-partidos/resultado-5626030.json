@@ -1,0 +1,24 @@
+{
+  "codacta": "5626030",
+  "categoria": "SEGUNDA AFICIONADO",
+  "grupo": "Grupo 2",
+  "jornada": "1",
+  "fecha": "27-09-2026",
+  "campo": "TRES CANTOS - KEKA VEGA - FORESTA 2 (HA)",
+  "resultado": {
+    "local": 0,
+    "visitante": 0,
+    "propioLocal": false,
+    "equipoPropio": "C.D. VILLA BUITRAGO DEL LOZOYA",
+    "rival": "UNION DEPORTIVA TRES CANTOS 'B'",
+    "escudoPropioUrl": "https://appweb.rffm.es/pnfg/pimg/Clubes/00100_0011051544_escudo.jpg?nova=1",
+    "escudoRivalUrl": "https://appweb.rffm.es/pnfg/pimg/Clubes/00100_0000055987_Escudo_UD3C_2012.jpg?nova=1"
+  },
+  "alineacion": [],
+  "suplentes": [],
+  "golesPropios": [],
+  "golesRival": [],
+  "hatTricks": [],
+  "tarjetas": [],
+  "expulsiones": []
+}
