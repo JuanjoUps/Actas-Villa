@@ -119,8 +119,8 @@ const CALENDARIO_URLS = [
 // jornadas con muchos partidos) responde lento o da 504 -- en vez
 // de rendirnos a la primera, reintentamos con una espera creciente
 // entre intentos (backoff), y un tiempo de espera más generoso.
-const REINTENTOS_MAX = 4;
-const TIMEOUT_PAGINA_MS = 60000; // subido de 30s a 60s
+const REINTENTOS_MAX = 2;
+const TIMEOUT_PAGINA_MS = 25000;
 
 function esperarMs(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
