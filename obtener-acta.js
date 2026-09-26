@@ -59,6 +59,16 @@ function urlActa(codacta, temporada, competicion, grupo) {
 // antes, sin tener que tocarlo.
 // ============================================================
 
+// La RFFM corre sobre Liferay y en fechas de mucha carga responde
+// lento o da 504 -- reintentamos con espera creciente en vez de
+// rendirnos a la primera.
+const REINTENTOS_MAX = 4;
+const TIMEOUT_PAGINA_MS = 60000;
+
+function esperarMs(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 async function obtenerActaCruda(url, browserExterno) {
   console.log(`Consultando acta: ${url}`);
 
@@ -69,24 +79,37 @@ async function obtenerActaCruda(url, browserExterno) {
   });
 
   try {
-    await page.goto(url, { waitUntil: "domcontentloaded", timeout: 30000 });
-    await page.waitForTimeout(1500);
-    const html = await page.content();
+    let ultimoError;
+    for (let intento = 1; intento <= REINTENTOS_MAX; intento++) {
+      try {
+        const resp = await page.goto(url, { waitUntil: "domcontentloaded", timeout: TIMEOUT_PAGINA_MS });
+        if (resp && resp.status() >= 500) {
+          throw new Error(`HTTP ${resp.status()} (servidor sobrecargado)`);
+        }
+        await page.waitForTimeout(1500);
+        const html = await page.content();
 
-    const match = html.match(
-      /<script id="__NEXT_DATA__"[^>]*>([\s\S]*?)<\/script>/
-    );
+        const match = html.match(
+          /<script id="__NEXT_DATA__"[^>]*>([\s\S]*?)<\/script>/
+        );
 
-    if (!match) {
-      throw new Error("No se encontró __NEXT_DATA__ en " + url);
+        if (!match) {
+          throw new Error("No se encontró __NEXT_DATA__ en " + url);
+        }
+
+        const data = JSON.parse(match[1]);
+        return data.props.pageProps;
+      } catch (err) {
+        ultimoError = err;
+        const esperaMs = intento * 5000;
+        console.log(`  ⚠️ Intento ${intento}/${REINTENTOS_MAX} falló: ${err.message}`);
+        if (intento < REINTENTOS_MAX) {
+          console.log(`  Reintentando en ${esperaMs / 1000}s...`);
+          await esperarMs(esperaMs);
+        }
+      }
     }
-
-    const data = JSON.parse(match[1]);
-
-    // Todavía no sabemos el nombre exacto de la clave (como
-    // "calendar" en el calendario). Devolvemos pageProps completo
-    // para poder inspeccionarlo.
-    return data.props.pageProps;
+    throw ultimoError;
   } finally {
     await page.close();
     if (!browserExterno) await browser.close();
