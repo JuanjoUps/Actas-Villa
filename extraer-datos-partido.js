@@ -23,18 +23,20 @@
 // el club, y un filtro de texto los cogería por error.
 const EQUIPOS_CLUB = new Set([
   "846904",   // Segunda Aficionado
-  "2276659",  // Primera Juvenil
   "3082888",  // Segunda Cadete
   "3088877",  // Primera Infantil
   "24710895", // Primera Alevín F-7
   "17138002", // Primera Fútbol Femenino
-  // "23996978" Primera Benjamín F7 no compite esta temporada.
+  "23996978", // Primera Benjamín F-7 'A'
+  "27703615", // Primera Benjamín F-7 'B' -- confirmado en la ficha oficial del club
+  // Juvenil retirado: el equipo no compite esta temporada.
+  // TODO: falta Prebenjamín ("28105851", equipo 'B') -- pendiente
+  // de confirmar su URL de calendario.
 ]);
 
 // ============================================================
 // ¿Es el club local o visitante en este partido?
 // ============================================================
-
 function esClubLocal(game) {
   return EQUIPOS_CLUB.has(game.codigo_equipo_local);
 }
@@ -72,7 +74,6 @@ function esFutbol7(game) {
   ) {
     return true;
   }
-
   // Categorías que en la RFFM siempre son fútbol 7, aunque el
   // texto de la categoría no lo diga explícitamente.
   if (texto.includes("ALEVIN") || texto.includes("ALEVÍN")) return true;
@@ -163,6 +164,7 @@ function extraerSuplentes(game, esLocal) {
       nombre: invertirNombre(j.nombre_jugador),
     }));
 }
+
 
 // ============================================================
 // Goles propios y del rival
