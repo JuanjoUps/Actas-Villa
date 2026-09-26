@@ -309,9 +309,35 @@ async function main() {
   const enVentana = nuestros.filter((p) => dentroDeVentana(p.fecha));
   console.log(`Partidos del club dentro de los próximos ${VENTANA_DIAS} días: ${enVentana.length}`);
 
+  // Combinamos con lo que ya hubiera guardado de antes, en vez de
+  // sobrescribir sin más -- así, si esta vez algún calendario falla
+  // por el bache de la RFFM, no perdemos partidos que ya se habían
+  // detectado bien en una ejecución anterior. Se combinan por
+  // codacta (identificador único de cada partido).
   const rutaSalida = path.join(__dirname, 'partidos-video.json');
-  fs.writeFileSync(rutaSalida, JSON.stringify(enVentana, null, 2));
-  console.log(`\n✓ Guardado en ${rutaSalida}`);
+  let previos = [];
+  if (fs.existsSync(rutaSalida)) {
+    try {
+      previos = JSON.parse(fs.readFileSync(rutaSalida, 'utf-8'));
+    } catch (err) {
+      console.log(`  ⚠️ No se pudo leer partidos-video.json previo: ${err.message}`);
+    }
+  }
+
+  const mapaCombinado = new Map();
+  previos.forEach((p) => mapaCombinado.set(p.codacta, p));
+  enVentana.forEach((p) => mapaCombinado.set(p.codacta, p)); // los nuevos ganan si hay conflicto
+
+  // Quitamos del combinado los que ya han quedado fuera de la
+  // ventana de verdad (partidos ya muy pasados de una ejecución
+  // vieja), para que esto no crezca sin límite.
+  const combinadoFinal = Array.from(mapaCombinado.values()).filter((p) => {
+    const f = parsearFecha(p.fecha);
+    return f && !isNaN(f) && f >= HOY;
+  });
+
+  fs.writeFileSync(rutaSalida, JSON.stringify(combinadoFinal, null, 2));
+  console.log(`\n✓ Guardado en ${rutaSalida} (${combinadoFinal.length} partidos combinados, ${previos.length} previos + ${enVentana.length} de esta pasada)`);
 }
 
 main().catch((err) => {
