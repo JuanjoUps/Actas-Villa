@@ -209,6 +209,14 @@ function extraerGoles(game, esLocal) {
   const propiosDeVerdad = [];
   const propiaHaciaRival = [];
 
+  // DIAGNÓSTICO: todos los campos de cada gol propio, tal cual
+  // vienen de la RFFM -- para encontrar el campo real que marca
+  // "propia puerta", ya que las suposiciones anteriores fallaron.
+  (golesPropiosBruto || []).forEach((g, i) => {
+    console.log(`  [diagnóstico gol ${i}] TODOS los campos:`);
+    console.log('  ' + JSON.stringify(g, null, 2).replace(/\n/g, '\n  '));
+  });
+
   (golesPropiosBruto || []).forEach((g) => {
     if (esGolEnPropia(g)) {
       propiaHaciaRival.push(g);
