@@ -118,15 +118,26 @@ async function main() {
         continue;
       }
 
-      // Sin condiciones previas: si la página del acta carga, se
-      // intenta sacar los datos directamente. Ni "acta_cerrada" ni
-      // ningún otro indicador administrativo bloquean nada -- solo
-      // comprobamos DESPUÉS de extraer si el resultado que salió
-      // tiene números de verdad. Si extraerDatosPartido falla
-      // porque el acta está a medias (alineación incompleta, etc.),
-      // lo tratamos como "todavía no está lista", no como un error
-      // real -- así no se dispara el aviso de Telegram por algo
-      // que se va a resolver solo en el siguiente sondeo.
+      // Comprobamos el dato EN BRUTO tal cual lo manda la RFFM,
+      // antes de que extraerDatosPartido lo convierta en número --
+      // un partido sin jugar trae "" (cadena vacía), no "0". Si
+      // luego lo convertimos a Number(""), da 0, y un 0-0 procesado
+      // parece un resultado real aunque no lo sea. Por eso miramos
+      // el original, no el ya procesado.
+      const golesLocalBruto = pageProps.game.goles_casa ?? pageProps.game.goles_local;
+      const golesVisitanteBruto = pageProps.game.goles_visitante;
+      const hayMarcadorBruto =
+        golesLocalBruto !== '' && golesLocalBruto != null &&
+        golesVisitanteBruto !== '' && golesVisitanteBruto != null;
+
+      if (!hayMarcadorBruto) {
+        console.log('  ℹ️ Todavía no hay marcador (partido sin jugar o en curso), se reintentará más adelante.');
+        continue;
+      }
+
+      // A partir de aquí SÍ hay un dato real que extraer -- ya no
+      // depende de "acta_cerrada" (el árbitro puede tardar horas en
+      // cerrarla a mano), solo de que el marcador ya no esté vacío.
       let datos;
       try {
         datos = extraerDatosPartido(pageProps.game);
