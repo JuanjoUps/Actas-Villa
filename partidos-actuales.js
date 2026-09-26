@@ -363,7 +363,7 @@ async function main() {
   // vieja), para que esto no crezca sin límite.
   const combinadoFinal = Array.from(mapaCombinado.values()).filter((p) => {
     const f = parsearFecha(p.fecha);
-    return f && !isNaN(f) && f >= HOY;
+    return f && !isNaN(f) && f >= FECHA_DESDE;
   });
 
   fs.writeFileSync(rutaSalida, JSON.stringify(combinadoFinal, null, 2));
