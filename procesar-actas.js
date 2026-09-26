@@ -118,23 +118,32 @@ async function main() {
         continue;
       }
 
-      // Ya no bloqueamos por "acta_cerrada" -- ese indicador lo
-      // marca el árbitro a mano y puede tardar horas de más aunque
-      // el resultado y la alineación ya estén públicos del todo.
-      // Comprobamos el dato que de verdad importa: si el marcador
-      // ya tiene los dos goles rellenos.
-      const golesLocal = pageProps.game.goles_casa ?? pageProps.game.goles_local;
-      const golesVisitante = pageProps.game.goles_visitante;
-      const resultadoCompleto =
-        golesLocal !== '' && golesLocal != null &&
-        golesVisitante !== '' && golesVisitante != null;
-
-      if (!resultadoCompleto) {
-        console.log('  ℹ️ El marcador todavía no está completo, se reintentará más adelante.');
+      // Sin condiciones previas: si la página del acta carga, se
+      // intenta sacar los datos directamente. Ni "acta_cerrada" ni
+      // ningún otro indicador administrativo bloquean nada -- solo
+      // comprobamos DESPUÉS de extraer si el resultado que salió
+      // tiene números de verdad. Si extraerDatosPartido falla
+      // porque el acta está a medias (alineación incompleta, etc.),
+      // lo tratamos como "todavía no está lista", no como un error
+      // real -- así no se dispara el aviso de Telegram por algo
+      // que se va a resolver solo en el siguiente sondeo.
+      let datos;
+      try {
+        datos = extraerDatosPartido(pageProps.game);
+      } catch (errExtraccion) {
+        console.log(`  ℹ️ El acta todavía está incompleta (${errExtraccion.message}), se reintentará más adelante.`);
         continue;
       }
 
-      const datos = extraerDatosPartido(pageProps.game);
+      const resultadoValido =
+        datos && datos.resultado &&
+        Number.isFinite(datos.resultado.local) &&
+        Number.isFinite(datos.resultado.visitante);
+
+      if (!resultadoValido) {
+        console.log('  ℹ️ La página del acta carga pero el resultado todavía no tiene números válidos, se reintentará más adelante.');
+        continue;
+      }
 
       const rutaSalida = path.join(RESULTADOS_DIR, `resultado-${partido.codacta}.json`);
       fs.writeFileSync(rutaSalida, JSON.stringify(datos, null, 2));
