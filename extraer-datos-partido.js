@@ -170,31 +170,62 @@ function extraerSuplentes(game, esLocal) {
 // Goles propios y del rival
 // ============================================================
 
+// Detecta si un gol es en propia puerta comprobando varias
+// posibles señales a la vez (no sabemos con certeza el nombre
+// exacto del campo en el JSON, así que cubrimos varias opciones
+// razonables en vez de una sola adivinada). La RFFM usa un icono
+// de archivo "goles_pp_*.svg" para estos goles en la web, así que
+// también miramos si algún campo de imagen/icono contiene "_pp_".
+function esGolEnPropia(g) {
+  if (!g) return false;
+  if (g.propia_puerta === '1' || g.propia_puerta === true) return true;
+  if (g.en_propia_puerta === '1' || g.en_propia_puerta === true) return true;
+  if (g.autogol === '1' || g.autogol === true) return true;
+  if (g.es_propia === '1' || g.es_propia === true) return true;
+  if (typeof g.tipo_gol === 'string' && g.tipo_gol.toLowerCase().includes('propia')) return true;
+  if (typeof g.codigo_tipo_gol === 'string' && g.codigo_tipo_gol.toLowerCase().includes('pp')) return true;
+  // Cualquier campo de texto (icono, imagen, url...) que contenga
+  // el patrón "_pp_" o "goles_pp" que ya vimos en el HTML real.
+  for (const valor of Object.values(g)) {
+    if (typeof valor === 'string' && (valor.includes('_pp_') || valor.includes('goles_pp'))) {
+      return true;
+    }
+  }
+  return false;
+}
+
 function extraerGoles(game, esLocal) {
-  const golesPropios = esLocal
+  const golesPropiosBruto = esLocal
     ? game.goles_equipo_local
     : game.goles_equipo_visitante;
 
-  const golesRival = esLocal
+  const golesRivalBruto = esLocal
     ? game.goles_equipo_visitante
     : game.goles_equipo_local;
 
-  // DIAGNÓSTICO TEMPORAL: imprime TODOS los campos del primer gol
-  // propio, para encontrar cuál marca un gol en propia puerta.
-  // Quitar esto en cuanto lo confirmemos.
-  if ((golesPropios || []).length > 0) {
-    console.log('  [diagnóstico gol] Primer gol propio, todos los campos:');
-    console.log('  ' + JSON.stringify(golesPropios[0], null, 2).replace(/\n/g, '\n  '));
-  }
+  // Un gol en propia dentro de NUESTRA lista en realidad cuenta
+  // para el rival -- lo pasamos de lista antes de construir el
+  // resultado final.
+  const propiosDeVerdad = [];
+  const propiaHaciaRival = [];
 
-  const propios = (golesPropios || []).map((g) => ({
+  (golesPropiosBruto || []).forEach((g) => {
+    if (esGolEnPropia(g)) {
+      propiaHaciaRival.push(g);
+    } else {
+      propiosDeVerdad.push(g);
+    }
+  });
+
+  const propios = propiosDeVerdad.map((g) => ({
     jugador: invertirNombre(g.nombre_jugador),
     minuto: Number(g.minuto),
   }));
 
-  const rival = (golesRival || []).map((g) => ({
-    minuto: Number(g.minuto),
-  }));
+  const rival = [
+    ...(golesRivalBruto || []).map((g) => ({ minuto: Number(g.minuto) })),
+    ...propiaHaciaRival.map((g) => ({ minuto: Number(g.minuto) })), // en propia: cuenta para el rival
+  ];
 
   return { propios, rival };
 }
