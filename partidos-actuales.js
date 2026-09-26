@@ -281,6 +281,21 @@ async function main() {
     console.log(`\nDescargando: ${url}`);
     const partidos = await descargarCalendario(url, browser);
     console.log(`  ${partidos.length} partidos encontrados en la tabla.`);
+
+    // Búsqueda directa por NOMBRE en los partidos ya descargados de
+    // ESTA categoría, sin depender del filtro por código ni de la
+    // ventana de fechas -- para saber sin ninguna duda si el
+    // partido del club está en los datos crudos o no.
+    const porNombre = partidos.filter(
+      (p) =>
+        (p.equipo_local || '').toUpperCase().includes('VILLA BUITRAGO') ||
+        (p.equipo_visitante || '').toUpperCase().includes('VILLA BUITRAGO')
+    );
+    console.log(`  [diagnóstico] Partidos de VILLA BUITRAGO encontrados en esta categoría (por nombre, antes de cualquier filtro): ${porNombre.length}`);
+    porNombre.forEach((p) => {
+      console.log(`    codacta=${p.codacta}  ${p.equipo_local} vs ${p.equipo_visitante}  fecha="${p.fecha}"  codigo_local=${p.codigo_equipo_local}  codigo_visitante=${p.codigo_equipo_visitante}`);
+    });
+
     todosLosPartidos = todosLosPartidos.concat(partidos);
   }
 
