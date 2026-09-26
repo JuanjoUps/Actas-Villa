@@ -179,6 +179,14 @@ function extraerGoles(game, esLocal) {
     ? game.goles_equipo_visitante
     : game.goles_equipo_local;
 
+  // DIAGNÓSTICO TEMPORAL: imprime TODOS los campos del primer gol
+  // propio, para encontrar cuál marca un gol en propia puerta.
+  // Quitar esto en cuanto lo confirmemos.
+  if ((golesPropios || []).length > 0) {
+    console.log('  [diagnóstico gol] Primer gol propio, todos los campos:');
+    console.log('  ' + JSON.stringify(golesPropios[0], null, 2).replace(/\n/g, '\n  '));
+  }
+
   const propios = (golesPropios || []).map((g) => ({
     jugador: invertirNombre(g.nombre_jugador),
     minuto: Number(g.minuto),
