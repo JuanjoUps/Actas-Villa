@@ -540,6 +540,11 @@ async function pintarGoles(datos) {
         ? ` <span class="minuto">${gol.minuto}'</span>`
         : "";
       el.innerHTML = `<span class="balon">⚽</span> ${gol.jugador}` + etiquetaMinuto;
+    } else if (gol.esPropia) {
+      // Gol en propia de un jugador nuestro, contado para el rival
+      // -- genérico "G.P.P.", sin nombrar a nadie.
+      const etiquetaMinuto = gol.minuto ? ` <span class="minuto">${gol.minuto}'</span>` : "";
+      el.innerHTML = `<span class="balon">⚽</span> G.P.P.` + etiquetaMinuto;
     } else {
       // Los del rival: solo el balón (no sabemos quién marcó).
       el.innerHTML = `<span class="balon">⚽</span>`;
