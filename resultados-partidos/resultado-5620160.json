@@ -1,0 +1,124 @@
+{
+  "codacta": "5620160",
+  "categoria": "PRIMERA INFANTIL",
+  "grupo": "Grupo 2",
+  "jornada": "1",
+  "fecha": "26-09-2026",
+  "campo": "ALGETE - URBANIZ. STO. DOMINGO (HA)",
+  "resultado": {
+    "local": 7,
+    "visitante": 1,
+    "propioLocal": false,
+    "equipoPropio": "C.D. VILLA BUITRAGO DEL LOZOYA 'A'",
+    "rival": "CDB SEK-CIUDALCAMPO 'A'",
+    "escudoPropioUrl": "https://appweb.rffm.es/pnfg/pimg/Clubes/00100_0011051544_escudo.jpg?nova=1",
+    "escudoRivalUrl": "https://appweb.rffm.eshttps://files.ffmadrid.es/pnfg/img/web_responsive/ESP/escudo_sm_resultados_.jpg"
+  },
+  "alineacion": [
+    {
+      "dorsal": "13",
+      "nombre": "EDUARD NICOLAS IOSUB",
+      "capitan": false,
+      "portero": true
+    },
+    {
+      "dorsal": "6",
+      "nombre": "MARCOS HORCAJO GARCIA",
+      "capitan": false,
+      "portero": false
+    },
+    {
+      "dorsal": "7",
+      "nombre": "RODRIGO GONZALEZ JANIK",
+      "capitan": true,
+      "portero": false
+    },
+    {
+      "dorsal": "8",
+      "nombre": "GUILLERMO DURAN BRAVO",
+      "capitan": false,
+      "portero": false
+    },
+    {
+      "dorsal": "11",
+      "nombre": "JAIME BRICEÑO CALACO",
+      "capitan": false,
+      "portero": false
+    },
+    {
+      "dorsal": "18",
+      "nombre": "ADAY PERNIA SERRANO",
+      "capitan": false,
+      "portero": false
+    },
+    {
+      "dorsal": "19",
+      "nombre": "RAFAEL ESCOBAR TRIBIS-ARROSPE",
+      "capitan": false,
+      "portero": false
+    },
+    {
+      "dorsal": "20",
+      "nombre": "SANTIAGO CARRASCO PEREZ",
+      "capitan": false,
+      "portero": false
+    },
+    {
+      "dorsal": "21",
+      "nombre": "BENI ANISLAVOV RALCHEV",
+      "capitan": false,
+      "portero": false
+    },
+    {
+      "dorsal": "22",
+      "nombre": "KARAM AKACHCHAR AMEZIAN",
+      "capitan": false,
+      "portero": false
+    },
+    {
+      "dorsal": "23",
+      "nombre": "LUIS MARTIN GONZALEZ",
+      "capitan": false,
+      "portero": false
+    }
+  ],
+  "suplentes": [
+    {
+      "dorsal": "15",
+      "nombre": "AMIR MOUSTAQUI OUZZINE"
+    }
+  ],
+  "golesPropios": [
+    {
+      "jugador": "RODRIGO GONZALEZ JANIK",
+      "minuto": 6
+    },
+    {
+      "jugador": "LUIS MARTIN GONZALEZ",
+      "minuto": 70
+    }
+  ],
+  "golesRival": [
+    {
+      "minuto": 8
+    },
+    {
+      "minuto": 21
+    },
+    {
+      "minuto": 22
+    },
+    {
+      "minuto": 28
+    },
+    {
+      "minuto": 40
+    },
+    {
+      "minuto": 67
+    }
+  ],
+  "hatTricks": [],
+  "tarjetas": [],
+  "expulsiones": []
+}
