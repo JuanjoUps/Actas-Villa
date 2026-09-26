@@ -62,8 +62,8 @@ function urlActa(codacta, temporada, competicion, grupo) {
 // La RFFM corre sobre Liferay y en fechas de mucha carga responde
 // lento o da 504 -- reintentamos con espera creciente en vez de
 // rendirnos a la primera.
-const REINTENTOS_MAX = 4;
-const TIMEOUT_PAGINA_MS = 60000;
+const REINTENTOS_MAX = 2;
+const TIMEOUT_PAGINA_MS = 25000;
 
 function esperarMs(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
