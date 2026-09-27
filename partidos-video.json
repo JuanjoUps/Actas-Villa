@@ -24,5 +24,31 @@
     "hora": "18:00",
     "competicion": "26737828",
     "grupo_id": "26737830"
+  },
+  {
+    "codacta": "5626038",
+    "fecha": "04-10-2026",
+    "jornada": "2 (04-10-2026)",
+    "equipo_local": "C.D. VILLA BUITRAGO DEL LOZOYA",
+    "equipo_visitante": "U.D. TALAMANCA",
+    "codigo_equipo_local": "846904",
+    "codigo_equipo_visitante": "19261709",
+    "campo": "BUITRAGO (HA)(HA)",
+    "hora": "18:00",
+    "competicion": "26738300",
+    "grupo_id": "26738302"
+  },
+  {
+    "codacta": "5620168",
+    "fecha": "04-10-2026",
+    "jornada": "2 (03-10-2026)",
+    "equipo_local": "C.D. VILLA BUITRAGO DEL LOZOYA 'A'",
+    "equipo_visitante": "C.D. FUTBOL TRES CANTOS 'B'",
+    "codigo_equipo_local": "3088877",
+    "codigo_equipo_visitante": "2036",
+    "campo": "BUITRAGO (HA)(HA)",
+    "hora": "12:30",
+    "competicion": "26737828",
+    "grupo_id": "26737830"
   }
 ]
