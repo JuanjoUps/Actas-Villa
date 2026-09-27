@@ -1,0 +1,148 @@
+{
+  "fecha": "27-09-2026",
+  "golesRival": [
+    {
+      "minuto": ""
+    }
+  ],
+  "suplentes": [
+    {
+      "dorsal": "99",
+      "nombre": "Gelo"
+    },
+    {
+      "dorsal": "8",
+      "nombre": "César"
+    },
+    {
+      "dorsal": "26",
+      "nombre": "Josek"
+    },
+    {
+      "dorsal": "44",
+      "nombre": "Álvaro"
+    },
+    {
+      "dorsal": "4",
+      "nombre": "Barbu"
+    },
+    {
+      "dorsal": "15",
+      "nombre": "Uge"
+    },
+    {
+      "dorsal": "18",
+      "nombre": "Sacha"
+    },
+    {
+      "dorsal": "25",
+      "nombre": "Joaquín"
+    }
+  ],
+  "tarjetas": [],
+  "hatTricks": [],
+  "golesPropios": [
+    {
+      "jugador": "Danilo",
+      "minuto": "1"
+    },
+    {
+      "jugador": "Xory",
+      "minuto": "90"
+    }
+  ],
+  "jornada": "",
+  "campo": "Alcalá, La Gal",
+  "alineacion": [
+    {
+      "portero": false,
+      "capitan": false,
+      "dorsal": "9",
+      "posicion": "delantero",
+      "nombre": "Xory"
+    },
+    {
+      "portero": false,
+      "dorsal": "23",
+      "capitan": false,
+      "posicion": "delantero",
+      "nombre": "Danilo"
+    },
+    {
+      "posicion": "defensa",
+      "dorsal": "6",
+      "capitan": false,
+      "portero": false,
+      "nombre": "Ricardo"
+    },
+    {
+      "nombre": "Lean",
+      "portero": false,
+      "posicion": "defensa",
+      "capitan": false,
+      "dorsal": "24"
+    },
+    {
+      "portero": true,
+      "dorsal": "88",
+      "capitan": false,
+      "posicion": "portero",
+      "nombre": "Ato"
+    },
+    {
+      "posicion": "centrocampista",
+      "nombre": "Juanjo",
+      "capitan": false,
+      "dorsal": "11",
+      "portero": false
+    },
+    {
+      "portero": false,
+      "capitan": false,
+      "dorsal": "3",
+      "nombre": "Nieva",
+      "posicion": "defensa"
+    },
+    {
+      "dorsal": "98",
+      "portero": false,
+      "capitan": false,
+      "posicion": "centrocampista",
+      "nombre": "Puli"
+    },
+    {
+      "posicion": "centrocampista",
+      "nombre": "Alber",
+      "capitan": false,
+      "dorsal": "17",
+      "portero": false
+    },
+    {
+      "portero": false,
+      "dorsal": "28",
+      "capitan": false,
+      "nombre": "Rober",
+      "posicion": "centrocampista"
+    },
+    {
+      "portero": false,
+      "capitan": false,
+      "nombre": "Chaski",
+      "dorsal": "50",
+      "posicion": "defensa"
+    }
+  ],
+  "resultado": {
+    "rival": "Bulgaria",
+    "local": 1,
+    "visitante": 2,
+    "escudoPropioUrl": "",
+    "escudoRivalUrl": "/escudos-cache/BULGARIA.png",
+    "propioLocal": false,
+    "equipoPropio": "C.D. VILLA DE BUITRAGO"
+  },
+  "codacta": "veteranos-2026-09-27",
+  "grupo": "Amistoso",
+  "expulsiones": [],
+  "categoria": "VETERANOS"
+}
