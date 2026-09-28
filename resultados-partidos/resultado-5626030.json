@@ -1,0 +1,149 @@
+{
+  "codacta": "5626030",
+  "categoria": "SEGUNDA AFICIONADO",
+  "grupo": "Grupo 2",
+  "jornada": "1",
+  "fecha": "27-09-2026",
+  "campo": "TRES CANTOS - KEKA VEGA - FORESTA 2 (HA)",
+  "resultado": {
+    "local": 4,
+    "visitante": 2,
+    "propioLocal": false,
+    "equipoPropio": "C.D. VILLA BUITRAGO DEL LOZOYA",
+    "rival": "UNION DEPORTIVA TRES CANTOS 'B'",
+    "escudoPropioUrl": "https://appweb.rffm.es/pnfg/pimg/Clubes/00100_0011051544_escudo.jpg?nova=1",
+    "escudoRivalUrl": "https://appweb.rffm.es/pnfg/pimg/Clubes/00100_0000055987_Escudo_UD3C_2012.jpg?nova=1"
+  },
+  "alineacion": [
+    {
+      "dorsal": "13",
+      "nombre": "JAVIER HERNANDEZ CEREZO",
+      "capitan": true,
+      "portero": true
+    },
+    {
+      "dorsal": "6",
+      "nombre": "ALBERTO JIMENEZ SANZ",
+      "capitan": false,
+      "portero": false
+    },
+    {
+      "dorsal": "7",
+      "nombre": "ADRIAN SERRANO MORENO",
+      "capitan": false,
+      "portero": false
+    },
+    {
+      "dorsal": "8",
+      "nombre": "VÍCTOR SANZ POBO",
+      "capitan": false,
+      "portero": false
+    },
+    {
+      "dorsal": "12",
+      "nombre": "ALEJANDRO FERNANDEZ CODINA",
+      "capitan": false,
+      "portero": false
+    },
+    {
+      "dorsal": "15",
+      "nombre": "RAUL GARCIA MARCOS",
+      "capitan": false,
+      "portero": false
+    },
+    {
+      "dorsal": "16",
+      "nombre": "ADRIAN RODRIGUEZ SOTILLO",
+      "capitan": false,
+      "portero": false
+    },
+    {
+      "dorsal": "17",
+      "nombre": "JULIO RAMIREZ ALCAZAR",
+      "capitan": false,
+      "portero": false
+    },
+    {
+      "dorsal": "24",
+      "nombre": "ALEJANDRO HIDALGO ROCHA",
+      "capitan": false,
+      "portero": false
+    },
+    {
+      "dorsal": "30",
+      "nombre": "ROBERTO DIAZ GARCIA",
+      "capitan": false,
+      "portero": false
+    },
+    {
+      "dorsal": "61",
+      "nombre": "LUCAS MILLAN MARTIN",
+      "capitan": false,
+      "portero": false
+    }
+  ],
+  "suplentes": [
+    {
+      "dorsal": "1",
+      "nombre": "CESAR MARTIN DIAZ"
+    },
+    {
+      "dorsal": "22",
+      "nombre": "JOSE LUIS CARMONA IBAÑEZ"
+    },
+    {
+      "dorsal": "9",
+      "nombre": "RAUL VEGA CASAS"
+    },
+    {
+      "dorsal": "28",
+      "nombre": "VICTOR RODRIGUEZ SOLERA"
+    },
+    {
+      "dorsal": "4",
+      "nombre": "JESÚS JAEN NUÑEZ"
+    },
+    {
+      "dorsal": "66",
+      "nombre": "MARCOS MERINO FERNÁNDEZ"
+    }
+  ],
+  "golesPropios": [
+    {
+      "jugador": "ADRIAN SERRANO MORENO",
+      "minuto": 38
+    },
+    {
+      "jugador": "ROBERTO DIAZ GARCIA",
+      "minuto": 83
+    }
+  ],
+  "golesRival": [
+    {
+      "minuto": 17
+    },
+    {
+      "minuto": 24
+    },
+    {
+      "minuto": 28
+    },
+    {
+      "minuto": 58
+    }
+  ],
+  "hatTricks": [],
+  "tarjetas": [
+    {
+      "jugador": "CARMONA IBAÑEZ, JOSE LUIS",
+      "minuto": 45,
+      "expulsion": false
+    },
+    {
+      "jugador": "HERNANDEZ CEREZO, JAVIER",
+      "minuto": 999,
+      "expulsion": false
+    }
+  ],
+  "expulsiones": []
+}
