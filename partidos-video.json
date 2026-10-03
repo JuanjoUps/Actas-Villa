@@ -24,5 +24,57 @@
     "hora": "12:30",
     "competicion": "26737828",
     "grupo_id": "26737830"
+  },
+  {
+    "codacta": "5608195",
+    "fecha": "10-10-2026",
+    "jornada": "1 (10-10-2026)",
+    "equipo_local": "C.D. HIGHLANDS EL ENCINAR 'A'",
+    "equipo_visitante": "C.D. VILLA BUITRAGO DEL LOZOYA 'A'",
+    "codigo_equipo_local": "6815808",
+    "codigo_equipo_visitante": "24710895",
+    "campo": "OLÍMPICO HORTALEZA - LAS CÁRCAVAS (HA)(HA)",
+    "hora": "11:00",
+    "competicion": "26738141",
+    "grupo_id": "26738146"
+  },
+  {
+    "codacta": "5620175",
+    "fecha": "10-10-2026",
+    "jornada": "3 (10-10-2026)",
+    "equipo_local": "C.D. UNION EUROPA SANSE 'A'",
+    "equipo_visitante": "C.D. VILLA BUITRAGO DEL LOZOYA 'A'",
+    "codigo_equipo_local": "6819582",
+    "codigo_equipo_visitante": "3088877",
+    "campo": "S.S. REYES - RAFAEL DELGADO ROSA - DEHESA BOYAL 1 (HA)(HA)",
+    "hora": "",
+    "competicion": "26737828",
+    "grupo_id": "26737830"
+  },
+  {
+    "codacta": "5636395",
+    "fecha": "10-10-2026",
+    "jornada": "1 (10-10-2026)",
+    "equipo_local": "C.D. VILLA BUITRAGO DEL LOZOYA 'A'",
+    "equipo_visitante": "C.D. MOLAREÑO 'B'",
+    "codigo_equipo_local": "3082888",
+    "codigo_equipo_visitante": "21414190",
+    "campo": "BUITRAGO (HA)(HA)",
+    "hora": "",
+    "competicion": "26737768",
+    "grupo_id": "26737774"
+  },
+  {
+    "codacta": "5683326",
+    "fecha": "10-10-2026",
+    "jornada": "1 (10-10-2026)",
+    "equipo_local": "C.D. VILLA BUITRAGO DEL LOZOYA 'A'",
+    "equipo_visitante": "C.D. VILLA BUITRAGO DEL LOZOYA 'B'",
+    "codigo_equipo_local": "23996978",
+    "codigo_equipo_visitante": "27703615",
+    "campo": "BUITRAGO (HA)(HA)",
+    "hora": "11:00",
+    "competicion": "26737943",
+    "grupo_id": "27642668"
   }
 ]
