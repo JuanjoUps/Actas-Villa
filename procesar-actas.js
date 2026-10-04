@@ -1,189 +1,113 @@
-// procesar-actas.js
-// Descarga y procesa las actas oficiales de los partidos ya
-// jugados de la RFFM y las guarda en
-// resultados-partidos/resultado-<codacta>.json, con el mismo
-// formato que usa el vídeo de resultado.
+/**
+ * PRUEBA END-TO-END con actas de temporadas anteriores.
+ *
+ * Descarga una o varias actas reales, extrae los datos limpios
+ * (resultado, alineación, goles, hat-tricks, expulsiones) y los
+ * imprime por consola para poder revisarlos a mano.
+ *
+ * Esto NO toca partidos-video.json ni genera carteles: es solo
+ * para verificar que obtener-acta.js + extraer-datos-partido.js
+ * funcionan bien juntos, usando actas de partidos que ya se jugaron.
+ *
+ * USO:
+ *   node probar-acta.js
+ */
+
+const { obtenerActaCruda } = require("./obtener-acta");
+const { extraerDatosPartido } = require("./extraer-datos-partido");
+
+// ============================================================
+// ACTAS ANTIGUAS DE PRUEBA
 //
-// Usa los dos módulos ya existentes y probados: obtener-acta.js
-// (descarga con Playwright + lee __NEXT_DATA__) y
-// extraer-datos-partido.js (convierte el "game" crudo de la RFFM
-// a nuestro formato) -- el mismo camino que ya confirmamos que
-// funciona en probar-acta.js, sin reinventar la extracción.
-//
-// Lleva su propio registro (estado-actas.json) para no volver a
-// procesar un acta ya guardada.
-
-const fs = require('fs');
-const path = require('path');
-const { chromium } = require('playwright');
-const { obtenerActaCruda } = require('./obtener-acta');
-const { extraerDatosPartido } = require('./extraer-datos-partido');
-
-// ============================================================
-// EQUIPOS DEL CLUB (por código numérico de la RFFM)
-// ============================================================
-const EQUIPOS_CLUB = new Set([
-  "846904",   // Segunda Aficionado (Senior)
-  "3082888",  // Segunda Cadete
-  "3088877",  // Primera Infantil
-  "24710895", // Primera Alevín F-7
-  "17138002", // Primera Fútbol Femenino
-  "23996978", // Primera Benjamín F-7 'A'
-  "27703615", // Primera Benjamín F-7 'B' -- confirmado en la ficha oficial del club
-  // TODO: falta Prebenjamín ("28105851", equipo 'B') -- pendiente
-  // de confirmar la URL de calendario de esa categoría.
-]);
-
-const RESULTADOS_DIR = path.join(__dirname, 'resultados-partidos');
-const ESTADO_ACTAS_PATH = path.join(__dirname, 'estado-actas.json');
-const PARTIDOS_VIDEO_PATH = path.join(__dirname, 'partidos-video.json');
-
-// ============================================================
-// ESTADO (qué actas ya se han procesado)
+// Pon aquí las URLs de actas de partidos ya finalizados de
+// temporadas pasadas (las que ya me pasaste sirven).
 // ============================================================
 
-function cargarEstadoActas() {
-  if (!fs.existsSync(ESTADO_ACTAS_PATH)) return {};
-  return JSON.parse(fs.readFileSync(ESTADO_ACTAS_PATH, 'utf-8'));
-}
+const ACTAS_DE_PRUEBA = [
+  "https://www.rffm.es/acta-partido/5431943?temporada=21&competicion=24037730&grupo=24037732",
+  "https://www.rffm.es/acta-partido/5431946?temporada=21&competicion=24037730&grupo=24037732",
+  "https://www.rffm.es/acta-partido/5432490?temporada=21&competicion=24762963&grupo=24762965",
 
-function guardarEstadoActas(estado) {
-  fs.writeFileSync(ESTADO_ACTAS_PATH, JSON.stringify(estado, null, 2));
-}
-
-// ============================================================
-// PARTIDOS PENDIENTES: los que partidos-actuales.js ya dejó
-// guardados en partidos-video.json, dentro de la ventana de 7 días
-// ============================================================
-
-function cargarPartidosPendientes() {
-  if (!fs.existsSync(PARTIDOS_VIDEO_PATH)) return [];
-  return JSON.parse(fs.readFileSync(PARTIDOS_VIDEO_PATH, 'utf-8'));
-}
-
-function esPartidoDelClub(partido) {
-  return (
-    EQUIPOS_CLUB.has(partido.codigo_equipo_local) ||
-    EQUIPOS_CLUB.has(partido.codigo_equipo_visitante)
-  );
-}
-
-// ============================================================
-// URL del acta a partir de los datos que ya trae cada partido de
-// partidos-video.json (mismo formato que urlActa() en obtener-acta.js)
-// ============================================================
-
-function urlDelActa(partido) {
-  return (
-    `https://www.rffm.es/acta-partido/${partido.codacta}` +
-    `?temporada=22&competicion=${partido.competicion || ''}&grupo=${partido.grupo_id || ''}`
-  );
-}
+  "https://www.rffm.es/acta-partido/5620163?temporada=22&competicion=26737828&grupo=26737830",
+];
 
 // ============================================================
 // MAIN
 // ============================================================
 
 async function main() {
-  if (!fs.existsSync(RESULTADOS_DIR)) {
-    fs.mkdirSync(RESULTADOS_DIR, { recursive: true });
-  }
-
-  const estadoActas = cargarEstadoActas();
-  const pendientes = cargarPartidosPendientes().filter(esPartidoDelClub);
-
-  const sinProcesar = pendientes.filter((p) => !estadoActas[p.codacta]);
-
-  console.log(`Partidos finalizados sin procesar: ${sinProcesar.length}`);
-
-  if (sinProcesar.length === 0) {
-    console.log('Nada nuevo que procesar.');
-    return;
-  }
-
-  const browser = await chromium.launch();
-  let procesados = 0;
-  let erroresReales = 0;
-
-  for (const partido of sinProcesar) {
-    console.log(`\nProcesando acta: ${partido.codacta}...`);
+  for (const url of ACTAS_DE_PRUEBA) {
+    console.log("\n================================================");
+    console.log(url);
+    console.log("================================================");
 
     try {
-      const url = urlDelActa(partido);
-      console.log(`  URL construida: ${url}`);
-      const pageProps = await obtenerActaCruda(url, browser);
+      const pageProps = await obtenerActaCruda(url);
 
       if (!pageProps.game) {
-        console.log('  -> Esta página no tiene datos de partido (game).');
+        console.log("  -> Esta página no tiene datos de partido (game).");
         continue;
       }
 
-      // Comprobamos el dato EN BRUTO tal cual lo manda la RFFM,
-      // antes de que extraerDatosPartido lo convierta en número --
-      // un partido sin jugar trae "" (cadena vacía), no "0". Si
-      // luego lo convertimos a Number(""), da 0, y un 0-0 procesado
-      // parece un resultado real aunque no lo sea. Por eso miramos
-      // el original, no el ya procesado.
-      const golesLocalBruto = pageProps.game.goles_casa ?? pageProps.game.goles_local;
-      const golesVisitanteBruto = pageProps.game.goles_visitante;
-      const hayMarcadorBruto =
-        golesLocalBruto !== '' && golesLocalBruto != null &&
-        golesVisitanteBruto !== '' && golesVisitanteBruto != null;
-
-      if (!hayMarcadorBruto) {
-        console.log('  ℹ️ Todavía no hay marcador (partido sin jugar o en curso), se reintentará más adelante.');
+      if (pageProps.game.acta_cerrada !== "1") {
+        console.log("  -> Acta todavía no cerrada, sin datos completos.");
         continue;
       }
 
-      // A partir de aquí SÍ hay un dato real que extraer -- ya no
-      // depende de "acta_cerrada" (el árbitro puede tardar horas en
-      // cerrarla a mano), solo de que el marcador ya no esté vacío.
-      let datos;
-      try {
-        datos = extraerDatosPartido(pageProps.game);
-      } catch (errExtraccion) {
-        console.log(`  ℹ️ El acta todavía está incompleta (${errExtraccion.message}), se reintentará más adelante.`);
+      const datos = extraerDatosPartido(pageProps.game);
+
+      // NUEVO: la RFFM puede marcar acta_cerrada = "1" en cuanto
+      // empieza el partido (con marcador 0-0 y sin alineación
+      // todavía), no solo cuando termina de verdad. Si no hay
+      // alineación, el partido sigue en directo -- no se procesa
+      // todavía, se reintentará en la siguiente ejecución.
+      if (!datos.alineacion || datos.alineacion.length === 0) {
+        console.log("  -> Acta cerrada pero sin alineación todavía (partido en curso). Se omite por ahora.");
         continue;
       }
 
-      const resultadoValido =
-        datos && datos.resultado &&
-        Number.isFinite(datos.resultado.local) &&
-        Number.isFinite(datos.resultado.visitante);
+      console.log(
+        `\n${datos.resultado.equipoPropio}  ${datos.resultado.propioLocal ? datos.resultado.local : datos.resultado.visitante}` +
+        ` - ${datos.resultado.propioLocal ? datos.resultado.visitante : datos.resultado.local}  ${datos.resultado.rival}`
+      );
 
-      if (!resultadoValido) {
-        console.log('  ℹ️ La página del acta carga pero el resultado todavía no tiene números válidos, se reintentará más adelante.');
-        continue;
+      console.log(`Categoría: ${datos.categoria} (${datos.grupo}) - Jornada ${datos.jornada}`);
+      console.log(`Fecha: ${datos.fecha}  Campo: ${datos.campo}`);
+
+      console.log(`\nAlineación titular (${datos.alineacion.length}):`);
+      for (const j of datos.alineacion) {
+        console.log(
+          `  #${j.dorsal}  ${j.nombre}` +
+          `${j.capitan ? "  (C)" : ""}${j.portero ? "  (POR)" : ""}`
+        );
       }
 
-      const rutaSalida = path.join(RESULTADOS_DIR, `resultado-${partido.codacta}.json`);
-      fs.writeFileSync(rutaSalida, JSON.stringify(datos, null, 2));
-      console.log(`  ✓ Guardado en ${rutaSalida}`);
+      console.log(`\nGoles propios (${datos.golesPropios.length}):`);
+      for (const g of datos.golesPropios) {
+        console.log(`  min ${g.minuto}'  ${g.jugador}`);
+      }
 
-      estadoActas[partido.codacta] = new Date().toISOString();
-      procesados++;
+      console.log(`\nGoles rival (${datos.golesRival.length}):`);
+      for (const g of datos.golesRival) {
+        console.log(`  min ${g.minuto}'`);
+      }
+
+      if (datos.hatTricks.length > 0) {
+        console.log(`\nHAT-TRICK: ${datos.hatTricks.join(", ")}`);
+      }
+
+      if (datos.tarjetas.length > 0) {
+        console.log(`\nTarjetas propias (${datos.tarjetas.length}):`);
+        for (const t of datos.tarjetas) {
+          console.log(
+            `  min ${t.minuto}'  ${t.jugador}${t.expulsion ? "  -> EXPULSION" : ""}`
+          );
+        }
+      }
     } catch (err) {
-      console.error(`  -> ERROR REAL procesando ${partido.codacta}: ${err.message}`);
-      erroresReales++;
+      console.error(`  -> ERROR: ${err.message}`);
     }
-  }
-
-  await browser.close();
-  guardarEstadoActas(estadoActas);
-  console.log(`\nActas nuevas procesadas: ${procesados}`);
-
-  if (erroresReales > 0) {
-    // Hacemos que el proceso termine en fallo, para que el propio
-    // workflow dispare el aviso de Telegram que ya tienes montado
-    // para errores -- sin hardcodear nada de este partido en
-    // concreto, cualquier fallo real de cualquier acta futura
-    // avisará igual.
-    console.error(`\n❌ ${erroresReales} acta(s) fallaron con un error real (no "todavía no cerrada"). Revisa el log de arriba.`);
-    process.exit(1);
   }
 }
 
-main().catch((err) => {
-  console.error('Error general:', err);
-  process.exit(1);
-});
+main();
