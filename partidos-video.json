@@ -47,20 +47,20 @@
     "codigo_equipo_local": "6819582",
     "codigo_equipo_visitante": "3088877",
     "campo": "S.S. REYES - RAFAEL DELGADO ROSA - DEHESA BOYAL 1 (HA)(HA)",
-    "hora": "",
+    "hora": "12:00",
     "competicion": "26737828",
     "grupo_id": "26737830"
   },
   {
     "codacta": "5636395",
-    "fecha": "10-10-2026",
+    "fecha": "11-10-2026",
     "jornada": "1 (10-10-2026)",
     "equipo_local": "C.D. VILLA BUITRAGO DEL LOZOYA 'A'",
     "equipo_visitante": "C.D. MOLAREÑO 'B'",
     "codigo_equipo_local": "3082888",
     "codigo_equipo_visitante": "21414190",
     "campo": "BUITRAGO (HA)(HA)",
-    "hora": "",
+    "hora": "17:15",
     "competicion": "26737768",
     "grupo_id": "26737774"
   },
@@ -76,5 +76,18 @@
     "hora": "11:00",
     "competicion": "26737943",
     "grupo_id": "27642668"
+  },
+  {
+    "codacta": "5626046",
+    "fecha": "11-10-2026",
+    "jornada": "3 (11-10-2026)",
+    "equipo_local": "C.D. VILLA BUITRAGO DEL LOZOYA",
+    "equipo_visitante": "C.D. BUSTARVIEJO",
+    "codigo_equipo_local": "846904",
+    "codigo_equipo_visitante": "2390",
+    "campo": "BUITRAGO (HA)(HA)",
+    "hora": "19:30",
+    "competicion": "26738300",
+    "grupo_id": "26738302"
   }
 ]
