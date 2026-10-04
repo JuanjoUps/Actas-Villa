@@ -1,113 +1,276 @@
 /**
- * PRUEBA END-TO-END con actas de temporadas anteriores.
+ * Procesa los partidos que ya están FINALIZADOS en
+ * partidos-video.json (generado por partidos-actuales.js) y cuya
+ * acta todavía no se ha extraído.
  *
- * Descarga una o varias actas reales, extrae los datos limpios
- * (resultado, alineación, goles, hat-tricks, expulsiones) y los
- * imprime por consola para poder revisarlos a mano.
+ * Para cada partido nuevo:
+ *   1. Construye la URL de su acta (codacta + temporada +
+ *      competicion + grupo, guardados en partidos-video.json).
+ *   2. Descarga el acta y comprueba que esté cerrada.
+ *   3. Extrae los datos limpios (resultado, alineación, goles,
+ *      hat-tricks, expulsiones).
+ *   4. Guarda el resultado en resultados-partidos/resultado-<codacta>.json
+ *   5. Marca el codacta como procesado en estado-actas.json, para
+ *      no volver a descargar la misma acta en la siguiente pasada.
  *
- * Esto NO toca partidos-video.json ni genera carteles: es solo
- * para verificar que obtener-acta.js + extraer-datos-partido.js
- * funcionan bien juntos, usando actas de partidos que ya se jugaron.
+ * Este script NO genera el vídeo — solo prepara los datos. El
+ * generador de vídeo (pendiente) leerá los archivos de
+ * resultados-partidos/.
  *
  * USO:
- *   node probar-acta.js
+ *   node procesar-actas.js
+ *
+ * Pensado para ejecutarse DESPUÉS de partidos-actuales.js en el
+ * mismo GitHub Action, los fines de semana.
  */
 
-const { obtenerActaCruda } = require("./obtener-acta");
+const fs = require("fs");
+const path = require("path");
+
+const { obtenerActaCruda, urlActa } = require("./obtener-acta");
 const { extraerDatosPartido } = require("./extraer-datos-partido");
+const { GestorEscudos } = require("./generar_cartel");
 
 // ============================================================
-// ACTAS ANTIGUAS DE PRUEBA
+// RUTAS
+// ============================================================
+
+const PARTIDOS_VIDEO_PATH = path.join(__dirname, "partidos-video.json");
+const ESTADO_ACTAS_PATH = path.join(__dirname, "estado-actas.json");
+const RESULTADOS_DIR = path.join(__dirname, "resultados-partidos");
+
+// ============================================================
+// ESTADO (qué codacta ya se ha procesado)
+// ============================================================
+
+function cargarEstadoActas() {
+  if (!fs.existsSync(ESTADO_ACTAS_PATH)) {
+    return {};
+  }
+
+  return JSON.parse(fs.readFileSync(ESTADO_ACTAS_PATH, "utf-8"));
+}
+
+function guardarEstadoActas(estado) {
+  fs.writeFileSync(
+    ESTADO_ACTAS_PATH,
+    JSON.stringify(estado, null, 2)
+  );
+}
+
+// ============================================================
+// ¿Este partido tiene un acta real de la RFFM?
+// (los amistosos manuales, codacta "MAN-...", no la tienen)
+// ============================================================
+
+function tieneActaReal(partido) {
+  return (
+    partido.codacta &&
+    !String(partido.codacta).startsWith("MAN-") &&
+    partido.temporada &&
+    partido.competicion &&
+    partido.grupo
+  );
+}
+
+// ============================================================
+// PROBAR UN ACTA CONCRETA (por número), sin depender de fechas —
+// si está puesto, se procesa SOLO esa acta e ignora el rango de
+// fechas de abajo. Déjalo en null para volver al modo normal.
+// ============================================================
+
+const CODACTA_PRUEBA = null; // modo producción: procesa todo lo pendiente
+
+// ============================================================
+// RANGO DE FECHAS A PROCESAR (para revisar un fin de semana
+// concreto con datos reales, en vez de todo el histórico).
 //
-// Pon aquí las URLs de actas de partidos ya finalizados de
-// temporadas pasadas (las que ya me pasaste sirven).
+// Formato DD-MM-YYYY, ambos límites incluidos. Ponlo a `null`
+// para procesar TODO lo pendiente (modo producción normal).
 // ============================================================
 
-const ACTAS_DE_PRUEBA = [
-  "https://www.rffm.es/acta-partido/5431943?temporada=21&competicion=24037730&grupo=24037732",
-  "https://www.rffm.es/acta-partido/5431946?temporada=21&competicion=24037730&grupo=24037732",
-  "https://www.rffm.es/acta-partido/5432490?temporada=21&competicion=24762963&grupo=24762965",
+const RANGO_FECHAS_PRUEBA = null; // modo producción: sin límite de fechas
 
-  "https://www.rffm.es/acta-partido/5620163?temporada=22&competicion=26737828&grupo=26737830",
-];
+function fechaEnRango(fechaDDMMYYYY, rango) {
+  if (!rango) return true;
+
+  const aFecha = (f) => {
+    const [d, m, a] = f.split("-").map(Number);
+    return new Date(a, m - 1, d);
+  };
+
+  const fecha = aFecha(fechaDDMMYYYY);
+  return fecha >= aFecha(rango.desde) && fecha <= aFecha(rango.hasta);
+}
 
 // ============================================================
 // MAIN
 // ============================================================
 
 async function main() {
-  for (const url of ACTAS_DE_PRUEBA) {
-    console.log("\n================================================");
-    console.log(url);
-    console.log("================================================");
+  if (!fs.existsSync(PARTIDOS_VIDEO_PATH)) {
+    console.error(
+      `No existe ${PARTIDOS_VIDEO_PATH}. Ejecuta primero partidos-actuales.js.`
+    );
+    process.exit(1);
+  }
+
+  if (!fs.existsSync(RESULTADOS_DIR)) {
+    fs.mkdirSync(RESULTADOS_DIR);
+  }
+
+  const todosLosPartidos = JSON.parse(
+    fs.readFileSync(PARTIDOS_VIDEO_PATH, "utf-8")
+  );
+
+  const estadoActas = cargarEstadoActas();
+
+  // Si hay un acta de prueba fijada, nos quedamos solo con esa
+  // (ignorando fechas por completo) — así podemos probar un
+  // partido suelto sin tener que saber en qué día cayó.
+  const pendientes = CODACTA_PRUEBA
+    ? todosLosPartidos.filter(
+        (p) =>
+          String(p.codacta) === String(CODACTA_PRUEBA) &&
+          tieneActaReal(p) &&
+          !estadoActas[p.codacta]
+      )
+    : todosLosPartidos.filter(
+        (p) =>
+          p.finalizado &&
+          tieneActaReal(p) &&
+          !estadoActas[p.codacta] &&
+          fechaEnRango(p.fecha, RANGO_FECHAS_PRUEBA)
+      );
+
+  console.log(
+    CODACTA_PRUEBA
+      ? `Modo prueba: buscando el acta ${CODACTA_PRUEBA} — encontrada: ${pendientes.length > 0 ? "sí" : "no"}`
+      : `Partidos finalizados sin procesar` +
+        (RANGO_FECHAS_PRUEBA
+          ? ` entre ${RANGO_FECHAS_PRUEBA.desde} y ${RANGO_FECHAS_PRUEBA.hasta}`
+          : "") +
+        `: ${pendientes.length}`
+  );
+
+  if (pendientes.length === 0) {
+    console.log("Nada nuevo que procesar.");
+    return;
+  }
+
+  let procesados = 0;
+
+  // Mismo gestor de caché de escudos que usa generar_cartel.js —
+  // así el escudo del rival (y el del propio Villa Buitrago, que
+  // se resuelve igual, por nombre) sale ya cacheado del proyecto
+  // de carteles si ya se había descargado antes.
+  const gestorEscudos = new GestorEscudos();
+
+  for (const partido of pendientes) {
+    const url = urlActa(
+      partido.codacta,
+      partido.temporada,
+      partido.competicion,
+      partido.grupo
+    );
+
+    console.log(`\nProcesando acta ${partido.codacta} (${partido.categoria})...`);
 
     try {
       const pageProps = await obtenerActaCruda(url);
 
       if (!pageProps.game) {
-        console.log("  -> Esta página no tiene datos de partido (game).");
+        console.log("  -> Sin datos de partido todavía, se reintentará más tarde.");
         continue;
       }
 
       if (pageProps.game.acta_cerrada !== "1") {
-        console.log("  -> Acta todavía no cerrada, sin datos completos.");
+        console.log("  -> Acta todavía no cerrada, se reintentará más tarde.");
         continue;
       }
 
       const datos = extraerDatosPartido(pageProps.game);
 
-      // NUEVO: la RFFM puede marcar acta_cerrada = "1" en cuanto
-      // empieza el partido (con marcador 0-0 y sin alineación
-      // todavía), no solo cuando termina de verdad. Si no hay
-      // alineación, el partido sigue en directo -- no se procesa
-      // todavía, se reintentará en la siguiente ejecución.
+      // La RFFM marca acta_cerrada = "1" en cuanto empieza el
+      // partido (con marcador 0-0, sin alineación todavía), no solo
+      // cuando termina de verdad. Si no hay alineación, el partido
+      // sigue en directo -- no se procesa ni se marca como hecho,
+      // se reintentará en la siguiente pasada.
       if (!datos.alineacion || datos.alineacion.length === 0) {
         console.log("  -> Acta cerrada pero sin alineación todavía (partido en curso). Se omite por ahora.");
         continue;
       }
 
-      console.log(
-        `\n${datos.resultado.equipoPropio}  ${datos.resultado.propioLocal ? datos.resultado.local : datos.resultado.visitante}` +
-        ` - ${datos.resultado.propioLocal ? datos.resultado.visitante : datos.resultado.local}  ${datos.resultado.rival}`
+      // DIAGNÓSTICO TEMPORAL: ¿trae el acta un campo directo de
+      // tipo de juego (fútbol 7 / fútbol 11)? Si existe, podemos
+      // dejar de adivinarlo por el nombre de la categoría.
+      const clavesTipoJuego = Object.keys(pageProps.game).filter((k) =>
+        /tipo.?juego|modalidad|num.?jugadores/i.test(k)
+      );
+      if (clavesTipoJuego.length > 0) {
+        console.log("  [diagnóstico] Campos de tipo de juego encontrados:");
+        clavesTipoJuego.forEach((clave) => {
+          console.log(`    ${clave} =`, JSON.stringify(pageProps.game[clave]));
+        });
+      } else {
+        console.log("  [diagnóstico] No se encontró ningún campo de tipo de juego/modalidad en el acta (seguimos detectando F-7 por el nombre de la categoría).");
+      }
+
+      // DIAGNÓSTICO TEMPORAL: para ver en el log del workflow cómo
+      // se llaman de verdad los campos de sustituciones en el acta,
+      // y así afinar la extracción de "también participaron" sin
+      // tener que adivinar. Se puede quitar una vez confirmado.
+      const clavesSustitucion = Object.keys(pageProps.game).filter((k) =>
+        /suplente|cambio|sustitu/i.test(k)
+      );
+      if (clavesSustitucion.length > 0) {
+        console.log("  [diagnóstico] Campos relacionados con cambios encontrados:");
+        clavesSustitucion.forEach((clave) => {
+          console.log(`    ${clave} =`, JSON.stringify(pageProps.game[clave]).slice(0, 500));
+        });
+      } else {
+        console.log("  [diagnóstico] No se encontró ningún campo con 'suplente/cambio/sustitu' en el acta.");
+      }
+
+      // Resolvemos los escudos a data URI (descarga + caché en
+      // escudos-cache/, o genérico si no se consigue).
+      datos.resultado.escudoPropio = await gestorEscudos.obtener(
+        datos.resultado.equipoPropio,
+        datos.resultado.escudoPropioUrl
+      );
+      datos.resultado.escudoRival = await gestorEscudos.obtener(
+        datos.resultado.rival,
+        datos.resultado.escudoRivalUrl
       );
 
-      console.log(`Categoría: ${datos.categoria} (${datos.grupo}) - Jornada ${datos.jornada}`);
-      console.log(`Fecha: ${datos.fecha}  Campo: ${datos.campo}`);
+      const archivoSalida = path.join(
+        RESULTADOS_DIR,
+        `resultado-${partido.codacta}.json`
+      );
 
-      console.log(`\nAlineación titular (${datos.alineacion.length}):`);
-      for (const j of datos.alineacion) {
-        console.log(
-          `  #${j.dorsal}  ${j.nombre}` +
-          `${j.capitan ? "  (C)" : ""}${j.portero ? "  (POR)" : ""}`
-        );
-      }
+      fs.writeFileSync(archivoSalida, JSON.stringify(datos, null, 2));
 
-      console.log(`\nGoles propios (${datos.golesPropios.length}):`);
-      for (const g of datos.golesPropios) {
-        console.log(`  min ${g.minuto}'  ${g.jugador}`);
-      }
+      console.log(`  -> Guardado en ${archivoSalida}`);
 
-      console.log(`\nGoles rival (${datos.golesRival.length}):`);
-      for (const g of datos.golesRival) {
-        console.log(`  min ${g.minuto}'`);
-      }
-
-      if (datos.hatTricks.length > 0) {
-        console.log(`\nHAT-TRICK: ${datos.hatTricks.join(", ")}`);
-      }
-
-      if (datos.tarjetas.length > 0) {
-        console.log(`\nTarjetas propias (${datos.tarjetas.length}):`);
-        for (const t of datos.tarjetas) {
-          console.log(
-            `  min ${t.minuto}'  ${t.jugador}${t.expulsion ? "  -> EXPULSION" : ""}`
-          );
-        }
-      }
+      // Marcamos como procesado SOLO si todo ha ido bien.
+      estadoActas[partido.codacta] = new Date().toISOString();
+      procesados++;
     } catch (err) {
       console.error(`  -> ERROR: ${err.message}`);
+      // No lo marcamos como procesado: se reintentará en la
+      // siguiente pasada.
     }
   }
+
+  await gestorEscudos.cerrar();
+
+  guardarEstadoActas(estadoActas);
+
+  console.log(`\nActas nuevas procesadas: ${procesados}`);
 }
 
-main();
+main().catch((err) => {
+  console.error("\n❌ ERROR GENERAL:");
+  console.error(err);
+  process.exit(1);
+});
