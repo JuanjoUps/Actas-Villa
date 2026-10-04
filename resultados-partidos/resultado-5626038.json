@@ -1,0 +1,24 @@
+{
+  "codacta": "5626038",
+  "categoria": "SEGUNDA AFICIONADO",
+  "grupo": "Grupo 2",
+  "jornada": "2",
+  "fecha": "04-10-2026",
+  "campo": "BUITRAGO (HA)",
+  "resultado": {
+    "local": 0,
+    "visitante": 0,
+    "propioLocal": true,
+    "equipoPropio": "C.D. VILLA BUITRAGO DEL LOZOYA",
+    "rival": "U.D. TALAMANCA",
+    "escudoPropioUrl": "https://appweb.rffm.es/pnfg/pimg/Clubes/00100_0011051544_escudo.jpg?nova=1",
+    "escudoRivalUrl": "https://appweb.rffm.es/pnfg/pimg/Clubes/00100_0012210596_IMG_0201.png"
+  },
+  "alineacion": [],
+  "suplentes": [],
+  "golesPropios": [],
+  "golesRival": [],
+  "hatTricks": [],
+  "tarjetas": [],
+  "expulsiones": []
+}
