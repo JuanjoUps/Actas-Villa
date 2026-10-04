@@ -1,0 +1,24 @@
+{
+  "codacta": "5620168",
+  "categoria": "PRIMERA INFANTIL",
+  "grupo": "Grupo 2",
+  "jornada": "2",
+  "fecha": "04-10-2026",
+  "campo": "BUITRAGO (HA)",
+  "resultado": {
+    "local": 0,
+    "visitante": 0,
+    "propioLocal": true,
+    "equipoPropio": "C.D. VILLA BUITRAGO DEL LOZOYA 'A'",
+    "rival": "C.D. FUTBOL TRES CANTOS 'B'",
+    "escudoPropioUrl": "https://appweb.rffm.es/pnfg/pimg/Clubes/00100_0011051544_escudo.jpg?nova=1",
+    "escudoRivalUrl": "https://appweb.rffm.es/pnfg/pimg/Clubes/00100_0012158828_Escudo_Tres_Cantos_CDF.png?nova=1"
+  },
+  "alineacion": [],
+  "suplentes": [],
+  "golesPropios": [],
+  "golesRival": [],
+  "hatTricks": [],
+  "tarjetas": [],
+  "expulsiones": []
+}
