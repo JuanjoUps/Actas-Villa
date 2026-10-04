@@ -1,0 +1,160 @@
+{
+  "jornada": "",
+  "resultado": {
+    "propioLocal": true,
+    "local": 2,
+    "escudoPropioUrl": "",
+    "rival": "Ud Colmenar Viejo",
+    "escudoRivalUrl": "",
+    "visitante": 5,
+    "equipoPropio": "C.D. VILLA DE BUITRAGO"
+  },
+  "grupo": "Liga privada",
+  "expulsiones": [],
+  "codacta": "veteranos-2026-10-04",
+  "golesRival": [
+    {
+      "minuto": ""
+    },
+    {
+      "minuto": ""
+    },
+    {
+      "minuto": ""
+    },
+    {
+      "minuto": ""
+    },
+    {
+      "minuto": ""
+    }
+  ],
+  "tarjetas": [],
+  "golesPropios": [
+    {
+      "minuto": "55",
+      "jugador": "Danilo"
+    },
+    {
+      "minuto": "89",
+      "jugador": "Lean"
+    }
+  ],
+  "campo": "Peñalta, Buitrago del Lozoya",
+  "fecha": "04-10-2026",
+  "hatTricks": [],
+  "alineacion": [
+    {
+      "portero": false,
+      "dorsal": "9",
+      "posicion": "delantero",
+      "capitan": false,
+      "nombre": "Xory"
+    },
+    {
+      "dorsal": "23",
+      "portero": false,
+      "capitan": false,
+      "posicion": "delantero",
+      "nombre": "Danilo"
+    },
+    {
+      "capitan": false,
+      "nombre": "Gelo",
+      "posicion": "centrocampista",
+      "portero": false,
+      "dorsal": "99"
+    },
+    {
+      "dorsal": "6",
+      "capitan": false,
+      "posicion": "defensa",
+      "nombre": "Ricardo",
+      "portero": false
+    },
+    {
+      "posicion": "portero",
+      "dorsal": "88",
+      "portero": true,
+      "capitan": false,
+      "nombre": "Ato"
+    },
+    {
+      "nombre": "Nieva",
+      "portero": false,
+      "capitan": false,
+      "posicion": "defensa",
+      "dorsal": "3"
+    },
+    {
+      "portero": false,
+      "dorsal": "20",
+      "posicion": "centrocampista",
+      "capitan": false,
+      "nombre": "Pana"
+    },
+    {
+      "capitan": false,
+      "posicion": "centrocampista",
+      "dorsal": "17",
+      "portero": false,
+      "nombre": "Alber"
+    },
+    {
+      "dorsal": "31",
+      "capitan": false,
+      "posicion": "defensa",
+      "portero": false,
+      "nombre": "Mini"
+    },
+    {
+      "nombre": "Javi",
+      "posicion": "centrocampista",
+      "capitan": false,
+      "portero": false,
+      "dorsal": "49"
+    },
+    {
+      "posicion": "defensa",
+      "dorsal": "50",
+      "portero": false,
+      "nombre": "Chaski",
+      "capitan": false
+    }
+  ],
+  "categoria": "VETERANOS",
+  "suplentes": [
+    {
+      "dorsal": "24",
+      "nombre": "Lean"
+    },
+    {
+      "dorsal": "14",
+      "nombre": "Claus"
+    },
+    {
+      "dorsal": "11",
+      "nombre": "Juanjo"
+    },
+    {
+      "dorsal": "44",
+      "nombre": "Álvaro"
+    },
+    {
+      "dorsal": "4",
+      "nombre": "Barbu"
+    },
+    {
+      "dorsal": "18",
+      "nombre": "Sacha"
+    },
+    {
+      "dorsal": "25",
+      "nombre": "Joaquín"
+    },
+    {
+      "dorsal": "28",
+      "nombre": "Rober"
+    }
+  ]
+}
