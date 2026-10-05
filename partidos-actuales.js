@@ -49,9 +49,7 @@ const EQUIPOS_CLUB = new Set([
   "17138002", // Femenino
   "23996978", // Benjamín F-7 (A)
   "27703615", // Benjamín F-7 (B)
-  // Prebenjamín: sin código de equipo todavía en
-  // calendarios-categorias.json (temporada 22 = null) — añádelo
-  // aquí en cuanto la RFFM lo publique.
+  "28105851", // Prebenjamín F-7
   // Juvenil: fuera a propósito, no existe esta temporada. Si vuelve
   // a haber equipo, añade aquí su código nuevo (no reutilices el
   // 2276659 viejo sin comprobar que la RFFM no lo haya reasignado).
@@ -87,9 +85,8 @@ const CALENDARIO_URLS = [
   // aparte para cada uno)
   "https://www.rffm.es/competicion/calendario?temporada=22&tipojuego=2&competicion=26737943&grupo=27642668",
 
-  // Prebenjamín: sin competicion/grupo todavía (temporada 22 = null
-  // en calendarios-categorias.json) — añade su URL aquí en cuanto
-  // la RFFM la publique.
+  // Prebenjamín F-7
+  "https://www.rffm.es/competicion/calendario?temporada=22&tipojuego=2&competicion=26797573&grupo=28112552",
 
 ];
 
