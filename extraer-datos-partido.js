@@ -22,21 +22,24 @@
 // DIEGO - BUITRAGO 'D'" contienen la palabra "BUITRAGO" sin ser
 // el club, y un filtro de texto los cogería por error.
 const EQUIPOS_CLUB = new Set([
-  "846904",   // Segunda Aficionado
-  "3082888",  // Segunda Cadete
-  "3088877",  // Primera Infantil
-  "24710895", // Primera Alevín F-7
-  "17138002", // Primera Fútbol Femenino
-  "23996978", // Primera Benjamín F-7 'A'
-  "27703615", // Primera Benjamín F-7 'B' -- confirmado en la ficha oficial del club
-  // Juvenil retirado: el equipo no compite esta temporada.
-  // TODO: falta Prebenjamín ("28105851", equipo 'B') -- pendiente
-  // de confirmar su URL de calendario.
+  "846904",   // Senior (Segunda Aficionado)
+  "3082888",  // Cadete
+  "3088877",  // Infantil
+  "24710895", // Alevín F-7
+  "17138002", // Femenino
+  "23996978", // Benjamín F-7 equipo A
+  "27703615", // Benjamín F-7 equipo B
+  "28105851", // Prebenjamín F-7
+  // Juvenil (2276659): fuera, ya no hay equipo esta temporada.
+  //
+  // OJO: esta lista tiene que coincidir con EQUIPOS_CLUB de
+  // partidos-actuales.js (están duplicadas). Si cambias una, cambia la otra.
 ]);
 
 // ============================================================
 // ¿Es el club local o visitante en este partido?
 // ============================================================
+
 function esClubLocal(game) {
   return EQUIPOS_CLUB.has(game.codigo_equipo_local);
 }
@@ -74,6 +77,7 @@ function esFutbol7(game) {
   ) {
     return true;
   }
+
   // Categorías que en la RFFM siempre son fútbol 7, aunque el
   // texto de la categoría no lo diga explícitamente.
   if (texto.includes("ALEVIN") || texto.includes("ALEVÍN")) return true;
@@ -109,22 +113,6 @@ function extraerCambios(game, esLocal) {
 
   if (!Array.isArray(cambios) || cambios.length === 0) return null;
 
-  // Plantilla completa (titulares + suplentes), con dorsal fiable —
-  // la usamos para rellenar el dorsal del que entra, en vez de
-  // fiarnos del nombre del campo dentro de "cambios" (que varía
-  // según categoría y no siempre acertamos a adivinar).
-  const plantillaCompleta = esLocal
-    ? game.jugadores_equipo_local
-    : game.jugadores_equipo_visitante;
-
-  function buscarDorsalPorNombre(nombreCrudo) {
-    if (!Array.isArray(plantillaCompleta)) return "";
-    const encontrado = plantillaCompleta.find(
-      (j) => j.nombre_jugador === nombreCrudo
-    );
-    return encontrado ? encontrado.dorsal || "" : "";
-  }
-
   const vistos = new Set();
   const resultado = [];
 
@@ -133,8 +121,7 @@ function extraerCambios(game, esLocal) {
     // probamos las variantes más habituales.
     const nombreEntra =
       c.nombre_jugador_entra || c.jugador_entra || c.entra || c.nombre_entra;
-    const dorsalEntraCampo = c.dorsal_entra || c.dorsal_jugador_entra || "";
-    const dorsalEntra = dorsalEntraCampo || buscarDorsalPorNombre(nombreEntra);
+    const dorsalEntra = c.dorsal_entra || c.dorsal_jugador_entra || "";
 
     if (nombreEntra && !vistos.has(nombreEntra)) {
       vistos.add(nombreEntra);
@@ -165,53 +152,27 @@ function extraerSuplentes(game, esLocal) {
     }));
 }
 
-
 // ============================================================
 // Goles propios y del rival
 // ============================================================
 
-// Gol en propia puerta: confirmado con datos reales que el campo
-// es "tipo_gol", con valor "102" (gol normal = "101"). Un gol en
-// propia dentro de NUESTRA lista de goles en realidad cuenta para
-// el rival.
-function esGolEnPropia(g) {
-  return g && g.tipo_gol === '102';
-}
-
 function extraerGoles(game, esLocal) {
-  const golesPropiosBruto = esLocal
+  const golesPropios = esLocal
     ? game.goles_equipo_local
     : game.goles_equipo_visitante;
 
-  const golesRivalBruto = esLocal
+  const golesRival = esLocal
     ? game.goles_equipo_visitante
     : game.goles_equipo_local;
 
-  // Un gol en propia dentro de NUESTRA lista en realidad cuenta
-  // para el rival -- lo pasamos de lista antes de construir el
-  // resultado final.
-  const propiosDeVerdad = [];
-  const propiaHaciaRival = [];
-
-  (golesPropiosBruto || []).forEach((g) => {
-    if (esGolEnPropia(g)) {
-      propiaHaciaRival.push(g);
-    } else {
-      propiosDeVerdad.push(g);
-    }
-  });
-
-  const propios = propiosDeVerdad.map((g) => ({
+  const propios = (golesPropios || []).map((g) => ({
     jugador: invertirNombre(g.nombre_jugador),
     minuto: Number(g.minuto),
   }));
 
-  const rival = [
-    ...(golesRivalBruto || []).map((g) => ({ minuto: Number(g.minuto) })),
-    // En propia: cuenta para el rival, marcado para mostrar "G.P.P."
-    // en el vídeo en vez del nombre de vuestro jugador.
-    ...propiaHaciaRival.map((g) => ({ minuto: Number(g.minuto), esPropia: true })),
-  ];
+  const rival = (golesRival || []).map((g) => ({
+    minuto: Number(g.minuto),
+  }));
 
   return { propios, rival };
 }
@@ -286,6 +247,9 @@ function extraerDatosPartido(game) {
     visitante: Number(game.goles_visitante),
     propioLocal: esLocal,
     equipoPropio: esLocal ? game.equipo_local.trim() : game.equipo_visitante.trim(),
+    // Código RFFM del equipo propio: es lo fiable para distinguir equipos de
+    // la misma categoría (Benjamín A / B); el nombre puede variar.
+    codigoEquipoPropio: String(esLocal ? game.codigo_equipo_local : game.codigo_equipo_visitante),
     rival: esLocal ? game.equipo_visitante.trim() : game.equipo_local.trim(),
     // URLs crudas del escudo en rffm.es. GestorEscudos (de
     // generar_cartel.js) las convierte en data URI cacheada.
