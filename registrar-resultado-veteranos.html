@@ -180,7 +180,12 @@
   }
   actualizarEtiquetaMarcador();
 
-  // --- Cargar la plantilla guardada ---
+  // jugadoresActivos: la lista que de verdad se pinta — es la
+  // convocatoria guardada para esta fecha si existe, o si no, la
+  // plantilla entera (35 jugadores) como hasta ahora.
+  let jugadoresActivos = [];
+
+  // --- Cargar la plantilla guardada (los 35, siempre) ---
   async function cargarPlantilla(){
     if (!$token.value.trim()) return;
     const url = `https://api.github.com/repos/${GITHUB_REPO}/contents/${RUTA_PLANTILLA}`;
@@ -188,6 +193,37 @@
     if (!resp.ok) { mostrar('No se pudo cargar la plantilla de veteranos. ¿Ya diste de alta jugadores?', true); return; }
     const data = await resp.json();
     plantilla = JSON.parse(decodeURIComponent(escape(atob(data.content))));
+    await actualizarSegunConvocatoria();
+  }
+
+  // Si hay convocatoria guardada para la fecha puesta, usa esos
+  // citados (más cómodo, menos filas); si no existe, usa la
+  // plantilla completa de siempre — nunca bloquea el formulario.
+  async function actualizarSegunConvocatoria(){
+    const fechaValor = $('fecha').value;
+
+    if (fechaValor) {
+      const rutaConvocatoria = `convocatorias-veteranos/convocatoria-${fechaValor}.json`;
+      const url = `https://api.github.com/repos/${GITHUB_REPO}/contents/${rutaConvocatoria}`;
+      const resp = await fetch(url, { headers: cabeceras() });
+
+      if (resp.ok) {
+        try {
+          const data = await resp.json();
+          const contenido = decodeURIComponent(escape(atob(data.content)));
+          const convocatoria = JSON.parse(contenido);
+          jugadoresActivos = convocatoria.citados;
+          mostrar(`✓ Usando convocatoria guardada (${jugadoresActivos.length} citados) en vez de la plantilla completa.`, false);
+          pintarJugadores();
+          pintarSelectorGoles();
+          return;
+        } catch (e) {
+          // si algo no cuadra leyendo la convocatoria, cae al respaldo de abajo
+        }
+      }
+    }
+
+    jugadoresActivos = plantilla;
     pintarJugadores();
     pintarSelectorGoles();
   }
@@ -196,7 +232,7 @@
     const cont = $('listaJugadores');
     cont.innerHTML = '';
     const orden = { portero: 0, defensa: 1, centrocampista: 2, delantero: 3 };
-    const ordenada = [...plantilla].sort((a, b) => (orden[a.posicion] ?? 9) - (orden[b.posicion] ?? 9));
+    const ordenada = [...jugadoresActivos].sort((a, b) => (orden[a.posicion] ?? 9) - (orden[b.posicion] ?? 9));
     ordenada.forEach((j) => {
       const fila = document.createElement('div');
       fila.className = 'jugador-fila';
@@ -286,18 +322,41 @@
     });
   }
 
+  // Repos donde puede haber quedado guardado un escudo ya existente
+  // — distintas herramientas (el flujo de Sofascore del cartel de
+  // amistosos, por ejemplo) guardan en repos distintos al de este
+  // formulario. Se prueban en este orden.
+  const REPOS_DONDE_BUSCAR_ESCUDO = [
+    GITHUB_REPO, // Actas-Villa (el de este formulario)
+    'JuanjoUps/Pruebas-carteles-partidos',
+  ];
+
+  async function leerArchivoGitHubEnRepo(repo, ruta, cab){
+    const url = `https://api.github.com/repos/${repo}/contents/${ruta}`;
+    const resp = await fetch(url, { headers: cab });
+    if (!resp.ok) return { existe: false };
+    const data = await resp.json();
+    return { existe: true, sha: data.sha };
+  }
+
   // NUEVO: si no subiste archivo en "Escudo del rival", busca si ya
   // existe uno guardado desde el flujo de Sofascore — mismo nombre
   // que usa claveEquipo() (rival en mayúsculas, sin acentos),
-  // probando las extensiones más comunes.
+  // probando las extensiones más comunes, en cada repo posible.
+  // Devuelve también si vino de otro repo distinto al de aquí, para
+  // poder avisarte en el mensaje de confirmación.
   async function buscarEscudoYaGuardado(rival, cab){
     const clave = claveEquipo(rival);
-    for (const ext of ['png', 'jpg', 'jpeg']) {
-      const ruta = `escudos-cache/${clave}.${ext}`;
-      const resultado = await leerArchivoGitHub(ruta, cab);
-      if (resultado.existe) return ruta;
+    for (const repo of REPOS_DONDE_BUSCAR_ESCUDO) {
+      for (const ext of ['png', 'jpg', 'jpeg']) {
+        const ruta = `escudos-cache/${clave}.${ext}`;
+        const resultado = await leerArchivoGitHubEnRepo(repo, ruta, cab);
+        if (resultado.existe) {
+          return { ruta, repo, esDeOtroRepo: repo !== GITHUB_REPO };
+        }
+      }
     }
-    return '';
+    return { ruta: '', repo: '', esDeOtroRepo: false };
   }
 
   $('btnGuardar').addEventListener('click', async () => {
@@ -346,7 +405,23 @@
         );
         escudoRivalUrl = rutaEscudo;
       } else {
-        escudoRivalUrl = await buscarEscudoYaGuardado(rival, cab);
+        const encontrado = await buscarEscudoYaGuardado(rival, cab);
+        if (encontrado.ruta && encontrado.esDeOtroRepo) {
+          // Lo copia a Actas-Villa, para que la sincronización de
+          // siempre (que solo mira aquí) lo recoja sin tocar nada más.
+          const urlOrigen = `https://api.github.com/repos/${encontrado.repo}/contents/${encontrado.ruta}`;
+          const respOrigen = await fetch(urlOrigen, { headers: cab });
+          if (!respOrigen.ok) throw new Error('No se pudo leer el escudo desde ' + encontrado.repo + ': ' + respOrigen.status);
+          const dataOrigen = await respOrigen.json();
+
+          const actualAqui = await leerArchivoGitHub(encontrado.ruta, cab);
+          await guardarArchivoGitHub(
+            encontrado.ruta, dataOrigen.content,
+            actualAqui.existe ? actualAqui.sha : null,
+            'Copia escudo de ' + rival + ' desde ' + encontrado.repo, cab
+          );
+        }
+        escudoRivalUrl = encontrado.ruta;
       }
 
       const fecha = fechaDDMMYYYY(fechaValor);
@@ -404,6 +479,8 @@
       $('btnGuardar').disabled = false;
     }
   });
+
+  $('fecha').addEventListener('change', actualizarSegunConvocatoria);
 
   $token.addEventListener('change', cargarPlantilla);
   cargarPlantilla();
