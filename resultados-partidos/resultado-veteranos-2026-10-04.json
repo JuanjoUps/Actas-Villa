@@ -1,16 +1,54 @@
 {
-  "jornada": "",
   "resultado": {
-    "propioLocal": true,
-    "local": 2,
-    "escudoPropioUrl": "",
-    "rival": "Ud Colmenar Viejo",
-    "escudoRivalUrl": "",
     "visitante": 5,
+    "escudoPropioUrl": "",
+    "local": 2,
+    "escudoRivalUrl": "/escudos-cache/AD_COLMENAR_VIEJO.png",
+    "propioLocal": true,
+    "rival": "AD Colmenar Viejo",
     "equipoPropio": "C.D. VILLA DE BUITRAGO"
   },
-  "grupo": "Liga privada",
-  "expulsiones": [],
+  "suplentes": [
+    {
+      "nombre": "Lean",
+      "dorsal": "24"
+    },
+    {
+      "nombre": "Claus",
+      "dorsal": "14"
+    },
+    {
+      "nombre": "Álvaro",
+      "dorsal": "44"
+    },
+    {
+      "nombre": "Pana",
+      "dorsal": "20"
+    },
+    {
+      "dorsal": "4",
+      "nombre": "Barbu"
+    },
+    {
+      "dorsal": "18",
+      "nombre": "Sacha"
+    },
+    {
+      "dorsal": "25",
+      "nombre": "Joaquín"
+    }
+  ],
+  "categoria": "VETERANOS",
+  "golesPropios": [
+    {
+      "minuto": "55",
+      "jugador": "Danilo"
+    },
+    {
+      "minuto": "89",
+      "jugador": "Lean"
+    }
+  ],
   "codacta": "veteranos-2026-10-04",
   "golesRival": [
     {
@@ -29,132 +67,97 @@
       "minuto": ""
     }
   ],
-  "tarjetas": [],
-  "golesPropios": [
-    {
-      "minuto": "55",
-      "jugador": "Danilo"
-    },
-    {
-      "minuto": "89",
-      "jugador": "Lean"
-    }
-  ],
-  "campo": "Peñalta, Buitrago del Lozoya",
+  "grupo": "Liga",
   "fecha": "04-10-2026",
+  "jornada": "3",
+  "expulsiones": [],
   "hatTricks": [],
+  "campo": "Peñalta, Buitrago del Lozoya",
+  "tarjetas": [],
   "alineacion": [
     {
-      "portero": false,
-      "dorsal": "9",
       "posicion": "delantero",
+      "portero": false,
       "capitan": false,
-      "nombre": "Xory"
+      "nombre": "Xory",
+      "dorsal": "9"
     },
     {
+      "nombre": "Danilo",
       "dorsal": "23",
-      "portero": false,
       "capitan": false,
       "posicion": "delantero",
-      "nombre": "Danilo"
-    },
-    {
-      "capitan": false,
-      "nombre": "Gelo",
-      "posicion": "centrocampista",
-      "portero": false,
-      "dorsal": "99"
-    },
-    {
-      "dorsal": "6",
-      "capitan": false,
-      "posicion": "defensa",
-      "nombre": "Ricardo",
       "portero": false
     },
     {
+      "dorsal": "99",
+      "portero": false,
+      "posicion": "centrocampista",
+      "capitan": false,
+      "nombre": "Gelo"
+    },
+    {
+      "nombre": "Ricardo",
+      "dorsal": "6",
+      "posicion": "defensa",
+      "capitan": false,
+      "portero": false
+    },
+    {
+      "nombre": "Ato",
       "posicion": "portero",
       "dorsal": "88",
-      "portero": true,
       "capitan": false,
-      "nombre": "Ato"
+      "portero": true
     },
     {
-      "nombre": "Nieva",
+      "dorsal": "11",
       "portero": false,
       "capitan": false,
+      "nombre": "Juanjo",
+      "posicion": "centrocampista"
+    },
+    {
+      "dorsal": "3",
+      "capitan": false,
+      "portero": false,
       "posicion": "defensa",
-      "dorsal": "3"
+      "nombre": "Nieva"
     },
     {
       "portero": false,
-      "dorsal": "20",
-      "posicion": "centrocampista",
       "capitan": false,
-      "nombre": "Pana"
-    },
-    {
-      "capitan": false,
-      "posicion": "centrocampista",
       "dorsal": "17",
-      "portero": false,
+      "posicion": "centrocampista",
       "nombre": "Alber"
     },
     {
-      "dorsal": "31",
+      "nombre": "Rober",
+      "posicion": "centrocampista",
+      "dorsal": "28",
       "capitan": false,
-      "posicion": "defensa",
-      "portero": false,
-      "nombre": "Mini"
+      "portero": false
     },
     {
-      "nombre": "Javi",
-      "posicion": "centrocampista",
-      "capitan": false,
+      "nombre": "Mini",
+      "posicion": "defensa",
       "portero": false,
-      "dorsal": "49"
+      "capitan": false,
+      "dorsal": "31"
+    },
+    {
+      "dorsal": "49",
+      "nombre": "Javi",
+      "capitan": false,
+      "posicion": "centrocampista",
+      "portero": false
     },
     {
       "posicion": "defensa",
       "dorsal": "50",
-      "portero": false,
+      "capitan": false,
       "nombre": "Chaski",
-      "capitan": false
-    }
-  ],
-  "categoria": "VETERANOS",
-  "suplentes": [
-    {
-      "dorsal": "24",
-      "nombre": "Lean"
-    },
-    {
-      "dorsal": "14",
-      "nombre": "Claus"
-    },
-    {
-      "dorsal": "11",
-      "nombre": "Juanjo"
-    },
-    {
-      "dorsal": "44",
-      "nombre": "Álvaro"
-    },
-    {
-      "dorsal": "4",
-      "nombre": "Barbu"
-    },
-    {
-      "dorsal": "18",
-      "nombre": "Sacha"
-    },
-    {
-      "dorsal": "25",
-      "nombre": "Joaquín"
-    },
-    {
-      "dorsal": "28",
-      "nombre": "Rober"
+      "portero": false
     }
   ]
 }
