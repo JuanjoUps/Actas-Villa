@@ -42,33 +42,54 @@ const {
 // ============================================================
 
 const EQUIPOS_CLUB = new Set([
-  "846904",   // Segunda Aficionado
-  "2276659",  // Primera Juvenil
-  "3082888",  // Segunda Cadete
-  "3088877",  // Primera Infantil
-  "24710895", // Primera Alevín F-7
-  "17138002", // Primera Fútbol Femenino
-  // "23996978" Primera Benjamín F7 queda fuera a propósito: la
-  // ficha del club la marca "en_competicion": "0" (no compite
-  // esta temporada) — si vuelve a competir, añádela aquí.
+  "846904",   // Senior
+  "3082888",  // Cadete
+  "3088877",  // Infantil
+  "24710895", // Alevín F-7
+  "17138002", // Femenino
+  "23996978", // Benjamín F-7 (A)
+  "27703615", // Benjamín F-7 (B)
+  // Prebenjamín: sin código de equipo todavía en
+  // calendarios-categorias.json (temporada 22 = null) — añádelo
+  // aquí en cuanto la RFFM lo publique.
+  // Juvenil: fuera a propósito, no existe esta temporada. Si vuelve
+  // a haber equipo, añade aquí su código nuevo (no reutilices el
+  // 2276659 viejo sin comprobar que la RFFM no lo haya reasignado).
 ]);
 
 // ============================================================
 // CONFIGURACIÓN FEDERACIÓN
 // ============================================================
 
+// temporada=22 — la ACTUAL. Sacadas de calendarios-categorias.json
+// (carteles-partidos/contenido-semanal), mismo origen que ya usas
+// en el resto de proyectos. Revísalas cada verano cuando cambie
+// la temporada.
 const CALENDARIO_URLS = [
 
-  "https://www.rffm.es/competicion/calendario?temporada=21&tipojuego=1&competicion=24762963&grupo=24762965",
+  // Senior
+  "https://www.rffm.es/competicion/calendario?temporada=22&tipojuego=1&competicion=26738300&grupo=26738302",
 
-  "https://www.rffm.es/competicion/calendario?temporada=21&tipojuego=1&competicion=24897923&grupo=24897945",
+  // Cadete
+  "https://www.rffm.es/competicion/calendario?temporada=22&tipojuego=1&competicion=26737768&grupo=26737774",
 
-  "https://www.rffm.es/competicion/calendario?temporada=21&tipojuego=1&competicion=24037637&grupo=24037640",
+  // Infantil
+  "https://www.rffm.es/competicion/calendario?temporada=22&tipojuego=1&competicion=26737828&grupo=26737830",
 
-  "https://www.rffm.es/competicion/calendario?temporada=21&tipojuego=1&competicion=24037730&grupo=24037732",
+  // Alevín F-7 (fútbol 7 — nota el tipojuego=2)
+  "https://www.rffm.es/competicion/calendario?temporada=22&tipojuego=2&competicion=26738141&grupo=26738146",
 
-  // Primera Alevín F-7 (fútbol 7 — nota el tipojuego=2)
-  "https://www.rffm.es/competicion/calendario?temporada=21&tipojuego=2&competicion=26603934&grupo=26698004",
+  // Femenino
+  "https://www.rffm.es/competicion/calendario?temporada=22&tipojuego=1&competicion=26737874&grupo=26737875",
+
+  // Benjamín F-7 (A y B comparten competición/grupo — ambos equipos
+  // propios se filtran luego por EQUIPOS_CLUB, no hace falta URL
+  // aparte para cada uno)
+  "https://www.rffm.es/competicion/calendario?temporada=22&tipojuego=2&competicion=26737943&grupo=27642668",
+
+  // Prebenjamín: sin competicion/grupo todavía (temporada 22 = null
+  // en calendarios-categorias.json) — añade su URL aquí en cuanto
+  // la RFFM la publique.
 
 ];
 
