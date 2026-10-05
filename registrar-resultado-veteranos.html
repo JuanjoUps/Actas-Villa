@@ -180,6 +180,52 @@
   }
   actualizarEtiquetaMarcador();
 
+  // --- Calendario de Sofascore (rival, jornada, casa/fuera reales) ---
+  const REPO_SOFASCORE = 'JuanjoUps/Pruebas-carteles-partidos';
+  const RUTA_CALENDARIO_SOFASCORE = 'veteranos-calendario.json';
+  let jornadaAutoDetectada = '';
+
+  async function buscarPartidoSofascore(fechaValor, cab){
+    const url = `https://api.github.com/repos/${REPO_SOFASCORE}/contents/${RUTA_CALENDARIO_SOFASCORE}`;
+    const resp = await fetch(url, { headers: cab });
+    if (!resp.ok) return null;
+
+    const data = await resp.json();
+    const contenido = JSON.parse(decodeURIComponent(escape(atob(data.content))));
+    // formato: [fecha,rival,esLocal,terminado,golesPropio,golesRival,hora,jornada]
+    const fila = (contenido.partidos || []).find((p) => p[0] === fechaValor);
+    if (!fila) return null;
+
+    return {
+      fecha: fila[0], rival: fila[1], esLocal: !!fila[2], terminado: !!fila[3],
+      golesPropio: fila[4], golesRival: fila[5], hora: fila[6], jornada: fila[7],
+    };
+  }
+
+  async function autorrellenarDesdeSofascore(){
+    const fechaValor = $('fecha').value;
+    if (!fechaValor) return;
+
+    const partido = await buscarPartidoSofascore(fechaValor, cabeceras());
+    if (!partido) {
+      jornadaAutoDetectada = '';
+      return;
+    }
+
+    $('rival').value = partido.rival;
+    jornadaAutoDetectada = partido.jornada != null ? String(partido.jornada) : '';
+
+    if (partido.esLocal && !esLocal) $('btnLocal').click();
+    if (!partido.esLocal && esLocal) $('btnFuera').click();
+
+    mostrar(
+      `✓ Partido encontrado en Sofascore: vs ${partido.rival}` +
+      (jornadaAutoDetectada ? ` (jornada ${jornadaAutoDetectada})` : '') +
+      (!partido.terminado ? ' — ⚠️ Sofascore todavía no lo marca como terminado, revisa el marcador antes de guardar.' : ''),
+      !partido.terminado
+    );
+  }
+
   // jugadoresActivos: la lista que de verdad se pinta — es la
   // convocatoria guardada para esta fecha si existe, o si no, la
   // plantilla entera (35 jugadores) como hasta ahora.
@@ -456,7 +502,7 @@
         codacta: idPartido,
         categoria: "VETERANOS",
         grupo: "Liga privada",
-        jornada: "",
+        jornada: jornadaAutoDetectada,
         fecha,
         campo: esLocal ? "Peñalta, Buitrago del Lozoya" : campoFuera,
         resultado: {
@@ -505,7 +551,10 @@
     }
   });
 
-  $('fecha').addEventListener('change', actualizarSegunConvocatoria);
+  $('fecha').addEventListener('change', async () => {
+    await autorrellenarDesdeSofascore();
+    await actualizarSegunConvocatoria();
+  });
 
   $token.addEventListener('change', cargarPlantilla);
   cargarPlantilla();
