@@ -331,31 +331,56 @@
     'JuanjoUps/Pruebas-carteles-partidos',
   ];
 
-  async function leerArchivoGitHubEnRepo(repo, ruta, cab){
-    const url = `https://api.github.com/repos/${repo}/contents/${ruta}`;
-    const resp = await fetch(url, { headers: cab });
-    if (!resp.ok) return { existe: false };
-    const data = await resp.json();
-    return { existe: true, sha: data.sha };
+  // Prefijos de tipo de club y sufijos de equipo que NO sirven para
+  // identificar al rival (p.ej. "AD Colmenar Viejo" de Sofascore vs
+  // "A_D_COLMENAR_VIEJO_B" guardado desde el nombre oficial de la
+  // RFFM — ni el prefijo ni el sufijo de letra de equipo coinciden
+  // nunca entre los dos orígenes, así que se ignoran al comparar).
+  const PALABRAS_IGNORAR_CLUB = new Set([
+    'AD','CD','UD','CF','SD','RCD','CDE','RSD','AT','ATL',
+    'A','B','C','D',
+  ]);
+
+  function palabrasSignificativas(nombre){
+    return claveEquipo(nombre)
+      .split('_')
+      .filter(p => p.length >= 3 && !PALABRAS_IGNORAR_CLUB.has(p));
   }
 
-  // NUEVO: si no subiste archivo en "Escudo del rival", busca si ya
-  // existe uno guardado desde el flujo de Sofascore — mismo nombre
-  // que usa claveEquipo() (rival en mayúsculas, sin acentos),
-  // probando las extensiones más comunes, en cada repo posible.
-  // Devuelve también si vino de otro repo distinto al de aquí, para
-  // poder avisarte en el mensaje de confirmación.
+  async function listarCarpetaGitHub(repo, carpeta, cab){
+    const url = `https://api.github.com/repos/${repo}/contents/${carpeta}`;
+    const resp = await fetch(url, { headers: cab });
+    if (!resp.ok) return [];
+    return await resp.json();
+  }
+
+  // NUEVO: si no subiste archivo en "Escudo del rival", busca uno ya
+  // guardado por PALABRAS CLAVE (no por nombre exacto) en cada repo
+  // posible — el nombre del rival puede venir simplificado de
+  // Sofascore mientras el escudo se guardó con el nombre oficial
+  // largo de la RFFM, o al revés. Se queda con el primer archivo de
+  // escudos-cache/ que contenga TODAS las palabras significativas.
   async function buscarEscudoYaGuardado(rival, cab){
-    const clave = claveEquipo(rival);
+    const palabras = palabrasSignificativas(rival);
+    if (palabras.length === 0) return { ruta: '', repo: '', esDeOtroRepo: false };
+
     for (const repo of REPOS_DONDE_BUSCAR_ESCUDO) {
-      for (const ext of ['png', 'jpg', 'jpeg']) {
-        const ruta = `escudos-cache/${clave}.${ext}`;
-        const resultado = await leerArchivoGitHubEnRepo(repo, ruta, cab);
-        if (resultado.existe) {
-          return { ruta, repo, esDeOtroRepo: repo !== GITHUB_REPO };
-        }
+      const archivos = await listarCarpetaGitHub(repo, 'escudos-cache', cab);
+
+      const encontrado = archivos.find((f) => {
+        const nombreArchivo = (f.name || '').toUpperCase();
+        return palabras.every((p) => nombreArchivo.includes(p));
+      });
+
+      if (encontrado) {
+        return {
+          ruta: `escudos-cache/${encontrado.name}`,
+          repo,
+          esDeOtroRepo: repo !== GITHUB_REPO,
+        };
       }
     }
+
     return { ruta: '', repo: '', esDeOtroRepo: false };
   }
 
