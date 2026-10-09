@@ -36,6 +36,11 @@ const EQUIPOS_CLUB = new Set([
   // partidos-actuales.js (están duplicadas). Si cambias una, cambia la otra.
 ]);
 
+// Equipos de sede itinerante (F-7): la RFFM los pone como "local" pero NO
+// juegan en Peñalta. Alevín, Benjamín A, Benjamín B y Prebenjamín.
+// (Mismo criterio que "sedeItinerante" en categorias.json de ResumenJornada.)
+const EQUIPOS_SEDE_ITINERANTE = new Set(["24710895", "23996978", "27703615", "28105851"]);
+
 // ============================================================
 // ¿Es el club local o visitante en este partido?
 // ============================================================
@@ -246,6 +251,8 @@ function extraerDatosPartido(game) {
     local: Number(game.goles_local),
     visitante: Number(game.goles_visitante),
     propioLocal: esLocal,
+    // ¿Se juega realmente en Peñalta? Local en la RFFM Y equipo que no sea itinerante.
+    juegaEnPenalta: esLocal && !EQUIPOS_SEDE_ITINERANTE.has(String(esLocal ? game.codigo_equipo_local : game.codigo_equipo_visitante)),
     equipoPropio: esLocal ? game.equipo_local.trim() : game.equipo_visitante.trim(),
     // Código RFFM del equipo propio: es lo fiable para distinguir equipos de
     // la misma categoría (Benjamín A / B); el nombre puede variar.
