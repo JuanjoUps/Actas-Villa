@@ -1386,7 +1386,7 @@
     "hora": "10:00",
     "campo": "OLÍMPICO HORTALEZA - LAS CÁRCAVAS (HA)(HA)",
     "esLocal": false,
-    "finalizado": false,
+    "finalizado": true,
     "temporada": "22",
     "competicion": "26738141",
     "grupo": "26738146"
