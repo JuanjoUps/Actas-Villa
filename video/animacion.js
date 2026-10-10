@@ -35,37 +35,49 @@ const FRASES = {
     "¡Festival de goles del Villa! ¡Qué partidazo!",
     "¡Goleada espectacular! El Villa pasa por encima del rival.",
     "¡Qué exhibición! El Villa firma una victoria arrolladora.",
-    "¡Noche de goles y fútbol! El Villa se luce a lo grande.",
+    "¡Recital de fútbol del Villa! Actuación de las que hacen afición.",
+    "¡Manita al rival! El Villa se luce a lo grande.",
+    "¡Paliza histórica! El Villa no dejó títere con cabeza.",
   ],
   victoriaMedia: [
     "¡Gran victoria del Villa! El equipo se impone con autoridad.",
     "¡Tres puntos y una actuación fantástica del equipo!",
     "¡Victoria contundente! El Villa demuestra su calidad.",
     "¡Partidazo del Villa! Victoria merecida de principio a fin.",
+    "¡El Villa manda y convence! Otra victoria para la vitrina.",
+    "¡Triunfo sólido del Villa! Trabajo en equipo de principio a fin.",
   ],
   victoriaMinima: [
     "¡Victoria trabajada hasta el último minuto!",
     "¡Tres puntos de oro en un partido de infarto!",
     "¡Sufriendo, peleando y ganando! ¡Así se consiguen estos tres puntos!",
     "¡El Villa aguanta hasta el final y se lleva una victoria de mucho mérito!",
+    "¡Un gol y toda la garra necesaria para sumar los tres puntos!",
+    "¡Se sufrió, pero se ganó! Victoria de esas que hacen equipo.",
   ],
   empate: [
     "¡Empate muy luchado por los dos equipos!",
     "¡Partido de máxima igualdad hasta el pitido final!",
     "¡Los dos equipos lo dejaron todo sobre el campo!",
     "¡Reparto de puntos después de un auténtico partidazo!",
+    "¡Un punto que sabe a esfuerzo! El Villa no bajó los brazos.",
+    "¡Empate justo en un partido muy disputado!",
   ],
   derrotaMinima: [
     "¡Derrota muy luchada! El Villa peleó hasta el final.",
     "¡Partido muy competido que esta vez cayó del lado rival!",
     "¡El equipo lo intentó hasta el último minuto!",
     "¡No pudo ser! Toca seguir trabajando y levantarse.",
+    "¡Derrota con la cara bien alta! El equipo compitió de tú a tú.",
+    "¡Se puso difícil, pero el Villa no dejó de pelear ni un segundo!",
   ],
   derrotaGrande: [
     "¡Dura derrota para el Villa en un partido complicado!",
     "¡Hoy no salió nada como esperábamos! Toca aprender y volver más fuertes.",
     "¡Resultado duro para el equipo! Ahora toca levantar la cabeza.",
     "¡Partido difícil para el Villa! Lo importante es seguir adelante.",
+    "¡Día complicado para el equipo! De estos partidos también se aprende.",
+    "¡No fue el día del Villa! A pasar página y a por el siguiente.",
   ],
 };
 
@@ -103,19 +115,32 @@ const FRASES_PORTERIA_CERO = [
 ];
 
 const FRASES_EXTRA_CIERRE = [
-  "¡Somos Villa!",
-  "¡A seguir trabajando!",
-  "¡Este equipo no para!",
-  "¡Seguimos! ¡La huella del Villa continúa!",
+  "¡Somos el Villa!",
+  "¡Vamos Buitrago!",
+  "¡Vamos verdes!",
+  "¡Con esta camiseta, hasta el final!",
+  "¡Este equipo no se rinde nunca!",
+  "¡Orgullo verde y negro!",
 ];
 
 // Duraciones de cada pantalla (ms)
-const DURACION_RESULTADO = 1800;
-const DURACION_ALINEACION_LISTA = 2600;
-const DURACION_ALINEACION_CAMPO = 3000;
+// Acortado a propósito: en Instagram Stories la atención se decide
+// en los primeros 1-2 segundos. Antes el marcador ocupaba casi todo
+// ese hueco él solo, quieto; ahora la alineación (que sí tiene
+// movimiento) empieza a entrar casi de inmediato, solapando con el
+// marcador en vez de esperar a que termine.
+const DURACION_RESULTADO = 700;
+// Fase 0 (lista de nombres) + fase 1 (presentación, repartidos por
+// la sección) + fase 2 (ya contraídos dentro del terreno de juego).
+const DURACION_ALINEACION_LISTA = 2400;
+const DURACION_ALINEACION_PRESENTACION = 1800;
+const DURACION_ALINEACION_CONTRAIDA = 3200;
 const DURACION_ENTRE_GOLES = 900;
-const DURACION_GOLES_FINAL = 1800;
-const DURACION_MASCOTA = 5000;
+const DURACION_GOLES_FINAL = 1100;
+// Acortado: el bloque final (mascota + mensaje + footer) no debe
+// quedarse esperando a que se lea todo -- si alguien quiere leerlo
+// con calma, pausa la story. El vídeo sigue su ritmo normal.
+const DURACION_MASCOTA = 3200;
 
 // ============================================================
 // UTILIDADES
@@ -125,8 +150,40 @@ function esperar(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+let semillaActual = 1;
+
+function mezclarSemilla(x) {
+  x = Math.imul(x ^ (x >>> 16), 0x45d9f3b);
+  x = Math.imul(x ^ (x >>> 16), 0x45d9f3b);
+  return (x ^ (x >>> 16)) >>> 0;
+}
+
+function fijarSemilla(codacta) {
+  let hash = 0;
+  const texto = String(codacta || "0");
+  for (let i = 0; i < texto.length; i++) {
+    hash = (hash * 31 + texto.charCodeAt(i)) >>> 0;
+  }
+  semillaActual = mezclarSemilla(hash) || 1;
+  // Calentamos el generador un par de vueltas — actas consecutivas
+  // (típico de partidos de la misma jornada) si no quedaban
+  // demasiado parecidas entre sí nada más fijar la semilla.
+  aleatorioConSemilla();
+  aleatorioConSemilla();
+}
+
+function aleatorioConSemilla() {
+  // Generador simple (xorshift) — determinista a partir de la
+  // semilla, suficiente para elegir frases sin dependencias.
+  semillaActual ^= semillaActual << 13;
+  semillaActual ^= semillaActual >>> 17;
+  semillaActual ^= semillaActual << 5;
+  semillaActual >>>= 0;
+  return semillaActual / 4294967295;
+}
+
 function elegirAleatorio(lista) {
-  return lista[Math.floor(Math.random() * lista.length)];
+  return lista[Math.floor(aleatorioConSemilla() * lista.length)];
 }
 
 function ajustarEscala() {
@@ -151,37 +208,39 @@ const RUTAS_CAMISETA = {
   portero: "assets/camiseta-portero-v4.png",
 };
 
-function crearCamisetaCanvas(jugador, esPartidoLocal) {
+function crearTarjetaJugador(jugador, esPartidoLocal) {
   const ruta = jugador.portero
     ? RUTAS_CAMISETA.portero
     : esPartidoLocal
     ? RUTAS_CAMISETA.local
     : RUTAS_CAMISETA.visitante;
 
-  const envoltura = document.createElement("div");
-  envoltura.className = "camiseta-envoltura";
+  const tarjeta = document.createElement("div");
+  tarjeta.className = "tarjeta-jugador" + (jugador.portero ? " portero" : "");
 
   const img = document.createElement("img");
-  img.className = "camiseta";
+  img.className = "camiseta-fondo";
   img.src = ruta;
-  envoltura.appendChild(img);
+  tarjeta.appendChild(img);
 
-  // Dorsal: negro de normal, blanco si es portero — con un
-  // pequeño fondo detrás para que se lea bien pase lo que pase
-  // debajo (petición: "que sea legible").
   const dorsal = document.createElement("div");
-  dorsal.className = "camiseta-dorsal" + (jugador.portero ? " portero" : "");
+  dorsal.className = "dorsal-tarjeta";
   dorsal.textContent = jugador.dorsal;
-  envoltura.appendChild(dorsal);
+  tarjeta.appendChild(dorsal);
+
+  const nombre = document.createElement("div");
+  nombre.className = "nombre-tarjeta";
+  nombre.textContent = jugador.nombre;
+  tarjeta.appendChild(nombre);
 
   if (jugador.capitan) {
     const capitan = document.createElement("div");
-    capitan.className = "camiseta-capitan";
+    capitan.className = "capitan-tarjeta";
     capitan.textContent = "C";
-    envoltura.appendChild(capitan);
+    tarjeta.appendChild(capitan);
   }
 
-  return envoltura;
+  return tarjeta;
 }
 
 
@@ -202,12 +261,14 @@ function pintarResultado(datos) {
 
   // El equipo LOCAL siempre va primero (izquierda) y el VISITANTE
   // siempre segundo (derecha) — sea "nosotros" el que sea.
+  // OJO: el campo se llama "escudoRivalUrl" en el JSON guardado
+  // (no "escudoRival") -- por eso estaba fallando antes.
   const izquierda = datos.resultado.propioLocal
     ? { nombre: datos.resultado.equipoPropio, escudo: "/escudo-club.png", goles: golesPropios }
-    : { nombre: datos.resultado.rival, escudo: datos.resultado.escudoRival || "", goles: golesRival };
+    : { nombre: datos.resultado.rival, escudo: datos.resultado.escudoRivalUrl || "", goles: golesRival };
 
   const derecha = datos.resultado.propioLocal
-    ? { nombre: datos.resultado.rival, escudo: datos.resultado.escudoRival || "", goles: golesRival }
+    ? { nombre: datos.resultado.rival, escudo: datos.resultado.escudoRivalUrl || "", goles: golesRival }
     : { nombre: datos.resultado.equipoPropio, escudo: "/escudo-club.png", goles: golesPropios };
 
   cont.innerHTML = `
@@ -254,7 +315,15 @@ function repartirEnFilas(cantidad) {
 // para cuando sí sabemos la posición de cada jugador (equipo de
 // veteranos, sin acta de la federación) — coloca a cada uno en su
 // línea de verdad, no en un reparto genérico por número.
-function posicionesPorRolFutbolistico(alineacion) {
+// Dos repartos por altura: "amplio" para la presentación inicial
+// (ocupa toda la caja, incluida la parte de fondo oscuro de la
+// imagen) y "compacto" para cuando se contraen — medido a mano
+// para que quede dentro del césped visible de verdad (que en nuestras
+// imágenes de fondo empieza sobre el 40-42% de la caja, no antes).
+const ALTURAS_AMPLIO = { portero: "88%", defensa: "68%", centrocampista: "45%", delantero: "22%" };
+const ALTURAS_COMPACTO = { portero: "88%", defensa: "72%", centrocampista: "56%", delantero: "40%" };
+
+function posicionesPorRolFutbolistico(alineacion, alturas = ALTURAS_AMPLIO) {
   const grupos = { portero: [], defensa: [], centrocampista: [], delantero: [] };
 
   alineacion.forEach((j) => {
@@ -263,10 +332,10 @@ function posicionesPorRolFutbolistico(alineacion) {
   });
 
   const filas = [
-    { jugadores: grupos.portero, top: "88%" },
-    { jugadores: grupos.defensa, top: "68%" },
-    { jugadores: grupos.centrocampista, top: "45%" },
-    { jugadores: grupos.delantero, top: "22%" },
+    { jugadores: grupos.portero, top: alturas.portero },
+    { jugadores: grupos.defensa, top: alturas.defensa },
+    { jugadores: grupos.centrocampista, top: alturas.centrocampista },
+    { jugadores: grupos.delantero, top: alturas.delantero },
   ];
 
   const mapa = new Map();
@@ -280,14 +349,14 @@ function posicionesPorRolFutbolistico(alineacion) {
   return mapa;
 }
 
-function posicionesEnCampo(numJugadores) {
+function posicionesEnCampo(numJugadores, alturas = ALTURAS_AMPLIO) {
   const posiciones = [];
 
   // Portero: centrado, cerca de la parte baja del campo.
-  posiciones.push({ top: "88%", left: "50%" });
+  posiciones.push({ top: alturas.portero, left: "50%" });
 
   const filas = repartirEnFilas(numJugadores - 1);
-  const alturaFilas = ["68%", "45%", "22%"]; // defensa, centro, ataque
+  const alturaFilas = [alturas.defensa, alturas.centrocampista, alturas.delantero];
 
   filas.forEach((cantidadFila, indiceFila) => {
     for (let i = 0; i < cantidadFila; i++) {
@@ -311,11 +380,7 @@ async function pintarAlineacion(datos) {
 
   // Fondo del campo: tu campo real si jugáis en casa, uno
   // genérico si jugáis fuera.
-  // juegaEnPenalta falta en resultados antiguos: entonces vale propioLocal.
-  const enPenalta = datos.resultado.juegaEnPenalta !== undefined
-    ? datos.resultado.juegaEnPenalta
-    : datos.resultado.propioLocal;
-  document.getElementById("fondo-campo").src = enPenalta
+  document.getElementById("fondo-campo").src = datos.resultado.propioLocal
     ? "assets/campo-local-v4.jpg"
     : "assets/campo-generico-v4.jpg";
 
@@ -332,45 +397,32 @@ async function pintarAlineacion(datos) {
     )
     .join("");
 
+  // --- Fase 0: lista de nombres, como al principio (antes de que
+  // aparezcan las tarjetas en el campo) ---
   // Portero primero (si lo detectamos), luego el resto en el
   // orden en que viene el acta.
   const alineacion = [...datos.alineacion].sort(
     (a, b) => Number(b.portero) - Number(a.portero)
   );
 
-  // --- Paso 1: lista de tarjetas, centradas verticalmente ---
   const altoCampo = campo.clientHeight;
-  const altoTarjeta = Math.min(62, (altoCampo - 30) / alineacion.length);
-  const inicioY = altoCampo / 2 - (alineacion.length * altoTarjeta) / 2;
+  const altoFila = Math.min(56, (altoCampo - 24) / alineacion.length);
+  const inicioY = altoCampo / 2 - (alineacion.length * altoFila) / 2;
 
   alineacion.forEach((jugador, i) => {
-    const el = document.createElement("div");
-    el.className = "jugador en-lista";
-    el.style.top = `${inicioY + i * altoTarjeta + altoTarjeta / 2}px`;
-    el.style.left = "50%";
-
-    const camiseta = crearCamisetaCanvas(jugador, datos.resultado.propioLocal);
-    // Tamaño de la camiseta ajustado al hueco real disponible por
-    // fila — si no, con muchos jugadores se solapan unas con otras.
-    const altoCamiseta = Math.max(30, altoTarjeta * 0.86);
-    camiseta.style.height = `${altoCamiseta}px`;
-    camiseta.style.width = `${altoCamiseta * 0.82}px`;
-    el.appendChild(camiseta);
-
-    const nombre = document.createElement("div");
-    nombre.className = "nombre";
-    nombre.textContent = jugador.nombre + (jugador.capitan ? " (C)" : "");
-    el.appendChild(nombre);
-
-    cont.appendChild(el);
+    const fila = document.createElement("div");
+    fila.className = "fila-lista";
+    fila.style.top = `${inicioY + i * altoFila + altoFila / 2}px`;
+    fila.innerHTML = `
+      <span class="dorsal-lista">${jugador.dorsal}</span>
+      <span class="nombre-lista">${jugador.nombre}${jugador.capitan ? " (C)" : ""}</span>
+    `;
+    cont.appendChild(fila);
   });
 
   await esperar(DURACION_ALINEACION_LISTA);
+  cont.innerHTML = "";
 
-  // --- Paso 2: las mismas camisetas (ya ondeando) se mueven a su
-  // posición en el campo — no desaparecen y reaparecen, se
-  // desplazan con una transición CSS ---
-  //
   // Si TODOS los jugadores traen una "posicion" guardada (caso del
   // equipo de veteranos, sin acta oficial), los colocamos por rol
   // real en vez del reparto genérico en 3 líneas.
@@ -382,19 +434,53 @@ async function pintarAlineacion(datos) {
     ? null
     : posicionesEnCampo(alineacion.length);
 
-  const elementos = cont.querySelectorAll(".jugador");
-
-  elementos.forEach((el, i) => {
-    el.classList.remove("en-lista");
-    const jugador = alineacion[i];
+  // Cada jugador aparece directamente en su posición del campo,
+  // con un pequeño "pop" — uno detrás de otro, sin pasar antes
+  // por una lista de nombres.
+  alineacion.forEach((jugador, i) => {
+    const el = document.createElement("div");
+    el.className = "jugador";
     const pos = usaPosicionesReales
       ? mapaPosiciones.get(jugador.dorsal) || { top: "50%", left: "50%" }
       : posiciones[i] || { top: "50%", left: "50%" };
     el.style.top = pos.top;
     el.style.left = pos.left;
+    el.style.animationDelay = `${i * 0.12}s`;
+
+    el.appendChild(crearTarjetaJugador(jugador, datos.resultado.propioLocal));
+    cont.appendChild(el);
+
+    // Forzamos el reflow antes de añadir la clase, para que la
+    // animación se dispare de verdad.
+    void el.offsetWidth;
+    el.classList.add("aparece");
   });
 
-  await esperar(DURACION_ALINEACION_CAMPO);
+  // Fase de presentación: se ven repartidos por toda la sección.
+  await esperar(DURACION_ALINEACION_PRESENTACION);
+
+  // Fase 2: se contraen hacia el terreno de juego real — la imagen
+  // de fondo del campo no llena toda la caja (queda fondo oscuro
+  // en la parte de arriba), así que usamos un reparto por alturas
+  // distinto, medido para caer dentro del césped visible de verdad.
+  const mapaPosicionesCompacto = usaPosicionesReales
+    ? posicionesPorRolFutbolistico(alineacion, ALTURAS_COMPACTO)
+    : null;
+  const posicionesCompacto = usaPosicionesReales
+    ? null
+    : posicionesEnCampo(alineacion.length, ALTURAS_COMPACTO);
+
+  const elementos = cont.querySelectorAll(".jugador");
+  elementos.forEach((el, i) => {
+    const jugador = alineacion[i];
+    const pos = usaPosicionesReales
+      ? mapaPosicionesCompacto.get(jugador.dorsal) || { top: "50%", left: "50%" }
+      : posicionesCompacto[i] || { top: "50%", left: "50%" };
+    el.style.top = pos.top;
+    el.style.left = pos.left;
+  });
+
+  await esperar(DURACION_ALINEACION_CONTRAIDA);
 }
 
 
@@ -454,6 +540,11 @@ async function pintarGoles(datos) {
         ? ` <span class="minuto">${gol.minuto}'</span>`
         : "";
       el.innerHTML = `<span class="balon">⚽</span> ${gol.jugador}` + etiquetaMinuto;
+    } else if (gol.esPropia) {
+      // Gol en propia de un jugador nuestro, contado para el rival
+      // -- genérico "G.P.P.", sin nombrar a nadie.
+      const etiquetaMinuto = gol.minuto ? ` <span class="minuto">${gol.minuto}'</span>` : "";
+      el.innerHTML = `<span class="balon">⚽</span> G.P.P.` + etiquetaMinuto;
     } else {
       // Los del rival: solo el balón (no sabemos quién marcó).
       el.innerHTML = `<span class="balon">⚽</span>`;
@@ -511,7 +602,11 @@ function frasePersonalizada(lista, nombreJugador) {
   return elegirAleatorio(lista).replace("[JUGADOR]", nombreJugador);
 }
 
-function pintarMascota(datos) {
+async function pintarMascota(datos) {
+  // Semilla fija por partido — mismo acta, mismas frases; partidos
+  // distintos, alta probabilidad de frases distintas.
+  fijarSemilla(datos.codacta);
+
   const propios = datos.resultado.propioLocal
     ? datos.resultado.local
     : datos.resultado.visitante;
@@ -529,18 +624,31 @@ function pintarMascota(datos) {
   const campo = datos.resultado.propioLocal ? "local" : "visitante";
 
   const imgMascota = document.getElementById("img-mascota");
-  imgMascota.src = MASCOTA_IMG[tipo][campo];
-  imgMascota.onerror = () => {
-    // Si no existe el archivo de imagen, mostramos un emoji grande
-    // en su lugar para no dejar el hueco vacío.
-    imgMascota.replaceWith(
-      Object.assign(document.createElement("div"), {
-        id: "img-mascota",
-        style: "font-size: 220px;",
-        textContent: MASCOTA_EMOJI_RESPALDO[tipo],
-      })
-    );
-  };
+  // Esperamos a que la imagen esté REALMENTE lista (decodificada
+  // del todo) antes de seguir -- si no, Playwright puede grabar un
+  // fotograma con la imagen a medio cargar (se ve "partida").
+  await new Promise((resolve) => {
+    imgMascota.onload = () => {
+      if (imgMascota.decode) {
+        imgMascota.decode().then(resolve).catch(resolve);
+      } else {
+        resolve();
+      }
+    };
+    imgMascota.onerror = () => {
+      // Si no existe el archivo de imagen, mostramos un emoji grande
+      // en su lugar para no dejar el hueco vacío.
+      imgMascota.replaceWith(
+        Object.assign(document.createElement("div"), {
+          id: "img-mascota",
+          style: "font-size: 220px;",
+          textContent: MASCOTA_EMOJI_RESPALDO[tipo],
+        })
+      );
+      resolve();
+    };
+    imgMascota.src = MASCOTA_IMG[tipo][campo];
+  });
 
   const categoria = categoriaResultado(diferencia);
 
@@ -611,7 +719,7 @@ async function reproducirVideo(datos) {
   mostrarBloque("bloque-goles");
   await pintarGoles(datos);
 
-  pintarMascota(datos);
+  await pintarMascota(datos);
   mostrarBloque("bloque-mascota");
   await esperar(DURACION_MASCOTA);
 
