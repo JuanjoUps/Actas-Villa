@@ -938,7 +938,7 @@
     "hora": "12:00",
     "campo": "S.S. REYES - RAFAEL DELGADO ROSA - DEHESA BOYAL 1 (HA)(HA)",
     "esLocal": false,
-    "finalizado": false,
+    "finalizado": true,
     "temporada": "22",
     "competicion": "26737828",
     "grupo": "26737830"
