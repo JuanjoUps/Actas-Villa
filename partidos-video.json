@@ -490,7 +490,7 @@
     "hora": "17:15",
     "campo": "BUITRAGO (HA)(HA)",
     "esLocal": true,
-    "finalizado": false,
+    "finalizado": true,
     "temporada": "22",
     "competicion": "26737768",
     "grupo": "26737774"
