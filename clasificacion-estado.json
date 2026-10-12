@@ -1,4 +1,9 @@
 {
+  "Senior (Segunda Aficionado)": {
+    "posicion": 5,
+    "puntos": 6,
+    "totalEquipos": 15
+  },
   "Alevín F-7": {
     "posicion": 6,
     "puntos": 1,
