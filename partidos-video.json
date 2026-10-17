@@ -1402,7 +1402,7 @@
     "hora": "13:15",
     "campo": "BUITRAGO (HA)(HA)",
     "esLocal": true,
-    "finalizado": false,
+    "finalizado": true,
     "temporada": "22",
     "competicion": "26738141",
     "grupo": "26738146"
@@ -2106,7 +2106,7 @@
     "hora": "11:00",
     "campo": "BUITRAGO (HA)(HA)",
     "esLocal": false,
-    "finalizado": false,
+    "finalizado": true,
     "temporada": "22",
     "competicion": "26737943",
     "grupo": "27642668"
@@ -2122,7 +2122,7 @@
     "hora": "12:00",
     "campo": "BUITRAGO (HA)(HA)",
     "esLocal": true,
-    "finalizado": false,
+    "finalizado": true,
     "temporada": "22",
     "competicion": "26737943",
     "grupo": "27642668"
