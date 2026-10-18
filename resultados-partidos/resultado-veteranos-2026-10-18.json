@@ -1,0 +1,154 @@
+{
+  "resultado": {
+    "propioLocal": false,
+    "equipoPropio": "C.D. VILLA DE BUITRAGO",
+    "escudoPropioUrl": "",
+    "visitante": 2,
+    "local": 3,
+    "escudoRivalUrl": "/escudos-cache/CF_RECREATIVO_SOTO_DEL_REAL.png",
+    "rival": "CF Recreativo Soto del Real"
+  },
+  "jornada": "4",
+  "expulsiones": [],
+  "tarjetas": [],
+  "alineacion": [
+    {
+      "capitan": false,
+      "posicion": "delantero",
+      "portero": false,
+      "nombre": "Xory",
+      "dorsal": "9"
+    },
+    {
+      "dorsal": "23",
+      "nombre": "Danilo",
+      "posicion": "delantero",
+      "capitan": false,
+      "portero": false
+    },
+    {
+      "portero": false,
+      "dorsal": "99",
+      "nombre": "Gelo",
+      "posicion": "centrocampista",
+      "capitan": false
+    },
+    {
+      "portero": false,
+      "nombre": "Ricardo",
+      "posicion": "defensa",
+      "dorsal": "6",
+      "capitan": false
+    },
+    {
+      "posicion": "portero",
+      "portero": true,
+      "nombre": "Ato",
+      "capitan": false,
+      "dorsal": "88"
+    },
+    {
+      "nombre": "Dieguito",
+      "capitan": false,
+      "dorsal": "27",
+      "portero": false,
+      "posicion": "centrocampista"
+    },
+    {
+      "posicion": "centrocampista",
+      "portero": false,
+      "capitan": false,
+      "nombre": "Puli",
+      "dorsal": "98"
+    },
+    {
+      "portero": false,
+      "capitan": false,
+      "nombre": "Sacha",
+      "dorsal": "18",
+      "posicion": "defensa"
+    },
+    {
+      "nombre": "Mini",
+      "posicion": "defensa",
+      "dorsal": "31",
+      "portero": false,
+      "capitan": false
+    },
+    {
+      "nombre": "Javi",
+      "dorsal": "49",
+      "portero": false,
+      "posicion": "centrocampista",
+      "capitan": false
+    },
+    {
+      "posicion": "defensa",
+      "portero": false,
+      "dorsal": "50",
+      "nombre": "Chaski",
+      "capitan": false
+    }
+  ],
+  "golesRival": [
+    {
+      "minuto": ""
+    },
+    {
+      "minuto": ""
+    },
+    {
+      "minuto": ""
+    }
+  ],
+  "hatTricks": [],
+  "categoria": "VETERANOS",
+  "fecha": "18-10-2026",
+  "grupo": "Liga",
+  "golesPropios": [
+    {
+      "jugador": "Javi",
+      "minuto": "59"
+    },
+    {
+      "jugador": "Xory",
+      "minuto": "72"
+    }
+  ],
+  "campo": "Campo de CF Recreativo Soto del Real",
+  "codacta": "veteranos-2026-10-18",
+  "suplentes": [
+    {
+      "dorsal": "24",
+      "nombre": "Lean"
+    },
+    {
+      "dorsal": "14",
+      "nombre": "Claus"
+    },
+    {
+      "dorsal": "11",
+      "nombre": "Juanjo"
+    },
+    {
+      "dorsal": "8",
+      "nombre": "César"
+    },
+    {
+      "dorsal": "34",
+      "nombre": "Miguel"
+    },
+    {
+      "nombre": "Pana",
+      "dorsal": "20"
+    },
+    {
+      "dorsal": "4",
+      "nombre": "Barbu"
+    },
+    {
+      "dorsal": "96",
+      "nombre": "Chencho"
+    }
+  ]
+}
