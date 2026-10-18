@@ -506,7 +506,7 @@
     "hora": "11:30",
     "campo": "SOTO DEL REAL - MPAL. AMANCIO AMARO (HA)(HA)",
     "esLocal": false,
-    "finalizado": false,
+    "finalizado": true,
     "temporada": "22",
     "competicion": "26737768",
     "grupo": "26737774"
