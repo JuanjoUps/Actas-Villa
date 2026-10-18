@@ -5,13 +5,8 @@
     "totalEquipos": 15
   },
   "Alevín F-7": {
-    "posicion": 7,
-    "puntos": 1,
+    "posicion": 4,
+    "puntos": 4,
     "totalEquipos": 13
-  },
-  "Infantil": {
-    "posicion": 14,
-    "puntos": 0,
-    "totalEquipos": 16
   }
 }
