@@ -954,7 +954,7 @@
     "hora": "17:00",
     "campo": "BUITRAGO (HA)(HA)",
     "esLocal": true,
-    "finalizado": false,
+    "finalizado": true,
     "temporada": "22",
     "competicion": "26737828",
     "grupo": "26737830"
@@ -967,7 +967,7 @@
     "rival": "UNION DEPORTIVA SAN AGUSTIN DEL GUADALIX 'A'",
     "rivalEscudo": "https://appweb.rffm.es/pnfg/pimg/Clubes/00100_0014268624_union_eprotiv_san_agusti.png",
     "fecha": "24-10-2026",
-    "hora": "",
+    "hora": "10:30",
     "campo": "SAN AGUSTIN DE GUADALIX - PVO. MUNICIPAL (HA)(HA)",
     "esLocal": false,
     "finalizado": false,
