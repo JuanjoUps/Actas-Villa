@@ -220,14 +220,29 @@ async function main() {
       estadoNuevo[clave2] = { posicion: posicionActual, puntos, totalEquipos };
 
       const anterior = estadoAnterior[clave2];
+      const detalle = `puesto ${posicionActual} de ${totalEquipos} (${puntos} puntos)`;
+      const manual = process.env.GITHUB_EVENT_NAME === "workflow_dispatch";
+
       if (anterior && anterior.posicion !== posicionActual) {
+        const subio = posicionActual < anterior.posicion;
         cambios.push({
           categoria: clave2,
           posicionAnterior: anterior.posicion,
           posicionNueva: posicionActual,
           puntos,
           totalEquipos,
-          subio: posicionActual < anterior.posicion,
+          subio,
+          texto: `${subio ? "⬆️ SUBE" : "⬇️ BAJA"} — ${clave2}: puesto ${anterior.posicion} -> ${posicionActual} de ${totalEquipos} (${puntos} puntos)`,
+        });
+      } else if (!anterior || manual) {
+        // Categoría vista por primera vez, o ejecución manual: se manda la
+        // posición actual de TODOS los equipos, aunque no haya cambiado.
+        cambios.push({
+          categoria: clave2,
+          posicionNueva: posicionActual,
+          puntos,
+          totalEquipos,
+          texto: `📌 ${clave2}: ${detalle}`,
         });
       }
     }
@@ -237,14 +252,8 @@ async function main() {
 
   if (cambios.length > 0) {
     fs2.writeFileSync(CAMBIOS_PATH, JSON.stringify(cambios, null, 2));
-    console.log(`\n${cambios.length} cambio(s) de posición detectado(s):`);
-    cambios.forEach((c) => {
-      const flecha = c.subio ? "⬆️" : "⬇️";
-      console.log(
-        `  ${flecha} ${c.categoria}: puesto ${c.posicionAnterior} -> ${c.posicionNueva} ` +
-        `de ${c.totalEquipos} (${c.puntos} puntos)`
-      );
-    });
+    console.log(`\n${cambios.length} aviso(s) de clasificación:`);
+    cambios.forEach((c) => console.log("  " + c.texto));
   } else {
     if (fs2.existsSync(CAMBIOS_PATH)) fs2.unlinkSync(CAMBIOS_PATH);
     console.log("\nSin cambios de posición desde la última revisión.");
