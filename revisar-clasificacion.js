@@ -37,16 +37,25 @@ const CAMBIOS_PATH = path.join(__dirname, "clasificacion-cambios.json");
 
 const CATEGORIAS = [
   { nombre: "Senior (Segunda Aficionado)", temporada: 22, tipojuego: 1, competicion: 26738300, grupo: 26738302 },
-  { nombre: "Alevín F-7", temporada: 22, tipojuego: 2, competicion: 26738141, grupo: 26738146 },
-  { nombre: "Juvenil", temporada: 22, tipojuego: 1, competicion: 26737724, grupo: 26737728 },
+  { nombre: "Cadete", temporada: 22, tipojuego: 1, competicion: 26737768, grupo: 26737774 },
   { nombre: "Infantil", temporada: 22, tipojuego: 1, competicion: 26737828, grupo: 26737830 },
-  { nombre: "Fútbol femenino", temporada: 22, tipojuego: 1, competicion: 26737874, grupo: 26737876 },
+  { nombre: "Alevín F-7", temporada: 22, tipojuego: 2, competicion: 26738141, grupo: 26738146 },
+  { nombre: "Fútbol femenino", temporada: 22, tipojuego: 1, competicion: 26737874, grupo: 26737875 },
+  { nombre: "Benjamín F-7", temporada: 22, tipojuego: 2, competicion: 26737943, grupo: 27642668 },
+  { nombre: "Prebenjamín F-7", temporada: 22, tipojuego: 2, competicion: 26797573, grupo: 28112552 },
 ];
+
+// Nombre con el que se avisa cuando hay dos equipos del club en el mismo
+// grupo (Benjamín A y B comparten competición y grupo).
+const NOMBRE_POR_EQUIPO = {
+  "23996978": "Benjamín F-7 (A)",
+  "27703615": "Benjamín F-7 (B)",
+};
 
 // Códigos de equipo del club, para localizar la fila correcta en
 // la tabla (mismos que EQUIPOS_CLUB del resto del proyecto).
 const EQUIPOS_CLUB = new Set([
-  "846904", "2276659", "3082888", "3088877", "24710895", "17138002",
+  "846904", "3082888", "3088877", "24710895", "17138002", "23996978", "27703615", "28105851",
 ]);
 
 // ============================================================
@@ -148,7 +157,7 @@ function extraerTabla(pageProps) {
 function encontrarFilaDelClub(tabla) {
   if (!Array.isArray(tabla)) return null;
   // El campo real se llama "codequipo" (confirmado con datos reales).
-  return tabla.find((fila) => EQUIPOS_CLUB.has(String(fila.codequipo)));
+  return tabla.filter((fila) => EQUIPOS_CLUB.has(String(fila.codequipo)));
 }
 
 // ============================================================
@@ -166,7 +175,9 @@ function cargarEstadoAnterior() {
 
 async function main() {
   const estadoAnterior = cargarEstadoAnterior();
-  const estadoNuevo = {};
+  // Se parte del estado anterior: si una categoría falla un día, no se pierde
+  // su posición (así no salen avisos falsos en la siguiente ejecución).
+  const estadoNuevo = { ...estadoAnterior };
   const cambios = [];
   const jornadas = ultimaJornadaPorCategoria();
 
@@ -188,33 +199,37 @@ async function main() {
       continue;
     }
 
-    const filaClub = encontrarFilaDelClub(tabla);
-    if (!filaClub) {
+    const filasClub = encontrarFilaDelClub(tabla);
+    if (!filasClub || filasClub.length === 0) {
       console.log(`  ⚠️ No se encontró la fila del club en la tabla de ${categoria.nombre}.`);
       diagnosticar(pageProps, categoria.nombre);
       continue;
     }
 
-    const posicionActual = Number(filaClub.posicion || filaClub.puesto || filaClub.rank);
-    const puntos = Number(filaClub.puntos || filaClub.points);
-    const totalEquipos = tabla.length;
+    for (const filaClub of filasClub) {
+      const posicionActual = Number(filaClub.posicion || filaClub.puesto || filaClub.rank);
+      const puntos = Number(filaClub.puntos || filaClub.points);
+      const totalEquipos = tabla.length;
 
-    estadoNuevo[categoria.nombre] = {
-      posicion: posicionActual,
-      puntos,
-      totalEquipos,
-    };
+      // Si hay más de un equipo del club en el grupo (Benjamín A y B),
+      // se distinguen por el nombre del equipo.
+      const clave2 = filasClub.length > 1
+        ? (NOMBRE_POR_EQUIPO[String(filaClub.codequipo)] || `${categoria.nombre} · ${filaClub.codequipo}`)
+        : categoria.nombre;
 
-    const anterior = estadoAnterior[categoria.nombre];
-    if (anterior && anterior.posicion !== posicionActual) {
-      cambios.push({
-        categoria: categoria.nombre,
-        posicionAnterior: anterior.posicion,
-        posicionNueva: posicionActual,
-        puntos,
-        totalEquipos,
-        subio: posicionActual < anterior.posicion,
-      });
+      estadoNuevo[clave2] = { posicion: posicionActual, puntos, totalEquipos };
+
+      const anterior = estadoAnterior[clave2];
+      if (anterior && anterior.posicion !== posicionActual) {
+        cambios.push({
+          categoria: clave2,
+          posicionAnterior: anterior.posicion,
+          posicionNueva: posicionActual,
+          puntos,
+          totalEquipos,
+          subio: posicionActual < anterior.posicion,
+        });
+      }
     }
   }
 
