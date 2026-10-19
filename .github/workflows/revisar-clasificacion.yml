@@ -27,15 +27,12 @@ jobs:
             echo "hay_cambios=false" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Enviar cambios a Telegram
+      - name: Enviar avisos a Telegram
         if: steps.comprobar.outputs.hay_cambios == 'true'
         run: |
           node -e "
           const cambios = require('./clasificacion-cambios.json');
-          cambios.forEach(c => {
-            const flecha = c.subio ? '⬆️ SUBE' : '⬇️ BAJA';
-            console.log(\`\${flecha} — \${c.categoria}: puesto \${c.posicionAnterior} -> \${c.posicionNueva} de \${c.totalEquipos} (\${c.puntos} puntos)\`);
-          });
+          cambios.forEach(c => console.log(c.texto));
           " > mensajes-clasificacion.txt
 
           while IFS= read -r linea; do
