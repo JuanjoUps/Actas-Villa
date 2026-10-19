@@ -8,5 +8,35 @@
     "posicion": 4,
     "puntos": 4,
     "totalEquipos": 13
+  },
+  "Cadete": {
+    "posicion": 1,
+    "puntos": 6,
+    "totalEquipos": 13
+  },
+  "Infantil": {
+    "posicion": 14,
+    "puntos": 0,
+    "totalEquipos": 16
+  },
+  "Fútbol femenino": {
+    "posicion": 5,
+    "puntos": 0,
+    "totalEquipos": 10
+  },
+  "Benjamín F-7 (A)": {
+    "posicion": 7,
+    "puntos": 3,
+    "totalEquipos": 14
+  },
+  "Benjamín F-7 (B)": {
+    "posicion": 10,
+    "puntos": 0,
+    "totalEquipos": 14
+  },
+  "Prebenjamín F-7": {
+    "posicion": 1,
+    "puntos": 0,
+    "totalEquipos": 9
   }
 }
