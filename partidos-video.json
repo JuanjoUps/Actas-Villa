@@ -2087,10 +2087,10 @@
     "rival": "C.D. VILLA BUITRAGO DEL LOZOYA 'B'",
     "rivalEscudo": "https://appweb.rffm.es/pnfg/pimg/Clubes/00100_0014265999_BUITRAGO.png",
     "fecha": "21-10-2026",
-    "hora": "16:30",
+    "hora": "17:15",
     "campo": "BUITRAGO (HA)(HA)",
     "esLocal": true,
-    "finalizado": false,
+    "finalizado": true,
     "temporada": "22",
     "competicion": "26737943",
     "grupo": "27642668"
