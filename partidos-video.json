@@ -2887,10 +2887,10 @@
     "rival": "C.D. PEDREZUELA 'A'",
     "rivalEscudo": "https://appweb.rffm.es/pnfg/pimg/Clubes/00100_0011784989_EscudoCDP_1975oSin.png",
     "fecha": "23-10-2026",
-    "hora": "18:00",
+    "hora": "18:10",
     "campo": "LA CABRERA - C.D.M. JULIAN BERRENDERO (HA)(HA)",
     "esLocal": true,
-    "finalizado": false,
+    "finalizado": true,
     "temporada": "22",
     "competicion": "26797573",
     "grupo": "28112552"
