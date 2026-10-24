@@ -161,23 +161,46 @@ function extraerSuplentes(game, esLocal) {
 // Goles propios y del rival
 // ============================================================
 
+// En el acta, un gol en propia puerta aparece en la lista del equipo
+// que lo marcó (tipo_gol "102", el normal es "101"), pero cuenta para
+// el RIVAL. Hay que moverlo de lista.
+function esGolEnPropia(g) {
+  return Boolean(g) && String(g.tipo_gol) === "102";
+}
+
 function extraerGoles(game, esLocal) {
-  const golesPropios = esLocal
-    ? game.goles_equipo_local
-    : game.goles_equipo_visitante;
+  const golesPropios = (esLocal ? game.goles_equipo_local : game.goles_equipo_visitante) || [];
+  const golesRival = (esLocal ? game.goles_equipo_visitante : game.goles_equipo_local) || [];
 
-  const golesRival = esLocal
-    ? game.goles_equipo_visitante
-    : game.goles_equipo_local;
+  // Goles normales del club + goles en propia del RIVAL (suman para nosotros).
+  const propios = [
+    ...golesPropios
+      .filter((g) => !esGolEnPropia(g))
+      .map((g) => ({
+        jugador: invertirNombre(g.nombre_jugador),
+        minuto: Number(g.minuto),
+      })),
+    ...golesRival
+      .filter(esGolEnPropia)
+      .map((g) => ({
+        jugador: "Gol en propia puerta (rival)",
+        minuto: Number(g.minuto),
+      })),
+  ];
 
-  const propios = (golesPropios || []).map((g) => ({
-    jugador: invertirNombre(g.nombre_jugador),
-    minuto: Number(g.minuto),
-  }));
+  // Goles normales del rival + goles en propia de NUESTROS jugadores
+  // (suman para el rival; en el vídeo salen como "G.P.P.", sin nombre).
+  const rival = [
+    ...golesRival
+      .filter((g) => !esGolEnPropia(g))
+      .map((g) => ({ minuto: Number(g.minuto) })),
+    ...golesPropios
+      .filter(esGolEnPropia)
+      .map((g) => ({ minuto: Number(g.minuto), esPropia: true })),
+  ];
 
-  const rival = (golesRival || []).map((g) => ({
-    minuto: Number(g.minuto),
-  }));
+  propios.sort((x, y) => x.minuto - y.minuto);
+  rival.sort((x, y) => x.minuto - y.minuto);
 
   return { propios, rival };
 }
