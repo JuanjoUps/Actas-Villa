@@ -1,0 +1,149 @@
+{
+  "tarjetas": [],
+  "fecha": "25-10-2026",
+  "golesRival": [],
+  "categoria": "VETERANOS",
+  "expulsiones": [
+    {
+      "expulsion": true,
+      "jugador": "Jugador del rival"
+    }
+  ],
+  "hatTricks": [],
+  "jornada": "5",
+  "campo": "Campo de Haro Villanueva FC",
+  "resultado": {
+    "propioLocal": false,
+    "rival": "Haro Villanueva FC",
+    "local": 0,
+    "escudoRivalUrl": "/escudos-cache/HARO_VILLANUEVA_FC.png",
+    "escudoPropioUrl": "",
+    "equipoPropio": "C.D. VILLA DE BUITRAGO",
+    "visitante": 2
+  },
+  "suplentes": [
+    {
+      "dorsal": "11",
+      "nombre": "Juanjo"
+    },
+    {
+      "dorsal": "26",
+      "nombre": "Josek"
+    },
+    {
+      "dorsal": "34",
+      "nombre": "Miguel"
+    },
+    {
+      "dorsal": "98",
+      "nombre": "Puli"
+    },
+    {
+      "nombre": "Edu",
+      "dorsal": "22"
+    },
+    {
+      "dorsal": "28",
+      "nombre": "Rober"
+    },
+    {
+      "dorsal": "31",
+      "nombre": "Mini"
+    },
+    {
+      "dorsal": "77",
+      "nombre": "Anuar"
+    }
+  ],
+  "grupo": "Liga",
+  "codacta": "veteranos-2026-10-25",
+  "golesPropios": [
+    {
+      "minuto": "23",
+      "jugador": "Ricardo"
+    },
+    {
+      "jugador": "Chencho",
+      "minuto": "89"
+    }
+  ],
+  "alineacion": [
+    {
+      "capitan": false,
+      "dorsal": "9",
+      "nombre": "Xory",
+      "portero": false,
+      "posicion": "delantero"
+    },
+    {
+      "portero": false,
+      "nombre": "Danilo",
+      "capitan": false,
+      "dorsal": "23",
+      "posicion": "delantero"
+    },
+    {
+      "portero": false,
+      "dorsal": "99",
+      "posicion": "centrocampista",
+      "nombre": "Gelo",
+      "capitan": false
+    },
+    {
+      "nombre": "Ricardo",
+      "portero": false,
+      "posicion": "defensa",
+      "dorsal": "6",
+      "capitan": false
+    },
+    {
+      "portero": true,
+      "dorsal": "88",
+      "capitan": false,
+      "posicion": "portero",
+      "nombre": "Ato"
+    },
+    {
+      "portero": false,
+      "dorsal": "14",
+      "nombre": "Claus",
+      "capitan": false,
+      "posicion": "centrocampista"
+    },
+    {
+      "posicion": "centrocampista",
+      "capitan": false,
+      "dorsal": "20",
+      "nombre": "Pana",
+      "portero": false
+    },
+    {
+      "portero": false,
+      "dorsal": "17",
+      "posicion": "centrocampista",
+      "nombre": "Alber",
+      "capitan": false
+    },
+    {
+      "portero": false,
+      "posicion": "defensa",
+      "dorsal": "18",
+      "capitan": false,
+      "nombre": "Sacha"
+    },
+    {
+      "portero": false,
+      "nombre": "Chaski",
+      "posicion": "defensa",
+      "capitan": false,
+      "dorsal": "50"
+    },
+    {
+      "posicion": "defensa",
+      "nombre": "Chencho",
+      "capitan": false,
+      "dorsal": "96",
+      "portero": false
+    }
+  ]
+}
