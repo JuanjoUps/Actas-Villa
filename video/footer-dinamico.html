@@ -234,10 +234,18 @@ const SLIDES = [
     cinta:"★ ESCANEA EL QR ★ TU CARNET DIGITAL ★ APOYA A TU CLUB ★ ",
     qr:true
   },
-  { tipo:"bolas", slots:2, cifras:"67512", lineas:[
-      [ ["LOTERÍA DE NAVIDAD","blanco"] ],
-      [ ["DEL VILLA · 22€","oro"] ],
-      [ ["YA DISPONIBLE","blanco"] ]
+  { tipo:"caja", lineas:[
+      [ ["PATROCINA NUESTRO"] ],
+      [ ["CONTENIDO SEMANAL"] ]
+  ]}
+];
+
+/* Mensajes disponibles por si quieres cambiarlos o añadirlos a SLIDES */
+const EXTRAS = [
+  { tipo:"texto", clase:"t3", img:"decimo", lineas:[
+      [ ["YA DISPONIBLE","oro"] ],
+      [ ["LOTERÍA DE NAVIDAD DEL VILLA","blanco"] ],
+      [ ["Nº 67512 · 22€","oro"] ]
   ]},
   { tipo:"texto", clase:"t1", lineas:[
       [ ["¿QUIERES QUE TU MARCA","blanco"] ],
@@ -370,6 +378,31 @@ SLIDES.forEach((sl) => {
   if (sl.tipo === "texto"){
     let i = 0;
     sl.lineas.forEach(l => { const r = linea(l, k, i, sl.clase || "t1"); cont.appendChild(r.div); i = r.siguiente; });
+  }
+
+  if (sl.tipo === "bolas1"){
+    cont.classList.add("conbolas");
+    let i = 0;
+    sl.lineas.forEach(l => { const r = linea(l, k, i, sl.clase || "t3"); cont.appendChild(r.div); i = r.siguiente; });
+    const cont2 = document.createElement("div");
+    cont2.className = "bolas";
+    [...sl.cifras].forEach((c, n) => {
+      const x = 4 + n * 84;
+      const sh = document.createElement("div");
+      sh.className = "sombra"; sh.style.left = (x - 2) + "px"; sh.style.setProperty("--i", n);
+      cont2.appendChild(sh);
+      const b = document.createElement("div");
+      b.className = "bola"; b.style.left = x + "px"; b.style.setProperty("--i", n);
+      const cu = document.createElement("div"); cu.className = "cuerpo";
+      for (let a = 0; a < 5; a++){
+        const pt = document.createElement("span"); pt.className = "pent";
+        pt.style.transform = `rotate(${a*72 + 20}deg) translateY(-34px)`;
+        cu.appendChild(pt);
+      }
+      const ci = document.createElement("div"); ci.className = "cifra"; ci.textContent = c;
+      cu.appendChild(ci); b.appendChild(cu); cont2.appendChild(b);
+    });
+    cont.appendChild(cont2);
   }
 
   if (sl.tipo === "bolas"){
