@@ -260,63 +260,102 @@ function partidosManuales() {
 // OBTENER CALENDARIO RFFM
 // ============================================================
 
-async function obtenerCalendario(url) {
+const USER_AGENT =
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0 Safari/537.36";
 
-  console.log(
-    `Consultando Federación: ${url}`
-  );
+const REINTENTOS_MAX = 3;
+const TIMEOUT_FETCH_MS = 20000;
+const TIMEOUT_NAVEGADOR_MS = 30000;
 
+function esperarMs(ms) {
+  return new Promise((r) => setTimeout(r, ms));
+}
 
-  const resp =
-    await fetch(
-      url,
-      {
-        headers: {
+// Navegador real (Playwright), solo si hace falta: se abre la primera
+// vez que el fetch normal falla y se reutiliza para el resto.
+let _navegador = null;
 
-          "User-Agent":
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0 Safari/537.36"
-
-        }
-      }
-    );
-
-
-  const html =
-    await resp.text();
-
-
-  const match =
-    html.match(
-      /<script id="__NEXT_DATA__"[^>]*>([\s\S]*?)<\/script>/
-    );
-
-
-  if (!match) {
-
-    throw new Error(
-      "No se encontró __NEXT_DATA__ en " +
-      url
-    );
-
+async function navegador() {
+  if (!_navegador) {
+    const { chromium } = require("playwright");
+    _navegador = await chromium.launch();
   }
+  return _navegador;
+}
 
+async function cerrarNavegador() {
+  if (_navegador) {
+    try { await _navegador.close(); } catch (e) { /* nada */ }
+    _navegador = null;
+  }
+}
 
-  const data =
-    JSON.parse(
-      match[1]
-    );
+function extraerCalendarioDeHtml(html) {
+  const match = html.match(/<script id="__NEXT_DATA__"[^>]*>([\s\S]*?)<\/script>/);
+  if (!match) throw new Error("la página no trae __NEXT_DATA__");
+  const calendario = JSON.parse(match[1])?.props?.pageProps?.calendar;
+  if (!calendario || !Array.isArray(calendario.rounds)) {
+    throw new Error("la página no trae el calendario (la web de la RFFM va saturada)");
+  }
+  return calendario;
+}
 
-  // Sacamos temporada, competicion y grupo de la propia URL de
-  // consulta, para poder guardarlos junto a cada partido y así
-  // luego poder construir la URL exacta de su acta.
+async function htmlConFetch(url) {
+  const resp = await fetch(url, {
+    headers: { "User-Agent": USER_AGENT },
+    timeout: TIMEOUT_FETCH_MS,
+  });
+  if (resp.status >= 500) throw new Error(`HTTP ${resp.status}`);
+  return resp.text();
+}
+
+async function htmlConNavegador(url) {
+  const browser = await navegador();
+  const context = await browser.newContext({ userAgent: USER_AGENT });
+  const page = await context.newPage();
+  try {
+    const resp = await page.goto(url, {
+      waitUntil: "domcontentloaded",
+      timeout: TIMEOUT_NAVEGADOR_MS,
+    });
+    if (resp && resp.status() >= 500) throw new Error(`HTTP ${resp.status()}`);
+    await page.waitForTimeout(1500);
+    return await page.content();
+  } finally {
+    await context.close();
+  }
+}
+
+/**
+ * Descarga el calendario de una categoría. Primero con fetch normal
+ * (rápido); si falla o no trae datos, con un navegador real.
+ * Reintenta varias veces. Si no lo consigue, devuelve null (no
+ * rompe el resto de categorías).
+ */
+async function obtenerCalendario(url) {
+  console.log(`Consultando Federación: ${url}`);
+
   const urlObj = new URL(url);
-
-  return {
-    calendario: data.props.pageProps.calendar,
+  const meta = {
     temporada: urlObj.searchParams.get("temporada"),
     competicion: urlObj.searchParams.get("competicion"),
     grupo: urlObj.searchParams.get("grupo"),
   };
+
+  for (let intento = 1; intento <= REINTENTOS_MAX; intento++) {
+    // Intento 1: fetch normal. Siguientes: navegador real.
+    const modo = intento === 1 ? "fetch" : "navegador";
+    try {
+      const html = modo === "fetch" ? await htmlConFetch(url) : await htmlConNavegador(url);
+      const calendario = extraerCalendarioDeHtml(html);
+      return { calendario, ...meta };
+    } catch (err) {
+      console.log(`  intento ${intento}/${REINTENTOS_MAX} (${modo}) falló: ${err.message}`);
+      if (intento < REINTENTOS_MAX) await esperarMs(5000 * intento);
+    }
+  }
+
+  return null;
 }
 
 
@@ -565,34 +604,53 @@ async function main() {
   );
 
 
-  for (
-    const url of
-    CALENDARIO_URLS
-  ) {
+  // Partidos de la ejecución anterior: si una categoría no se puede
+  // descargar hoy (web de la RFFM saturada), se conservan los suyos
+  // en vez de perderlos.
+  let partidosAnteriores = [];
+  try {
+    if (fs.existsSync(PARTIDOS_VIDEO_PATH)) {
+      partidosAnteriores = JSON.parse(fs.readFileSync(PARTIDOS_VIDEO_PATH, "utf-8"));
+    }
+  } catch (e) {
+    partidosAnteriores = [];
+  }
 
-    const { calendario, temporada, competicion, grupo } =
-      await obtenerCalendario(
-        url
+  let categoriasFallidas = 0;
+
+  for (const url of CALENDARIO_URLS) {
+
+    const descarga = await obtenerCalendario(url);
+
+    if (!descarga) {
+      categoriasFallidas++;
+      const u = new URL(url);
+      const comp = u.searchParams.get("competicion");
+      const grp = u.searchParams.get("grupo");
+      const conservados = partidosAnteriores.filter(
+        (p) => String(p.competicion) === comp && String(p.grupo) === grp
       );
-
-
-    const partidos =
-      partidosDelClub(
-        calendario,
-        { temporada, competicion, grupo }
+      console.log(
+        `  ⚠️ No se pudo descargar esta categoría ahora. ` +
+        `Se conservan ${conservados.length} partidos de la vez anterior.`
       );
+      todosLosPartidos = todosLosPartidos.concat(conservados);
+      continue;
+    }
 
+    const { calendario, temporada, competicion, grupo } = descarga;
 
-    console.log(
-      `Partidos del club encontrados: ${partidos.length}`
-    );
+    const partidos = partidosDelClub(calendario, { temporada, competicion, grupo });
 
+    console.log(`Partidos del club encontrados: ${partidos.length}`);
 
-    todosLosPartidos =
-      todosLosPartidos.concat(
-        partidos
-      );
+    todosLosPartidos = todosLosPartidos.concat(partidos);
+  }
 
+  await cerrarNavegador();
+
+  if (categoriasFallidas > 0) {
+    console.log(`\n⚠️ ${categoriasFallidas} categoría(s) sin descargar en esta pasada (se conservan los datos anteriores).`);
   }
 
 
