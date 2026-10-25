@@ -274,6 +274,7 @@ function esperarMs(ms) {
 // Navegador real (Playwright), solo si hace falta: se abre la primera
 // vez que el fetch normal falla y se reutiliza para el resto.
 let _navegador = null;
+let _fetchRoto = false;
 
 async function navegador() {
   if (!_navegador) {
@@ -343,14 +344,17 @@ async function obtenerCalendario(url) {
   };
 
   for (let intento = 1; intento <= REINTENTOS_MAX; intento++) {
-    // Intento 1: fetch normal. Siguientes: navegador real.
-    const modo = intento === 1 ? "fetch" : "navegador";
+    // Intento 1: fetch normal (salvo que ya haya fallado en esta pasada:
+    // entonces se va directo al navegador y no se pierden 20 s por categoría).
+    // Siguientes intentos: navegador real.
+    const modo = intento === 1 && !_fetchRoto ? "fetch" : "navegador";
     try {
       const html = modo === "fetch" ? await htmlConFetch(url) : await htmlConNavegador(url);
       const calendario = extraerCalendarioDeHtml(html);
       return { calendario, ...meta };
     } catch (err) {
       console.log(`  intento ${intento}/${REINTENTOS_MAX} (${modo}) falló: ${err.message}`);
+      if (modo === "fetch") _fetchRoto = true;
       if (intento < REINTENTOS_MAX) await esperarMs(5000 * intento);
     }
   }
