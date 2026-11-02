@@ -90,7 +90,7 @@
     "hora": "15:00",
     "campo": "TRES CANTOS - LA LUZ (HA)(HA)",
     "esLocal": false,
-    "finalizado": false,
+    "finalizado": true,
     "temporada": "22",
     "competicion": "26738300",
     "grupo": "26738302"
