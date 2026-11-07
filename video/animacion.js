@@ -676,8 +676,12 @@ async function pintarMascota(datos) {
     }
   }
 
-  // Portería a cero (el rival no marcó).
-  if ((datos.golesRival || []).length === 0) {
+  // Portería a cero: el rival no marcó. Se mira el MARCADOR, no la lista de
+  // goles del acta: si el acta trae el marcador pero aún no detalla los goles
+  // del rival, la lista sale vacía aunque nos hayan metido.
+  const _r = datos.resultado || {};
+  const golesDelRival = _r.propioLocal ? Number(_r.visitante) : Number(_r.local);
+  if (Number.isFinite(golesDelRival) && golesDelRival === 0) {
     lineas.push({ icono: "🧤", texto: elegirAleatorio(FRASES_PORTERIA_CERO) });
   }
 
