@@ -1,0 +1,139 @@
+{
+  "resultado": {
+    "rival": "Rayo Alcalá de Henares",
+    "escudoRivalUrl": "/escudos-cache/RAYO_ALCALA_DE_HENARES.png",
+    "local": 0,
+    "propioLocal": true,
+    "visitante": 1,
+    "equipoPropio": "C.D. VILLA DE BUITRAGO",
+    "escudoPropioUrl": ""
+  },
+  "grupo": "Liga",
+  "golesRival": [
+    {
+      "minuto": ""
+    }
+  ],
+  "jornada": "6",
+  "fecha": "08-11-2026",
+  "hatTricks": [],
+  "campo": "Peñalta, Buitrago del Lozoya",
+  "golesPropios": [],
+  "suplentes": [
+    {
+      "nombre": "Afa",
+      "dorsal": "5"
+    },
+    {
+      "dorsal": "14",
+      "nombre": "Claus"
+    },
+    {
+      "nombre": "Vik",
+      "dorsal": "10"
+    },
+    {
+      "dorsal": "44",
+      "nombre": "Álvaro"
+    },
+    {
+      "dorsal": "20",
+      "nombre": "Pana"
+    },
+    {
+      "dorsal": "4",
+      "nombre": "Barbu"
+    },
+    {
+      "dorsal": "18",
+      "nombre": "Sacha"
+    },
+    {
+      "nombre": "Rober",
+      "dorsal": "28"
+    }
+  ],
+  "codacta": "veteranos-2026-11-08",
+  "categoria": "VETERANOS",
+  "alineacion": [
+    {
+      "portero": false,
+      "posicion": "delantero",
+      "capitan": false,
+      "dorsal": "23",
+      "nombre": "Danilo"
+    },
+    {
+      "posicion": "centrocampista",
+      "dorsal": "99",
+      "nombre": "Gelo",
+      "capitan": false,
+      "portero": false
+    },
+    {
+      "portero": false,
+      "nombre": "Ricardo",
+      "dorsal": "6",
+      "posicion": "defensa",
+      "capitan": false
+    },
+    {
+      "portero": false,
+      "dorsal": "24",
+      "nombre": "Lean",
+      "posicion": "defensa",
+      "capitan": false
+    },
+    {
+      "portero": false,
+      "capitan": false,
+      "posicion": "centrocampista",
+      "dorsal": "27",
+      "nombre": "Dieguito"
+    },
+    {
+      "posicion": "defensa",
+      "nombre": "Nieva",
+      "dorsal": "3",
+      "portero": false,
+      "capitan": false
+    },
+    {
+      "portero": true,
+      "posicion": "portero",
+      "capitan": false,
+      "dorsal": "1",
+      "nombre": "Gato"
+    },
+    {
+      "capitan": false,
+      "portero": false,
+      "nombre": "Josek",
+      "dorsal": "26",
+      "posicion": "delantero"
+    },
+    {
+      "dorsal": "98",
+      "nombre": "Puli",
+      "portero": false,
+      "posicion": "centrocampista",
+      "capitan": false
+    },
+    {
+      "portero": false,
+      "posicion": "centrocampista",
+      "capitan": false,
+      "dorsal": "17",
+      "nombre": "Alber"
+    },
+    {
+      "posicion": "defensa",
+      "capitan": false,
+      "dorsal": "50",
+      "nombre": "Chaski",
+      "portero": false
+    }
+  ],
+  "expulsiones": [],
+  "tarjetas": []
+}
