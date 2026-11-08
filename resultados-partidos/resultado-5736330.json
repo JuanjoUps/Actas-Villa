@@ -1,0 +1,130 @@
+{
+  "codacta": "5736330",
+  "categoria": "PRIMERA FÚTBOL FEMENINO",
+  "grupo": "Grupo 1",
+  "jornada": "2",
+  "fecha": "08-11-2026",
+  "campo": "ALCALA - CIUDAD DPTVA. EL JUNCAL (HA)",
+  "resultado": {
+    "local": 4,
+    "visitante": 2,
+    "propioLocal": false,
+    "juegaEnPenalta": false,
+    "equipoPropio": "C.D. VILLA BUITRAGO DEL LOZOYA",
+    "codigoEquipoPropio": "17138002",
+    "rival": "ATLETICO ALCALA",
+    "escudoPropioUrl": "https://appweb.rffm.es/pnfg/pimg/Clubes/00100_0014265999_BUITRAGO.png",
+    "escudoRivalUrl": "https://appweb.rffm.es/pnfg/pimg/Clubes/00100_0011193081_Escudo_ATA__con_fondo_.jpg?nova=1",
+    "escudoPropio": "data:image/png;base64,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",
+    "escudoRival": "data:image/jpeg;base64,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"
+  },
+  "alineacion": [
+    {
+      "dorsal": "1",
+      "nombre": "SILVIA MORILLO MORAGA",
+      "capitan": false,
+      "portero": true
+    },
+    {
+      "dorsal": "2",
+      "nombre": "CARMEN ABAD MARTIN",
+      "capitan": false,
+      "portero": false
+    },
+    {
+      "dorsal": "4",
+      "nombre": "ERIKA RAMIREZ MARTIN",
+      "capitan": false,
+      "portero": false
+    },
+    {
+      "dorsal": "8",
+      "nombre": "LUCIA ESTEBAN GONZALEZ",
+      "capitan": false,
+      "portero": false
+    },
+    {
+      "dorsal": "11",
+      "nombre": "ELENA SANTOS DEL VALLE",
+      "capitan": false,
+      "portero": false
+    },
+    {
+      "dorsal": "14",
+      "nombre": "PILAR NARRO CALAHORRO",
+      "capitan": false,
+      "portero": false
+    },
+    {
+      "dorsal": "16",
+      "nombre": "ALBA GARCIA FERNANDEZ",
+      "capitan": false,
+      "portero": false
+    },
+    {
+      "dorsal": "17",
+      "nombre": "JIMENA VAZQUEZ GONZÁLEZ",
+      "capitan": false,
+      "portero": false
+    },
+    {
+      "dorsal": "18",
+      "nombre": "SANDRA RAMÍREZ GALLEGO",
+      "capitan": true,
+      "portero": false
+    },
+    {
+      "dorsal": "23",
+      "nombre": "ELSA MORCILLO HERNÁNDEZ",
+      "capitan": false,
+      "portero": false
+    },
+    {
+      "dorsal": "47",
+      "nombre": "IRIA NAVARRO MELERO",
+      "capitan": false,
+      "portero": false
+    }
+  ],
+  "suplentes": [
+    {
+      "dorsal": "",
+      "nombre": "DANIELA MARTÍN INFANTE"
+    },
+    {
+      "dorsal": "",
+      "nombre": "ALEJANDRA MUÑOZ ALCÁZAR"
+    },
+    {
+      "dorsal": "",
+      "nombre": "ANDREEA MERLAN GRIGORE"
+    }
+  ],
+  "golesPropios": [
+    {
+      "jugador": "ERIKA RAMIREZ MARTIN",
+      "minuto": 69
+    },
+    {
+      "jugador": "ERIKA RAMIREZ MARTIN",
+      "minuto": 77
+    }
+  ],
+  "golesRival": [
+    {
+      "minuto": 14
+    },
+    {
+      "minuto": 51
+    },
+    {
+      "minuto": 59
+    },
+    {
+      "minuto": 74
+    }
+  ],
+  "hatTricks": [],
+  "tarjetas": [],
+  "expulsiones": []
+}
