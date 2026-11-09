@@ -1,7 +1,7 @@
 {
   "Senior (Segunda Aficionado)": {
-    "posicion": 11,
-    "puntos": 6,
+    "posicion": 8,
+    "puntos": 9,
     "totalEquipos": 15
   },
   "Alevín F-7": {
@@ -11,7 +11,7 @@
   },
   "Cadete": {
     "posicion": 3,
-    "puntos": 9,
+    "puntos": 10,
     "totalEquipos": 13
   },
   "Infantil": {
@@ -25,7 +25,7 @@
     "totalEquipos": 10
   },
   "Benjamín F-7 (A)": {
-    "posicion": 6,
+    "posicion": 7,
     "puntos": 9,
     "totalEquipos": 14
   },
