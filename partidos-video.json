@@ -2922,7 +2922,7 @@
     "hora": "18:50",
     "campo": "MIRAFLORES DE LA SIERRA - MPAL. LA DEHESILLA (HA)(HA)",
     "esLocal": true,
-    "finalizado": false,
+    "finalizado": true,
     "temporada": "22",
     "competicion": "26797573",
     "grupo": "28112552"
