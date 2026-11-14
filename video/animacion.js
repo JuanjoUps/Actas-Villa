@@ -129,7 +129,7 @@ const FRASES_CATEGORIA_BASE = [
 ];
 
 const ACLARACION_CATEGORIA_BASE =
-  "Por norma de la RFFM, en esta categoría el acta solo recoge 1-0, 0-0 o 0-1 y no se publican goleadores.";
+  "Por norma de la RFFM, en esta categoría el acta solo recoge si se gana, se empata o se pierde, y no se publican goleadores.";
 
 function sinTildes(texto) {
   return String(texto || "")
@@ -304,6 +304,20 @@ function pintarResultado(datos) {
     ? { nombre: datos.resultado.rival, escudo: datos.resultado.escudoRivalUrl || "", goles: golesRival }
     : { nombre: datos.resultado.equipoPropio, escudo: "/escudo-club.png", goles: golesPropios };
 
+  // Benjamín / Prebenjamín: el acta solo recoge 1-0, 0-0 o 0-1, así que
+  // en lugar del número mostramos VICTORIA / EMPATE / DERROTA.
+  let marcadorHtml = `
+        <div class="resultado-marcador">
+          <span class="${datos.resultado.propioLocal ? "propio" : ""}">${izquierda.goles}</span><span>-</span><span class="${datos.resultado.propioLocal ? "" : "propio"}">${derecha.goles}</span>
+        </div>`;
+  if (esCategoriaBase(datos.categoria)) {
+    const dif = Number(golesPropios) - Number(golesRival);
+    const claseRes = dif > 0 ? "victoria" : dif < 0 ? "derrota" : "empate";
+    const textoRes = dif > 0 ? "VICTORIA" : dif < 0 ? "DERROTA" : "EMPATE";
+    marcadorHtml = `
+        <div class="resultado-palabra ${claseRes}">${textoRes}</div>`;
+  }
+
   cont.innerHTML = `
     <div class="marcador-card">
       <div class="resultado-equipos">
@@ -311,9 +325,7 @@ function pintarResultado(datos) {
           <img class="escudo-equipo" src="${izquierda.escudo}" />
           <div class="resultado-nombre">${izquierda.nombre}</div>
         </div>
-        <div class="resultado-marcador">
-          <span class="${datos.resultado.propioLocal ? "propio" : ""}">${izquierda.goles}</span><span>-</span><span class="${datos.resultado.propioLocal ? "" : "propio"}">${derecha.goles}</span>
-        </div>
+        ${marcadorHtml}
         <div class="equipo">
           <img class="escudo-equipo" src="${derecha.escudo}" />
           <div class="resultado-nombre">${derecha.nombre}</div>
