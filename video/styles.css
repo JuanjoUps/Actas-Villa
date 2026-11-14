@@ -179,6 +179,18 @@ html, body {
   color: var(--color-oro);
 }
 
+.resultado-palabra {
+  font-size: 58px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  line-height: 1;
+  padding: 0 6px;
+  color: #071A0F;
+}
+.resultado-palabra.victoria { color: #1E8E3E; }
+.resultado-palabra.derrota  { color: #B3261E; }
+.resultado-palabra.empate   { color: #7A6A2E; }
+
 .resultado-fecha {
   margin-top: 22px;
   padding-top: 18px;
