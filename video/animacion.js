@@ -114,6 +114,39 @@ const FRASES_PORTERIA_CERO = [
   "¡Defensa de acero y portería a cero!",
 ];
 
+// ------------------------------------------------------------
+// Benjamín y Prebenjamín (norma RFFM 2026/27, Regla X): el acta NO
+// muestra los goles marcadores y el resultado figura solo como 1-0,
+// 0-0 o 0-1. Por eso en estas categorías no se habla de goleadas,
+// dobletes ni portería a cero: se usan frases neutras y una aclaración.
+// ------------------------------------------------------------
+
+const FRASES_CATEGORIA_BASE = [
+  "¡Gran partido de nuestros pequeños! Aquí lo importante es disfrutar y aprender.",
+  "¡Todos compitieron con ilusión! Así se hace equipo.",
+  "¡Orgullosos de cómo jugaron nuestros [NOMBRE]!",
+  "¡Un partido más de crecer jugando juntos!",
+];
+
+const ACLARACION_CATEGORIA_BASE =
+  "Por norma de la RFFM, en esta categoría el acta solo recoge 1-0, 0-0 o 0-1 y no se publican goleadores.";
+
+function sinTildes(texto) {
+  return String(texto || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
+}
+
+// true si la categoría es Benjamín o Prebenjamín (con o sin tilde).
+function esCategoriaBase(categoria) {
+  return sinTildes(categoria).includes("benjamin");
+}
+
+function nombrePluralCategoria(categoria) {
+  return sinTildes(categoria).includes("prebenjamin") ? "prebenjamines" : "benjamines";
+}
+
 const FRASES_EXTRA_CIERRE = [
   "¡Somos el Villa!",
   "¡Vamos Buitrago!",
@@ -655,13 +688,26 @@ async function pintarMascota(datos) {
   // Cada línea del bocadillo lleva un icono + su frase, al estilo
   // de la referencia (viñetas con emoji delante).
   const iconoResultado = { victoria: "🏆", empate: "🤝", derrota: "💪" }[tipo];
-  const lineas = [
-    { icono: iconoResultado, texto: elegirAleatorio(FRASES[categoria]) },
-  ];
+  const categoriaBase = esCategoriaBase(datos.categoria);
+  const lineas = [];
+
+  if (categoriaBase) {
+    // Benjamín / Prebenjamín: frases neutras + aclaración de la norma.
+    lineas.push({
+      icono: "⚽",
+      texto: elegirAleatorio(FRASES_CATEGORIA_BASE).replace(
+        "[NOMBRE]",
+        nombrePluralCategoria(datos.categoria)
+      ),
+    });
+    lineas.push({ icono: "ℹ️", texto: ACLARACION_CATEGORIA_BASE });
+  } else {
+    lineas.push({ icono: iconoResultado, texto: elegirAleatorio(FRASES[categoria]) });
+  }
 
   // Dobletes y hat-tricks (contados a partir de los goles propios).
   const conteoGoles = contarGolesPorJugador(datos.golesPropios || []);
-  for (const nombreJugador of Object.keys(conteoGoles)) {
+  for (const nombreJugador of categoriaBase ? [] : Object.keys(conteoGoles)) {
     const goles = conteoGoles[nombreJugador];
     if (goles >= 3) {
       lineas.push({
@@ -681,7 +727,7 @@ async function pintarMascota(datos) {
   // del rival, la lista sale vacía aunque nos hayan metido.
   const _r = datos.resultado || {};
   const golesDelRival = _r.propioLocal ? Number(_r.visitante) : Number(_r.local);
-  if (Number.isFinite(golesDelRival) && golesDelRival === 0) {
+  if (!categoriaBase && Number.isFinite(golesDelRival) && golesDelRival === 0) {
     lineas.push({ icono: "🧤", texto: elegirAleatorio(FRASES_PORTERIA_CERO) });
   }
 
