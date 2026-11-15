@@ -1,0 +1,157 @@
+{
+  "campo": "Campo de AD La Plata TR82 Torrejón",
+  "golesRival": [
+    {
+      "minuto": ""
+    },
+    {
+      "minuto": ""
+    },
+    {
+      "minuto": ""
+    },
+    {
+      "minuto": ""
+    }
+  ],
+  "expulsiones": [],
+  "codacta": "veteranos-2026-11-15",
+  "categoria": "VETERANOS",
+  "golesPropios": [
+    {
+      "jugador": "Xory",
+      "minuto": "25"
+    },
+    {
+      "jugador": "Chencho",
+      "minuto": "33"
+    },
+    {
+      "jugador": "Danilo",
+      "minuto": "61"
+    }
+  ],
+  "hatTricks": [],
+  "alineacion": [
+    {
+      "dorsal": "5",
+      "posicion": "delantero",
+      "nombre": "Afa",
+      "portero": false,
+      "capitan": false
+    },
+    {
+      "capitan": false,
+      "portero": false,
+      "nombre": "Ricardo",
+      "dorsal": "6",
+      "posicion": "defensa"
+    },
+    {
+      "dorsal": "11",
+      "nombre": "Juanjo",
+      "capitan": false,
+      "portero": false,
+      "posicion": "centrocampista"
+    },
+    {
+      "posicion": "defensa",
+      "capitan": false,
+      "nombre": "Nieva",
+      "portero": false,
+      "dorsal": "3"
+    },
+    {
+      "portero": true,
+      "capitan": false,
+      "posicion": "portero",
+      "nombre": "Gato",
+      "dorsal": "1"
+    },
+    {
+      "portero": false,
+      "posicion": "defensa",
+      "dorsal": "44",
+      "capitan": false,
+      "nombre": "Álvaro"
+    },
+    {
+      "portero": false,
+      "dorsal": "20",
+      "nombre": "Pana",
+      "posicion": "centrocampista",
+      "capitan": false
+    },
+    {
+      "dorsal": "98",
+      "posicion": "centrocampista",
+      "nombre": "Puli",
+      "capitan": false,
+      "portero": false
+    },
+    {
+      "portero": false,
+      "posicion": "centrocampista",
+      "dorsal": "17",
+      "nombre": "Alber",
+      "capitan": false
+    },
+    {
+      "portero": false,
+      "posicion": "centrocampista",
+      "capitan": false,
+      "dorsal": "49",
+      "nombre": "Javi"
+    },
+    {
+      "capitan": false,
+      "dorsal": "96",
+      "nombre": "Chencho",
+      "portero": false,
+      "posicion": "defensa"
+    }
+  ],
+  "resultado": {
+    "escudoPropioUrl": "",
+    "equipoPropio": "C.D. VILLA DE BUITRAGO",
+    "local": 4,
+    "escudoRivalUrl": "/escudos-cache/AD_LA_PLATA_TR82_TORREJON.png",
+    "propioLocal": false,
+    "visitante": 3,
+    "rival": "AD La Plata TR82 Torrejón"
+  },
+  "grupo": "Liga",
+  "suplentes": [
+    {
+      "nombre": "Xory",
+      "dorsal": "9"
+    },
+    {
+      "nombre": "Danilo",
+      "dorsal": "23"
+    },
+    {
+      "dorsal": "99",
+      "nombre": "Gelo"
+    },
+    {
+      "nombre": "Josek",
+      "dorsal": "26"
+    },
+    {
+      "nombre": "Miguel",
+      "dorsal": "34"
+    },
+    {
+      "nombre": "Sacha",
+      "dorsal": "18"
+    },
+    {
+      "nombre": "Rober",
+      "dorsal": "28"
+    }
+  ],
+  "jornada": "7",
+  "tarjetas": [],
+  "fecha": "15-11-2026"
+}
