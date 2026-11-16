@@ -1,6 +1,6 @@
 {
   "Senior (Segunda Aficionado)": {
-    "posicion": 8,
+    "posicion": 11,
     "puntos": 9,
     "totalEquipos": 15
   },
@@ -11,7 +11,7 @@
   },
   "Cadete": {
     "posicion": 3,
-    "puntos": 10,
+    "puntos": 13,
     "totalEquipos": 13
   },
   "Infantil": {
@@ -20,7 +20,7 @@
     "totalEquipos": 16
   },
   "Fútbol femenino": {
-    "posicion": 10,
+    "posicion": 9,
     "puntos": 0,
     "totalEquipos": 10
   },
