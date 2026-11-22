@@ -1,0 +1,158 @@
+{
+  "jornada": "8",
+  "tarjetas": [],
+  "hatTricks": [],
+  "categoria": "VETERANOS",
+  "golesRival": [
+    {
+      "minuto": ""
+    },
+    {
+      "minuto": ""
+    }
+  ],
+  "expulsiones": [],
+  "resultado": {
+    "rival": "Tres Cantos UD-Base-CDF",
+    "escudoRivalUrl": "/escudos-cache/TRES_CANTOS_UD_BASE_CDF.png",
+    "local": 3,
+    "propioLocal": true,
+    "equipoPropio": "C.D. VILLA DE BUITRAGO",
+    "visitante": 2,
+    "escudoPropioUrl": ""
+  },
+  "codacta": "veteranos-2026-11-22",
+  "alineacion": [
+    {
+      "posicion": "delantero",
+      "portero": false,
+      "dorsal": "9",
+      "capitan": false,
+      "nombre": "Xory"
+    },
+    {
+      "capitan": false,
+      "posicion": "defensa",
+      "nombre": "Ricardo",
+      "dorsal": "6",
+      "portero": false
+    },
+    {
+      "posicion": "centrocampista",
+      "capitan": false,
+      "nombre": "Dieguito",
+      "dorsal": "27",
+      "portero": false
+    },
+    {
+      "capitan": false,
+      "posicion": "portero",
+      "dorsal": "1",
+      "nombre": "Gato",
+      "portero": true
+    },
+    {
+      "dorsal": "8",
+      "nombre": "César",
+      "posicion": "delantero",
+      "capitan": false,
+      "portero": false
+    },
+    {
+      "portero": false,
+      "nombre": "Pana",
+      "capitan": false,
+      "posicion": "centrocampista",
+      "dorsal": "20"
+    },
+    {
+      "dorsal": "18",
+      "nombre": "Sacha",
+      "portero": false,
+      "posicion": "defensa",
+      "capitan": false
+    },
+    {
+      "portero": false,
+      "dorsal": "28",
+      "nombre": "Rober",
+      "capitan": false,
+      "posicion": "centrocampista"
+    },
+    {
+      "portero": false,
+      "dorsal": "31",
+      "posicion": "defensa",
+      "nombre": "Mini",
+      "capitan": false
+    },
+    {
+      "portero": false,
+      "capitan": false,
+      "nombre": "Javi",
+      "dorsal": "49",
+      "posicion": "centrocampista"
+    },
+    {
+      "posicion": "defensa",
+      "capitan": false,
+      "nombre": "Chaski",
+      "portero": false,
+      "dorsal": "50"
+    },
+    {
+      "dorsal": "96",
+      "portero": false,
+      "nombre": "Chencho",
+      "capitan": false,
+      "posicion": "defensa"
+    }
+  ],
+  "grupo": "Liga",
+  "fecha": "22-11-2026",
+  "golesPropios": [
+    {
+      "jugador": "Xory",
+      "minuto": "4"
+    },
+    {
+      "jugador": "Javi",
+      "minuto": "19"
+    },
+    {
+      "jugador": "Javi",
+      "minuto": "62"
+    }
+  ],
+  "campo": "Peñalta, Buitrago del Lozoya",
+  "suplentes": [
+    {
+      "nombre": "Afa",
+      "dorsal": "5"
+    },
+    {
+      "nombre": "Claus",
+      "dorsal": "14"
+    },
+    {
+      "nombre": "Vik",
+      "dorsal": "10"
+    },
+    {
+      "nombre": "Josek",
+      "dorsal": "26"
+    },
+    {
+      "nombre": "Álvaro",
+      "dorsal": "44"
+    },
+    {
+      "nombre": "Puli",
+      "dorsal": "98"
+    },
+    {
+      "nombre": "Alber",
+      "dorsal": "17"
+    }
+  ]
+}
