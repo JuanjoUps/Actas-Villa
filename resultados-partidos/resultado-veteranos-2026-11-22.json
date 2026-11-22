@@ -1,8 +1,18 @@
 {
-  "jornada": "8",
-  "tarjetas": [],
-  "hatTricks": [],
-  "categoria": "VETERANOS",
+  "golesPropios": [
+    {
+      "minuto": "4",
+      "jugador": "Xory"
+    },
+    {
+      "minuto": "19",
+      "jugador": "Javi"
+    },
+    {
+      "minuto": "62",
+      "jugador": "Javi"
+    }
+  ],
   "golesRival": [
     {
       "minuto": ""
@@ -12,36 +22,77 @@
     }
   ],
   "expulsiones": [],
-  "resultado": {
-    "rival": "Tres Cantos UD-Base-CDF",
-    "escudoRivalUrl": "/escudos-cache/TRES_CANTOS_UD_BASE_CDF.png",
-    "local": 3,
-    "propioLocal": true,
-    "equipoPropio": "C.D. VILLA DE BUITRAGO",
-    "visitante": 2,
-    "escudoPropioUrl": ""
-  },
+  "categoria": "VETERANOS",
+  "campo": "Peñalta, Buitrago del Lozoya",
   "codacta": "veteranos-2026-11-22",
-  "alineacion": [
+  "resultado": {
+    "visitante": 2,
+    "escudoRivalUrl": "/escudos-cache/TRES_CANTOS_UD_BASE_CDF.png",
+    "escudoPropioUrl": "",
+    "equipoPropio": "C.D. VILLA DE BUITRAGO",
+    "propioLocal": true,
+    "rival": "Tres Cantos UD-Base-CDF",
+    "local": 3
+  },
+  "suplentes": [
     {
-      "posicion": "delantero",
-      "portero": false,
-      "dorsal": "9",
-      "capitan": false,
-      "nombre": "Xory"
+      "dorsal": "5",
+      "nombre": "Afa"
     },
     {
+      "dorsal": "14",
+      "nombre": "Claus"
+    },
+    {
+      "dorsal": "10",
+      "nombre": "Vik"
+    },
+    {
+      "dorsal": "8",
+      "nombre": "César"
+    },
+    {
+      "dorsal": "26",
+      "nombre": "Josek"
+    },
+    {
+      "dorsal": "44",
+      "nombre": "Álvaro"
+    },
+    {
+      "dorsal": "98",
+      "nombre": "Puli"
+    },
+    {
+      "dorsal": "17",
+      "nombre": "Alber"
+    }
+  ],
+  "jornada": "8",
+  "tarjetas": [],
+  "fecha": "22-11-2026",
+  "hatTricks": [],
+  "grupo": "Liga",
+  "alineacion": [
+    {
       "capitan": false,
-      "posicion": "defensa",
-      "nombre": "Ricardo",
-      "dorsal": "6",
+      "dorsal": "9",
+      "nombre": "Xory",
+      "posicion": "delantero",
       "portero": false
+    },
+    {
+      "dorsal": "6",
+      "capitan": false,
+      "nombre": "Ricardo",
+      "portero": false,
+      "posicion": "defensa"
     },
     {
       "posicion": "centrocampista",
       "capitan": false,
-      "nombre": "Dieguito",
       "dorsal": "27",
+      "nombre": "Dieguito",
       "portero": false
     },
     {
@@ -52,107 +103,53 @@
       "portero": true
     },
     {
-      "dorsal": "8",
-      "nombre": "César",
-      "posicion": "delantero",
+      "posicion": "centrocampista",
       "capitan": false,
+      "nombre": "Pana",
+      "dorsal": "20",
       "portero": false
     },
     {
       "portero": false,
-      "nombre": "Pana",
-      "capitan": false,
-      "posicion": "centrocampista",
-      "dorsal": "20"
-    },
-    {
       "dorsal": "18",
       "nombre": "Sacha",
-      "portero": false,
-      "posicion": "defensa",
-      "capitan": false
+      "capitan": false,
+      "posicion": "defensa"
     },
     {
       "portero": false,
       "dorsal": "28",
       "nombre": "Rober",
-      "capitan": false,
-      "posicion": "centrocampista"
-    },
-    {
-      "portero": false,
-      "dorsal": "31",
-      "posicion": "defensa",
-      "nombre": "Mini",
+      "posicion": "centrocampista",
       "capitan": false
     },
     {
       "portero": false,
+      "posicion": "defensa",
+      "nombre": "Mini",
       "capitan": false,
-      "nombre": "Javi",
+      "dorsal": "31"
+    },
+    {
+      "capitan": false,
       "dorsal": "49",
-      "posicion": "centrocampista"
+      "posicion": "centrocampista",
+      "nombre": "Javi",
+      "portero": false
+    },
+    {
+      "capitan": false,
+      "nombre": "Chaski",
+      "dorsal": "50",
+      "portero": false,
+      "posicion": "defensa"
     },
     {
       "posicion": "defensa",
       "capitan": false,
-      "nombre": "Chaski",
-      "portero": false,
-      "dorsal": "50"
-    },
-    {
       "dorsal": "96",
-      "portero": false,
       "nombre": "Chencho",
-      "capitan": false,
-      "posicion": "defensa"
-    }
-  ],
-  "grupo": "Liga",
-  "fecha": "22-11-2026",
-  "golesPropios": [
-    {
-      "jugador": "Xory",
-      "minuto": "4"
-    },
-    {
-      "jugador": "Javi",
-      "minuto": "19"
-    },
-    {
-      "jugador": "Javi",
-      "minuto": "62"
-    }
-  ],
-  "campo": "Peñalta, Buitrago del Lozoya",
-  "suplentes": [
-    {
-      "nombre": "Afa",
-      "dorsal": "5"
-    },
-    {
-      "nombre": "Claus",
-      "dorsal": "14"
-    },
-    {
-      "nombre": "Vik",
-      "dorsal": "10"
-    },
-    {
-      "nombre": "Josek",
-      "dorsal": "26"
-    },
-    {
-      "nombre": "Álvaro",
-      "dorsal": "44"
-    },
-    {
-      "nombre": "Puli",
-      "dorsal": "98"
-    },
-    {
-      "nombre": "Alber",
-      "dorsal": "17"
+      "portero": false
     }
   ]
 }
