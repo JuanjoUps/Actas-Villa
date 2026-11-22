@@ -1,43 +1,89 @@
 {
-  "golesPropios": [
+  "alineacion": [
     {
-      "minuto": "4",
-      "jugador": "Xory"
+      "nombre": "Xory",
+      "portero": false,
+      "posicion": "delantero",
+      "dorsal": "9",
+      "capitan": false
     },
     {
-      "minuto": "19",
-      "jugador": "Javi"
+      "nombre": "Ricardo",
+      "dorsal": "6",
+      "posicion": "defensa",
+      "portero": false,
+      "capitan": false
     },
     {
-      "minuto": "62",
-      "jugador": "Javi"
+      "posicion": "centrocampista",
+      "nombre": "Dieguito",
+      "capitan": false,
+      "dorsal": "27",
+      "portero": false
+    },
+    {
+      "posicion": "portero",
+      "portero": true,
+      "capitan": false,
+      "dorsal": "1",
+      "nombre": "Gato"
+    },
+    {
+      "portero": false,
+      "capitan": false,
+      "nombre": "Pana",
+      "dorsal": "20",
+      "posicion": "centrocampista"
+    },
+    {
+      "posicion": "defensa",
+      "dorsal": "18",
+      "capitan": false,
+      "nombre": "Sacha",
+      "portero": false
+    },
+    {
+      "portero": false,
+      "nombre": "Rober",
+      "capitan": false,
+      "posicion": "centrocampista",
+      "dorsal": "28"
+    },
+    {
+      "portero": false,
+      "capitan": false,
+      "nombre": "Mini",
+      "dorsal": "31",
+      "posicion": "defensa"
+    },
+    {
+      "posicion": "centrocampista",
+      "nombre": "Javi",
+      "dorsal": "49",
+      "portero": false,
+      "capitan": false
+    },
+    {
+      "capitan": false,
+      "portero": false,
+      "dorsal": "50",
+      "nombre": "Chaski",
+      "posicion": "defensa"
+    },
+    {
+      "capitan": false,
+      "nombre": "Chencho",
+      "portero": false,
+      "dorsal": "96",
+      "posicion": "defensa"
     }
   ],
-  "golesRival": [
-    {
-      "minuto": ""
-    },
-    {
-      "minuto": ""
-    }
-  ],
-  "expulsiones": [],
-  "categoria": "VETERANOS",
+  "jornada": "8",
   "campo": "Peñalta, Buitrago del Lozoya",
-  "codacta": "veteranos-2026-11-22",
-  "resultado": {
-    "visitante": 2,
-    "escudoRivalUrl": "/escudos-cache/TRES_CANTOS_UD_BASE_CDF.png",
-    "escudoPropioUrl": "",
-    "equipoPropio": "C.D. VILLA DE BUITRAGO",
-    "propioLocal": true,
-    "rival": "Tres Cantos UD-Base-CDF",
-    "local": 3
-  },
   "suplentes": [
     {
-      "dorsal": "5",
-      "nombre": "Afa"
+      "nombre": "Afa",
+      "dorsal": "5"
     },
     {
       "dorsal": "14",
@@ -68,88 +114,46 @@
       "nombre": "Alber"
     }
   ],
-  "jornada": "8",
-  "tarjetas": [],
-  "fecha": "22-11-2026",
+  "expulsiones": [],
+  "categoria": "VETERANOS",
   "hatTricks": [],
-  "grupo": "Liga",
-  "alineacion": [
+  "golesRival": [
     {
-      "capitan": false,
-      "dorsal": "9",
-      "nombre": "Xory",
-      "posicion": "delantero",
-      "portero": false
+      "minuto": ""
     },
     {
-      "dorsal": "6",
-      "capitan": false,
-      "nombre": "Ricardo",
-      "portero": false,
-      "posicion": "defensa"
-    },
-    {
-      "posicion": "centrocampista",
-      "capitan": false,
-      "dorsal": "27",
-      "nombre": "Dieguito",
-      "portero": false
-    },
-    {
-      "capitan": false,
-      "posicion": "portero",
-      "dorsal": "1",
-      "nombre": "Gato",
-      "portero": true
-    },
-    {
-      "posicion": "centrocampista",
-      "capitan": false,
-      "nombre": "Pana",
-      "dorsal": "20",
-      "portero": false
-    },
-    {
-      "portero": false,
-      "dorsal": "18",
-      "nombre": "Sacha",
-      "capitan": false,
-      "posicion": "defensa"
-    },
-    {
-      "portero": false,
-      "dorsal": "28",
-      "nombre": "Rober",
-      "posicion": "centrocampista",
-      "capitan": false
-    },
-    {
-      "portero": false,
-      "posicion": "defensa",
-      "nombre": "Mini",
-      "capitan": false,
-      "dorsal": "31"
-    },
-    {
-      "capitan": false,
-      "dorsal": "49",
-      "posicion": "centrocampista",
-      "nombre": "Javi",
-      "portero": false
-    },
-    {
-      "capitan": false,
-      "nombre": "Chaski",
-      "dorsal": "50",
-      "portero": false,
-      "posicion": "defensa"
-    },
-    {
-      "posicion": "defensa",
-      "capitan": false,
-      "dorsal": "96",
-      "nombre": "Chencho",
-      "portero": false
+      "minuto": ""
     }
-  ]
+  ],
+  "fecha": "22-11-2026",
+  "resultado": {
+    "visitante": 2,
+    "rival": "Tres Cantos UD-Base-CDF",
+    "escudoPropioUrl": "",
+    "propioLocal": true,
+    "equipoPropio": "C.D. VILLA DE BUITRAGO",
+    "escudoRivalUrl": "/escudos-cache/TRES_CANTOS_UD_BASE_CDF.png",
+    "local": 4
+  },
+  "tarjetas": [],
+  "codacta": "veteranos-2026-11-22",
+  "golesPropios": [
+    {
+      "minuto": "4",
+      "jugador": "Xory"
+    },
+    {
+      "jugador": "Javi",
+      "minuto": "19"
+    },
+    {
+      "minuto": "62",
+      "jugador": "Javi"
+    },
+    {
+      "minuto": "83",
+      "jugador": "Xory"
+    }
+  ],
+  "grupo": "Liga"
 }
